@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P&L Statement</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="p&l.js"></script>
+</head>
+<body>
+    <h2>Profit & Loss Statement</h2>
+    <table border="1" cellspacing="0" cellpadding="10">
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th>Amount</th>
+                <th>Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Revenue Section -->
+            <tr>
+                <td>Revenue</td>
+                <td id="revenue">Loading...</td>
+                <td>Total revenue from services</td>
+            </tr>
+            
+            <tr>
+                <td>Total COGS</td>
+                <td id="cogs">Loading...</td>
+                <td>Total Cost of Goods Sold</td>
+            </tr>
+            
+            <!-- Profit Calculations -->
+            <tr>
+                <td>Gross Profit</td>
+                <td id="gross-profit">Loading...</td>
+                <td>Revenue minus COGS</td>
+            </tr>
+            <tr>
+                <td>Operating Expenses</td>
+                <td>
+                    <input type="number" id="operating-expenses" value="400" 
+                           onchange="recalculatePL()">
+                </td>
+                <td>Fixed operating expenses</td>
+            </tr>
+            <tr>
+                <td>Operating Profit</td>
+                <td id="operating-profit">Loading...</td>
+                <td>Gross profit minus operating expenses</td>
+            </tr>
+            <tr>
+                <td>Interest Expense</td>
+                <td>
+                    <input type="number" id="interest-expense" value="2000" 
+                           onchange="recalculatePL()">
+                </td>
+                <td>Interest on loans and credit</td>
+            </tr>
+            <tr>
+                <td>Profit Before Tax</td>
+                <td id="profit-before-tax">Loading...</td>
+                <td>Operating profit minus interest</td>
+            </tr>
+            <tr>
+                <td>Taxes</td>
+                <td>
+                    <input type="number" id="tax-percent" value="13" min="0" max="100" step="0.1" 
+                           onchange="recalculatePL()">
+                </td>
+                <td>Tax percentage applied to profit before tax</td>
+            </tr>
+            <tr>
+                <td>Tax Amount</td>
+                <td id="taxes-hst">Loading...</td>
+                <td>Calculated tax amount</td>
+            </tr>
+            <tr class="total">
+                <td>Net Profit</td>
+                <td id="net-profit">Loading...</td>
+                <td>Final profit after all deductions</td>
+            </tr>
+            <tr>
+                <td>Profit Margin</td>
+                <td id="profit-margin">Loading...</td>
+                <td>Net profit as percentage of revenue</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Update Table Button -->
+    <button onclick="recalculatePL()">Update Table</button>
+
+    <div class="navigation">
+        
+        <a href="index.html" class="service-button">Back to Home</a>
+    </div>
+</body>
+</html>

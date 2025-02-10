@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing Details Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Pricing Details Calculator</h1>
+    
+    <form id="pricingForm">
+        <div class="form-section">
+            <h2>Building Details</h2>
+            <div class="form-group">
+                <label for="totalSqFt">Total Square Feet (from previous calculation):</label>
+                <input type="number" id="totalSqFt" readonly class="readonly-input" value="10000">
+            </div>
+            
+            <div class="form-group">
+                <label>Building Height Category:</label>
+                <div class="radio-group">
+                    <label class="radio-item">
+                        <input type="radio" name="heightCategory" value="0-5" required> 1-5 Floors
+                    </label>
+                    <label class="radio-item">
+                        <input type="radio" name="heightCategory" value="6-10"> 6-10 Floors
+                    </label>
+                    <label class="radio-item">
+                        <input type="radio" name="heightCategory" value="10+"> 10+ Floors
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="totalFloors">Total Number of Floors:</label>
+                <input type="number" id="totalFloors" required min="1" oninput="calculateDistribution()">
+            </div>
+
+            <div class="form-group">
+                <label>Cleaning Frequency:</label>
+                <div class="radio-group">
+                    <label class="radio-item">
+                        <input type="radio" name="frequency" value="annually" required> Annually
+                    </label>
+                    <label class="radio-item">
+                        <input type="radio" name="frequency" value="semi-annually"> Semi-Annually
+                    </label>
+                    <label class="radio-item">
+                        <input type="radio" name="frequency" value="quarterly"> Quarterly
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h2>Floor Distribution</h2>
+            <div class="form-group">
+                <label for="sqFtPerFloor">Square Feet per Floor:</label>
+                <input type="number" id="sqFtPerFloor" readonly class="readonly-input">
+            </div>
+
+            <div class="form-group">
+                <label for="lowRiseFloors">Low Rise Floors (1-5):</label>
+                <input type="number" id="lowRiseFloors" readonly class="readonly-input">
+            </div>
+
+            <div class="form-group">
+                <label for="midRiseFloors">Mid Rise Floors (6-10):</label>
+                <input type="number" id="midRiseFloors" readonly class="readonly-input">
+            </div>
+
+            <div class="form-group">
+                <label for="highRiseFloors">High Rise Floors (10+):</label>
+                <input type="number" id="highRiseFloors" readonly class="readonly-input">
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h2>Square Footage by Rise</h2>
+            <div class="form-group">
+                <label for="lowRiseSqFt">Low Rise Square Footage:</label>
+                <input type="number" id="lowRiseSqFt" readonly class="readonly-input">
+            </div>
+
+            <div class="form-group">
+                <label for="midRiseSqFt">Mid Rise Square Footage:</label>
+                <input type="number" id="midRiseSqFt" readonly class="readonly-input">
+            </div>
+
+            <div class="form-group">
+                <label for="highRiseSqFt">High Rise Square Footage:</label>
+                <input type="number" id="highRiseSqFt" readonly class="readonly-input">
+            </div>
+        </div>
+
+        <div class="discount-section">
+            <h3>Apply Discount</h3>
+            <label for="discountType">Discount Type:</label>
+            <select id="discountType">
+                <option value="none">None</option>
+                <option value="percentage">Percentage</option>
+                <option value="fixed">Fixed Amount</option>
+            </select>
+
+            <div id="discountValueSection" style="display:none;">
+                <label for="discountValue">Discount Value:</label>
+                <input type="number" id="discountValue" placeholder="Enter discount value" min="0" />
+            </div>
+        </div>
+        
+
+        <button type="button" id="calculatePriceButton" class="service-button">Calculate Final Price</button>
+
+    </form>
+
+    <div id="result" style="display: none;">
+        <!-- Results will be dynamically populated by JavaScript -->
+    </div>
+    <button id="saveButton" class="btn btn-primary">Save Calculation</button>
+
+    <!-- Button to show the P&L page -->
+    <button onclick="showPnLPage()">View Profit & Loss Statement</button>
+
+    <div class="navigation">
+        <a href="window-cleaning.html" class="service-button">Back to Measurements</a>
+        <a href="index.html" class="service-button">Back to Home</a>
+    </div>
+
+    <script src="pricingDetails.js"></script>
+</body>
+</html>

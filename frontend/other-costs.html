@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Other Costs Configuration</title>
+    <link rel="stylesheet" href="styles.css">
+    
+</head>
+<body>
+    <div class="container">
+        <h1>Other Costs Configuration</h1>
+        
+        <form id="otherCostsForm">
+            <!-- General Costs Section -->
+            <h2 class="section-header">General Costs</h2>
+            
+            <div class="form-group">
+                <label for="miscellaneous">Miscellaneous Costs ($):</label>
+                <input type="number" id="miscellaneous" name="miscellaneous" step="0.01" required>
+            </div>
+
+            <div class="form-group">
+                <label for="fixedCosts">Fixed Costs ($):</label>
+                <input type="number" id="fixedCosts" name="fixedCosts" step="0.01" required>
+            </div>
+
+            <div class="form-group">
+                <label for="solutionCosts">Solution Costs ($):</label>
+                <input type="number" id="solutionCosts" name="solutionCosts" step="0.01" required>
+            </div>
+
+            <div class="form-group">
+                <label for="travelCharge">Travel Charge ($):</label>
+                <input type="number" id="travelCharge" name="travelCharge" step="0.01" required>
+            </div>
+
+            <!-- Water Filtration Constants Section -->
+            <h2 class="section-header">Water Filtration Constants</h2>
+            
+            <div class="form-group">
+                <label for="costPerCubicFoot">Cost per Cubic Foot ($):</label>
+                <input type="number" id="costPerCubicFoot" name="costPerCubicFoot" step="0.01" required>
+                <div class="help-text">Cost of resin per cubic foot</div>
+            </div>
+
+            <div class="form-group">
+                <label for="gallonsPerResin">Gallons per Resin:</label>
+                <input type="number" id="gallonsPerResin" name="gallonsPerResin" step="1" required>
+                <div class="help-text">Number of gallons that can be treated per cubic foot of resin</div>
+            </div>
+
+            <button type="submit">Save Configuration</button>
+            <button type="button" class="btn-secondary" onclick="window.location.href='index.html'">Back to Home</button>
+        </form>
+    </div>
+
+    <!-- Link to the JavaScript file -->
+    <script src="other-costs.js"></script>
+</body>
+</html>
