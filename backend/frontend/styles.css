@@ -1,4 +1,4 @@
-/* General Body and Layout Styling */
+/* General Body and Layout Styling (Existing styles - no changes here) */
 body {
     font-family: 'Arial', sans-serif;
     background-color: #f9f9f9;
@@ -21,7 +21,7 @@ h2 {
     margin-bottom: 15px;
 }
 
-/* Service Buttons Section */
+/* Service Buttons Section (Existing styles - no changes here) */
 .service-buttons {
     display: flex;
     gap: 20px;
@@ -52,7 +52,7 @@ h2 {
     cursor: not-allowed;
 }
 
-/* Form and Input Section */
+/* Form and Input Section (Existing styles - no changes here) */
 .form-section {
     background-color: #fff;
     padding: 25px;
@@ -88,7 +88,7 @@ input[type="number"], input[type="text"], input[type="radio"] {
     color: #666;
 }
 
-/* Radio Buttons Layout */
+/* Radio Buttons Layout (Existing styles - no changes here) */
 .radio-group {
     display: flex;
     flex-wrap: wrap;
@@ -104,7 +104,7 @@ input[type="number"], input[type="text"], input[type="radio"] {
     cursor: pointer;
 }
 
-/* Results Section */
+/* Results Section (Existing styles - no changes here) */
 #result {
     margin-top: 30px;
     padding: 20px;
@@ -137,7 +137,7 @@ input[type="number"], input[type="text"], input[type="radio"] {
     margin-top: 20px;
 }
 
-/* Optional: Add Navigation Styling */
+/* Optional: Add Navigation Styling (Existing styles - no changes here) */
 .navigation {
     margin-top: 30px;
     text-align: center;
@@ -157,7 +157,7 @@ input[type="number"], input[type="text"], input[type="radio"] {
     background-color: #0b7dda;
 }
 
-/* Side Sections */
+/* Side Sections (Existing styles - no changes here) */
 .side-section {
     background-color: #f0f0f0;
     padding: 20px;
@@ -170,7 +170,7 @@ input[type="number"], input[type="text"], input[type="radio"] {
     margin-top: 0;
 }
 
-/* Special Glass Estimate Box */
+/* Special Glass Estimate Box (Existing styles - no changes here) */
 .glass-estimate {
     background-color: #e6f3ff;
     padding: 20px;
@@ -178,7 +178,7 @@ input[type="number"], input[type="text"], input[type="radio"] {
     margin: 30px 0;
 }
 
-/* Button Styling for Service Buttons */
+/* Button Styling for Service Buttons (Existing styles - no changes here) */
 button.service-button {
     padding: 12px 20px;
     background-color: #4CAF50;
@@ -202,7 +202,7 @@ button.service-button:disabled {
     cursor: not-allowed;
 }
 
-/* Responsive Design */
+/* Responsive Design (Existing styles - no changes here) */
 @media (max-width: 768px) {
     .service-buttons {
         flex-direction: column;
@@ -231,7 +231,7 @@ button.service-button:disabled {
     }
 }
 
-/* Additional Styling for the Calculator */
+/* Additional Styling for the Calculator (Existing styles - no changes here) */
 #calculatorForm {
     max-width: 600px;
     margin: 0 auto;
@@ -245,7 +245,7 @@ button.service-button:disabled {
     margin: 30px 0;
 }
 
-/* Animation on page load */
+/* Animation on page load (Existing styles - no changes here) */
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -258,6 +258,8 @@ button.service-button:disabled {
 body {
     animation: fadeIn 1s ease-in;
 }
+
+/* Discount Section (Existing styles - no changes here) */
 .discount-section {
     border: 1px solid #ccc;
     border-radius: 8px;
@@ -303,6 +305,8 @@ body {
     margin-top: 10px;
     display: none; /* Keep this hidden until needed */
 }
+
+/* Saved Calculations Table (Existing styles - no changes here) */
 .saved-calculations-table {
     width: 100%;
     border-collapse: collapse;
@@ -320,7 +324,7 @@ body {
     background-color: #f4f4f4;
 }
 
-/* Style the toggle button */
+/* Style the toggle button (Existing styles - no changes here) */
 button {
     background-color: #4CAF50; /* Green background */
     color: white; /* White text */
@@ -336,16 +340,18 @@ button {
     transition: background-color 0.3s ease; /* Smooth background color transition */
 }
 
-/* Button hover effect */
+/* Button hover effect (Existing styles - no changes here) */
 button:hover {
     background-color: #45a049; /* Darker green when hovered */
 }
 
-/* Button focus effect */
+/* Button focus effect (Existing styles - no changes here) */
 button:focus {
     outline: none; /* Remove focus outline */
     box-shadow: 0 0 5px 2px rgba(72, 245, 110, 0.7); /* Green glow around the button */
 }
+
+/* General Body and Layout Styling (Continued from above - no changes here) */
 body {
     font-family: Arial, sans-serif;
     padding: 20px;
@@ -373,9 +379,12 @@ table th, table td {
     text-align: center;
 }
 
+/* ... table th { (Continued from above - no changes here) */
 table th {
     background-color: #f4f4f4;
 }
+
+/* Toggle Labor Costs Button (Existing styles - no changes here) */
 #toggleLaborCostsButton {
     background-color: white;
     color: black;
@@ -389,6 +398,8 @@ table th {
 #toggleLaborCostsButton:hover {
     background-color: #f0f0f0; /* Optional: a slight grey background on hover */
 }
+
+/* Back Button (Existing styles - no changes here) */
 .back-button {
     display: inline-block;
     padding: 10px 20px;
@@ -404,3 +415,79 @@ table th {
     background-color: #0056b3;
 }
 
+/* Back to Login Button - MODIFIED */
+.back-to-login-button {
+    font-size: 14px; /* Make it smaller */
+    background-color: white; /* Make the background white */
+    color: black; /* Change the text color to black for visibility */
+    padding: 5px 10px; /* Adjust padding as needed */
+    border: 1px solid black; /* Add a border for definition */
+}
+
+/* Back to Login Button Hover - MODIFIED */
+.back-to-login-button:hover {
+    background-color: #f0f0f0; /* Keep the background light on hover */
+    color: black; /* Ensure the text color remains black on hover */
+}
+
+/* Form Styles (Existing styles - no changes here) */
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+select {
+    height: 38px;
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Link Styles (Existing styles - no changes here) */
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Message Style (Existing styles - no changes here) */
+#message {
+    text-align: center;
+    margin-top: 15px;
+    color: #dc3545;
+}

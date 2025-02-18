@@ -41,16 +41,20 @@
                 <label>Cleaning Frequency:</label>
                 <div class="radio-group">
                     <label class="radio-item">
-                        <input type="radio" name="frequency" value="annually" required> Annually
+                        <input type="radio" name="frequency" value="monthly" required> Monthly
+                    </label>
+                    <label class="radio-item">
+                        <input type="radio" name="frequency" value="quarterly"> Quarterly
                     </label>
                     <label class="radio-item">
                         <input type="radio" name="frequency" value="semi-annually"> Semi-Annually
                     </label>
                     <label class="radio-item">
-                        <input type="radio" name="frequency" value="quarterly"> Quarterly
+                        <input type="radio" name="frequency" value="annually"> Annually
                     </label>
                 </div>
             </div>
+            
         </div>
 
         <div class="form-section">
@@ -124,9 +128,12 @@
 
     <div class="navigation">
         <a href="window-cleaning.html" class="service-button">Back to Measurements</a>
-        <a href="index.html" class="service-button">Back to Home</a>
+        <a href="#" id="backToHome" class="back-button">Back to Home</a>
+
     </div>
 
     <script src="pricingDetails.js"></script>
+    <script src="setHomeLinks.js"></script>
+
 </body>
 </html>

@@ -7,6 +7,20 @@ document.addEventListener('DOMContentLoaded', function () {
         calculateFinalPrice();
     });
 });
+document.addEventListener('DOMContentLoaded', function() {
+    const isAdmin = localStorage.getItem('isAdmin') === 'true';
+    const pnlButton = document.getElementById('showPnLPage'); // Adjust the ID as necessary
+    
+    if (pnlButton) {
+        if (!isAdmin) {
+            pnlButton.style.display = 'none';
+        } else {
+            pnlButton.addEventListener('click', showPnLPage);
+        }
+    }
+});
+
+
 document.getElementById('discountType').addEventListener('change', function() {
     const discountType = this.value;
     const discountValueSection = document.getElementById('discountValueSection');
@@ -393,8 +407,10 @@ function calculateFinalPrice() {
     const frequencyMultiplier = {
         'annually': 1,
         'semi-annually': 1.5,
-        'quarterly': 2
+        'quarterly': 2,
+        'monthly': 12
     }[frequency];
+    
 
     const subtotal = baseSubtotal * frequencyMultiplier;
 
@@ -579,6 +595,14 @@ function calculateFinalPrice() {
 
     // showPnLPage.js
     function showPnLPage() {
+         // Check if user is admin
+    const isAdmin = localStorage.getItem('isAdmin') === 'true';
+    
+    if (!isAdmin) {
+        alert('Access denied. Only administrators can view the P&L page.');
+        return; // Exit the function if not an admin
+    }
+
         try {
             console.log('Getting values from calculation results...');
     
@@ -639,6 +663,7 @@ function calculateFinalPrice() {
     
         // Call calculateFinalPrice to ensure we have the latest values
         const results = calculateFinalPrice();
+        const country = localStorage.getItem('country'); 
     
         // Validate results
         if (!results) {
@@ -663,7 +688,8 @@ function calculateFinalPrice() {
                     address,
                     totalSqFt,
                     totalPrice: results.totals.totalPrice,
-                    discount: results.totals.discountAmount
+                    discount: results.totals.discountAmount,
+                    country: country,
                 }),
             });
     

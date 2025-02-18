@@ -24,6 +24,11 @@ const calculationSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now
-    }
+    },
+    country: {
+        type: String,
+        enum: ['USA', 'Canada', 'Mexico'],
+        required: true
+    },
 });
 module.exports = mongoose.model('Calculation', calculationSchema);

@@ -5,15 +5,16 @@ const Calculation = require('../models/Calculation');
 /// POST endpoint to save calculations
 router.post('/', async (req, res) => {
     try {
-        const { name, totalPrice, discount, totalSqFt, address } = req.body;
-
+        const { name, totalPrice, discount, totalSqFt, address, country } = req.body;
+        console.log("this is the country", country)
         // Create a new calculation object
-        const calculation = new Calculation({
+        const calculation = new Calculation({  // Corrected line: Use lowercase 'calculation'
             name,
             totalPrice,
             discount,
             totalSqFt,
-            address
+            address,
+            country,
         });
 
         // Save to MongoDB
@@ -26,15 +27,22 @@ router.post('/', async (req, res) => {
 });
 
 
-// GET all endpoint
 router.get('/', async (req, res) => {
     try {
-        const calculations = await Calculation.find().sort({ createdAt: -1 }); // Sort by date, newest first
-        res.status(200).json(calculations);
+        const country = req.query.country;
+        if (country) {
+            const calculations = await Calculation.find({ country: country }).sort({ createdAt: -1 });
+            res.status(200).json(calculations);
+        } else {
+            const calculations = await Calculation.find().sort({ createdAt: -1 });
+            res.status(200).json(calculations);
+        }
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 });
+
+
 // DELETE endpoint
 router.delete('/:id', async (req, res) => {
     try {
