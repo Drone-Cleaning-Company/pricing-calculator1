@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return; // If user clicks "Cancel", do nothing
         }
 
-        const url = `http://localhost:5000/api/calculations/${id}`;
+        const url = `/api/calculations/${id}`;
         console.log('Delete request URL:', url);
 
         try {
