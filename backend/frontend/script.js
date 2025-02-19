@@ -143,7 +143,7 @@ function setupContinueButton(totalGlassArea) {
 
 async function saveCalculation(clientName, totalGlassArea) {
     try {
-        const response = await fetch('http://localhost:5000/api/calculations', {
+        const response = await fetch('/api/calculations', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
