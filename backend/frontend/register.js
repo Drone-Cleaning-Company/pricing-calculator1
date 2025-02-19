@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (response.ok) {
                 message.textContent = data.message;
-                window.location.href = 'http://localhost:5000/index.html'; // Redirect to login page
+                window.location.href = 'frontend/index.html'; // Redirect to login page
             } else {
                 message.textContent = data.message;
             }
