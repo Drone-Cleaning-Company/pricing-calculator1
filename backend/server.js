@@ -9,7 +9,7 @@ const userManagerRoutes = require('./routes/userManager');
 
 
 const app = express();
-
+app.get("/", (req, res) => res.send("Express on Vercel"));
 // Enable CORS
 app.use(cors());
 
@@ -47,3 +47,4 @@ const port = process.env.PORT || 5000;
 app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);
 });
+module.exports = app;
