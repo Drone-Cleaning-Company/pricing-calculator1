@@ -44,6 +44,7 @@ app.get('/index.html', (req, res) => {
 const port = process.env.PORT || 5000;
 
 // Start the server and log the full URL
-app.listen(port, () => {
-    console.log(`Server listening at http://localhost:${port}`);
-});
+const server = app.listen(port, '0.0.0.0', function () {
+    console.log(`Server listening on port ${port}`);
+  });
+  
