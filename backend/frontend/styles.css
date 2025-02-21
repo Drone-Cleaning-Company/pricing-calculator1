@@ -491,3 +491,50 @@ a:hover {
     margin-top: 15px;
     color: #dc3545;
 }
+.readme-content {
+    display: none; /* Initially hidden */
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-family: 'Arial', sans-serif; /* Change font family */
+    line-height: 1.6; /* Improve line height for readability */
+}
+
+.readme-content h1 {
+    color: #2c3e50;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 10px;
+    margin-bottom: 15px; /* Add space below the heading */
+}
+
+.readme-content h2 {
+    color: #2980b9;
+    margin-top: 30px; /* Space above the heading */
+    margin-bottom: 10px; /* Space below the heading */
+}
+
+.readme-content h3 {
+    color: #16a085;
+    margin-top: 25px; /* Space above the heading */
+    margin-bottom: 8px; /* Space below the heading */
+}
+
+.readme-content ul, .readme-content ol {
+    padding-left: 20px;
+    margin-top: 10px; /* Space above lists */
+    margin-bottom: 10px; /* Space below lists */
+}
+
+.readme-content .important {
+    color: #c0392b;
+    font-weight: bold;
+}
+
+.readme-content .admin-key {
+    background-color: #f1c40f;
+    padding: 2px 5px;
+    border-radius: 3px;
+}
+

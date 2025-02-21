@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Drone Cleaning Company</title>
     <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
+   
 </head>
 <body>
 
@@ -22,14 +23,130 @@
             <button type="submit" class="login-button">Login</button>
         </form>
 
-        <!-- Add this line for displaying messages -->
         <p id="message"></p>
 
         <div class="register-link">
             <p>Don't have an account? <a href="register.html">Register here</a></p>
         </div>
-    </div>
 
-    <script src="login.js"></script> <!-- New: Login script -->
+        <!-- README Button -->
+        <button class="readme-button" onclick="toggleReadme()">READ ME!</button>
+
+        <!-- README Content -->
+        <div class="readme-content" id="readmeContent">
+            <h1>Window Cleaning Pricing Calculator</h1>
+
+            <h2>Table of Contents</h2>
+            <ol>
+                <li><a href="#introduction">Introduction</a></li>
+                <li><a href="#registration">Registration</a></li>
+                <li><a href="#saving-costs">Saving Costs</a></li>
+                <li><a href="#user-guide">User Guide</a></li>
+                <li><a href="#important-notes">Important Notes</a></li>
+                <li><a href="#features">Features</a></li>
+            </ol>
+            
+            <h2 id="introduction">1. Introduction</h2>
+            <p>Welcome to the Window Cleaning Pricing Calculator! This tool is designed to streamline the process of estimating costs for window cleaning projects, manage calculations, and provide insights for business operations.</p>
+            
+            <h2 id="registration">2. Registration</h2>
+            <p>To get started with the Pricing Calculator, follow these steps:</p>
+            <ol>
+                <li><strong>Users:</strong> During registration, specify your country to receive country-specific content and currency. Users do not need to put Admin Key.</li>
+                <li><strong>Admins:</strong> Enter the provided admin key during registration to gain admin privileges. The Admin Key is <span class="admin-key">iAmTheAdmin</span>.</li>
+            </ol>
+            
+            <h2 id="saving-costs">3. Saving Costs</h2>
+            <p class="important">IMPORTANT: Before using the calculator, ensure you have saved your operational costs and other costs in the system by navigating to "Operational Cost" and "Other Costs" and clicking "Save Configuration". This will help ensure accurate pricing calculations.</p>
+            
+            <h2 id="user-guide">4. User Guide</h2>
+            <h3>For All Users:</h3>
+            <ol>
+                <li>Window Cleaning Page:
+                    <ul>
+                        <li>Enter the client's name and address.</li>
+                        <li>Select the number of buildings.</li>
+                        <li>Input the dimensions of the buildings.</li>
+                        <li>Edit glass coverage if necessary.</li>
+                        <li>Click "Calculate sq footage".</li>
+                        <li>Click "Continue to Pricing Details".</li>
+                    </ul>
+                </li>
+                <li>Pricing Details Page:
+                    <ul>
+                        <li>Select the building height category.</li>
+                        <li>Enter the number of floors.</li>
+                        <li>Choose the cleaning frequency.</li>
+                        <li>Apply discounts if applicable (percentage or fixed amount).</li>
+                        <li>Click "Calculate Final Price".</li>
+                    </ul>
+                </li>
+                <li>Saving Calculations:
+                    <ul>
+                        <li>After reviewing the details, click "Save Calculation".</li>
+                    </ul>
+                </li>
+                <li>Viewing Saved Calculations:
+                    <ul>
+                        <li>Access the dashboard and click "Saved Calculations".</li>
+                    </ul>
+                </li>
+            </ol>
+            
+            <h3>For Admins:</h3>
+            <ul>
+                <li>Accessing P&L Page:
+                    <ul>
+                        <li class="important">IMPORTANT: Always save your current calculation before navigating to the P&L page.</li>
+                    </ul>
+                </li>
+                <li>Managing Calculations:
+                    <ul>
+                        <li>View and delete saved calculations as needed.</li>
+                    </ul>
+                </li>
+                <li>User Management:
+                    <ul>
+                        <li>View and delete user accounts.</li>
+                    </ul>
+                </li>
+            </ul>
+            
+            <h2 id="important-notes">5. Important Notes</h2>
+            <ul>
+                <li>Users can only view calculations for their registered country.</li>
+                <li>Admins have access to calculations from all countries.</li>
+                <li>Always save your "Operational Cost" and "Other Cost" after your first login.</li>
+                <li>Always save your calculation before navigating away from the pricing page, especially when accessing the P&L page.</li>
+            </ul>
+            
+            <h2 id="features">6. Features</h2>
+            <ul>
+                <li>Detailed window cleaning cost estimation.</li>
+                <li>Discount application (percentage or fixed amount).</li>
+                <li>Savings calculations management.</li>
+                <li>Country-specific view for users.</li>
+                <li>Comprehensive admin controls including P&L analysis and user management.</li>
+            </ul>
+            
+            
+            
+        </div><!-- End of README Content -->
+    </div><!-- End of Login Container -->
+
+    <!-- JavaScript for toggling README content -->
+    <script>
+        function toggleReadme() {
+            const readmeContent = document.getElementById("readmeContent");
+            
+            // Toggle between showing and hiding the README content
+            if (readmeContent.style.display === "none" || readmeContent.style.display === "") {
+                readmeContent.style.display = "block";
+            } else {
+                readmeContent.style.display = "none";
+            }
+        }
+    </script>
+
 </body>
 </html>
