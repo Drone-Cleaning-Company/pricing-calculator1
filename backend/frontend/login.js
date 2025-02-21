@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('isAdmin', data.isAdmin);
                 localStorage.setItem('country', data.country);
+                localStorage.setItem('name', data.name); // Store the name
 
                 // Redirect based on user role
                 if (data.isAdmin) {

@@ -139,7 +139,8 @@ function setupContinueButton(totalGlassArea) {
     document.getElementById('continueButton').addEventListener('click', function () {
         window.location.href = `pricingDetails.html?sqft=${totalGlassArea.toFixed(2)}&clientName=${encodeURIComponent(clientName)}&address=${encodeURIComponent(address)}`;
     });
-}
+}        localStorage.setItem('address', address);
+
 
 async function saveCalculation(clientName, totalGlassArea) {
     try {
