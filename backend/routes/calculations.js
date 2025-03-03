@@ -5,7 +5,7 @@ const Calculation = require('../models/Calculation');
 /// POST endpoint to save calculations
 router.post('/', async (req, res) => {
     try {
-        const { name, totalPrice, discount, totalSqFt, address, country } = req.body;
+        const { name, totalPrice, discount, totalSqFt, address, country, cleaningType } = req.body;
         console.log("this is the country", country)
         // Create a new calculation object
         const calculation = new Calculation({  // Corrected line: Use lowercase 'calculation'
@@ -15,6 +15,7 @@ router.post('/', async (req, res) => {
             totalSqFt,
             address,
             country,
+            cleaningType,
         });
 
         // Save to MongoDB
@@ -25,7 +26,6 @@ router.post('/', async (req, res) => {
         res.status(400).json({ message: error.message });
     }
 });
-
 
 router.get('/', async (req, res) => {
     try {
@@ -42,7 +42,6 @@ router.get('/', async (req, res) => {
     }
 });
 
-
 // DELETE endpoint
 router.delete('/:id', async (req, res) => {
     try {
@@ -56,5 +55,26 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
+// PUT endpoint to update a calculation
+router.put('/:id', async (req, res) => {
+    try {
+        const { totalPrice, discount } = req.body;
+
+        const calculation = await Calculation.findByIdAndUpdate(
+            req.params.id,
+            { totalPrice: totalPrice, discount: discount },
+            { new: true, runValidators: true } // Return the updated document and run validation
+        );
+
+        if (!calculation) {
+            return res.status(404).json({ message: 'Calculation not found' });
+        }
+
+        res.status(200).json(calculation); // Respond with the updated calculation
+    } catch (error) {
+        console.error('Error updating calculation:', error.message);
+        res.status(400).json({ message: error.message });
+    }
+});
 
 module.exports = router;

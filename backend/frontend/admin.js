@@ -12,3 +12,14 @@ document.addEventListener('DOMContentLoaded', function() {
         userNameSpan.textContent = name;
     }
 });
+// Add this to your initializeDataPersistence function
+if (document.getElementById('debugStorageButton')) {
+    document.getElementById('debugStorageButton').addEventListener('click', function() {
+      let storageInfo = "Current localStorage contents:\n\n";
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        storageInfo += `${key}: ${localStorage.getItem(key)}\n`;
+      }
+      alert(storageInfo);
+    });
+  }

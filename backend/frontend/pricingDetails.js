@@ -592,17 +592,28 @@ function calculateFinalPrice() {
      return results;
 
 };
+// Function to store client info before navigating to P&L
+function storeClientInfo() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const name = decodeURIComponent(urlParams.get('clientName')) || localStorage.getItem('clientName');
+    const address = decodeURIComponent(urlParams.get('address')) || localStorage.getItem('address');
+    const totalSqFt = urlParams.get('sqft') || localStorage.getItem('totalSqFt');
+
+    localStorage.setItem('clientName', name);
+    localStorage.setItem('address', address);
+    localStorage.setItem('totalSqFt', totalSqFt);
+}
 
     // showPnLPage.js
     function showPnLPage() {
          // Check if user is admin
     const isAdmin = localStorage.getItem('isAdmin') === 'true';
-    
+   
     if (!isAdmin) {
         alert('Access denied. Only administrators can view the P&L page.');
         return; // Exit the function if not an admin
     }
-
+    storeClientInfo();
         try {
             console.log('Getting values from calculation results...');
     
@@ -643,7 +654,8 @@ function calculateFinalPrice() {
                 totalCost,
                 additionalCost // Include additional cost in the data
             };
-    
+            
+            localStorage.setItem('savedCalculation', JSON.stringify(window.calculationResults));
             console.log('Data to be encoded:', data);
     
             // Encode the data and pass it to the new page (p&l.html)
@@ -657,44 +669,231 @@ function calculateFinalPrice() {
         }
     }
     
-   
-    async function saveCalculation() {
-        console.log('saveCalculation function called');
+    function restoreSavedCalculation() {
+        const savedCalculation = localStorage.getItem('savedCalculation');
+        if (savedCalculation) {
+            try {
+                window.calculationResults = JSON.parse(savedCalculation);
+                // Update the UI with the restored values
+                updateUIWithCalculationResults();
+            } catch (error) {
+                console.error('Error parsing saved calculation:', error);
+            }
+        } else {
+            console.log('No saved calculation found');
+        }
+    }
     
-        // Call calculateFinalPrice to ensure we have the latest values
-        const results = calculateFinalPrice();
-        const country = localStorage.getItem('country'); 
-    
-        // Validate results
-        if (!results) {
-            console.error('calculateFinalPrice returned no results.');
-            alert('Failed to save calculation due to missing results. Please try again.');
+    function updateUIWithCalculationResults() {
+        if (!window.calculationResults) {
+            console.warn("No calculation results to restore.");
             return;
         }
     
-        const urlParams = new URLSearchParams(window.location.search);
-        const name = decodeURIComponent(urlParams.get('clientName'));
-        const address = decodeURIComponent(urlParams.get('address'));
-        const totalSqFt = parseFloat(urlParams.get('sqft'));
+        const results = window.calculationResults;
     
         try {
+            // Restore input values
+            document.getElementById('totalSqFt').value = results.inputs?.totalSqFt || '';
+            document.getElementById('totalFloors').value = results.inputs?.totalFloors || '';
+    
+            // Restore selected radio buttons for frequency
+            const frequencyRadio = document.querySelector(`input[name="frequency"][value="${results.inputs?.frequency}"]`);
+            if (frequencyRadio) {
+                frequencyRadio.checked = true;
+            }
+    
+            // Restore selected radio buttons for height category
+            const heightCategoryRadio = document.querySelector(`input[name="heightCategory"][value="${results.inputs?.heightCategory}"]`);
+            if (heightCategoryRadio) {
+                heightCategoryRadio.checked = true;
+            }
+    
+            document.getElementById('discountType').value = results.inputs?.discountType || '';
+            document.getElementById('discountValue').value = results.inputs?.discountValue || '';
+    
+            // Update the result display
+            const resultDiv = document.getElementById('result');
+            if (resultDiv) {
+                resultDiv.style.display = 'block'; // Ensure it's visible
+    
+                resultDiv.innerHTML = `
+                    <h3>Service Price Breakdown</h3>
+                    <table border="1" cellspacing="0" cellpadding="10">
+                        <tr>
+                            <th>Category</th>
+                            <th>Square Footage</th>
+                            <th>Price per Sq Ft</th>
+                            <th>Total Price</th>
+                        </tr>
+                        <tr>
+                            <td>Low Rise (1-5 Floors)</td>
+                            <td>${results.pricing?.lowRise?.squareFootage?.toFixed(2) || '0.00'} sq ft</td>
+                            <td>$0.10</td>
+                            <td>$${results.pricing?.lowRise?.totalPrice?.toFixed(2) || '0.00'}</td>
+                        </tr>
+                        <tr>
+                            <td>Mid Rise (6-10 Floors)</td>
+                            <td>${results.pricing?.midRise?.squareFootage?.toFixed(2) || '0.00'} sq ft</td>
+                            <td>$0.25</td>
+                            <td>$${results.pricing?.midRise?.totalPrice?.toFixed(2) || '0.00'}</td>
+                        </tr>
+                        <tr>
+                            <td>High Rise (11+ Floors)</td>
+                            <td>${results.pricing?.highRise?.squareFootage?.toFixed(2) || '0.00'} sq ft</td>
+                            <td>$0.40</td>
+                            <td>$${results.pricing?.highRise?.totalPrice?.toFixed(2) || '0.00'}</td>
+                        </tr>
+                    </table>
+    
+                    <h3>Operational Costs</h3>
+                    <table border="1" cellspacing="0" cellpadding="10">
+                        <tr>
+                            <td>Total Square Footage</td>
+                            <td>${results.operationalCosts?.totalSqFt?.toFixed(0) || '0'} sq ft</td>
+                        </tr>
+                        <tr>
+                            <td>Square Feet Cleaned Per Hour</td>
+                            <td>${results.operationalCosts?.sqFtPerHour?.toFixed(0) || '0'} sq ft</td>
+                        </tr>
+                        <tr>
+                            <td>Cleaning Hours</td>
+                            <td>${results.operationalCosts?.cleaningHours?.toFixed(1) || '0.0'} hours</td>
+                        </tr>
+                        <tr>
+                            <td>Additional Time Required (hrs)</td>
+                            <td>${results.operationalCosts?.setupHours || '0'} hours</td>
+                        </tr>
+                        <tr>
+                            <td>Total Time</td>
+                            <td>${results.operationalCosts?.totalHours?.toFixed(1) || '0.0'} hours</td>
+                        </tr>
+                        <tr>
+                            <td>Total Days</td>
+                            <td>${results.operationalCosts?.totalDays?.toFixed(2) || '0.00'} days</td>
+                        </tr>
+                    </table>
+    
+                   <button id="toggleLaborCostsButton" onclick="toggleLaborCosts()">Labor Costs</button>
+                   <div id="laborCostsSection" style="display: none; margin-top: 10px;">
+                    <table border="1" cellspacing="0" cellpadding="10">
+                        <tr>
+                            <td>Drone Pilot</td>
+                            <td>$${results.operationalCosts?.dronePilotCost?.toFixed(2) || '0.00'}</td>
+                         </tr>
+                          <tr>
+                             <td>Visual Observer</td>
+                            <td>$${results.operationalCosts?.voCost?.toFixed(2) || '0.00'}</td>
+                           </tr>
+                        <tr>
+                             <td>Operations Manager</td>
+                             <td>$${results.operationalCosts?.opsManagerCost?.toFixed(2) || '0.00'}</td>
+                         </tr>
+                         <tr>
+                            <td><strong>Total Labor Costs</strong></td>
+                               <td><strong>$${results.operationalCosts?.totalOperationalCost?.toFixed(2) || '0.00'}</strong></td>
+                          </tr>
+                   </table>
+                 </div>
+    
+    
+                    <h4>Final Price Breakdown</h4>
+                    <table border="1" cellspacing="0" cellpadding="10">
+                        <tr>
+                            <td>Base Service Price</td>
+                            <td>$${results.totals?.baseServicePrice?.toFixed(2) || '0.00'}</td>
+                        </tr>
+                        <tr>
+                            <td>Additional Cost</td>
+                            <td>$${((results.otherCosts?.otherCostSubtotal || 0) + (results.waterCosts?.totalWaterCost || 0)).toFixed(2)}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Subtotal</strong></td>
+                            <td><strong>$${results.totals?.subtotal?.toFixed(2) || '0.00'}</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Discount (${results.inputs?.discountType === 'percentage' ? results.inputs?.discountValue + '%' : 'Fixed'})</td>
+                            <td>-$${results.totals?.discountAmount?.toFixed(2) || '0.00'}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Total Price</strong></td>
+                            <td><strong>$${results.totals?.totalPrice?.toFixed(2) || '0.00'}</strong></td>
+                        </tr>
+                    </table>
+                `;
+            }
+        } catch (error) {
+            console.error("Error updating UI:", error);
+        }
+    }
+    
+    
+    function restoreClientInfo() {
+        const nameDisplay = document.getElementById('clientNameDisplay');
+        const addressDisplay = document.getElementById('addressDisplay');
+        
+        if (nameDisplay) {
+          nameDisplay.textContent = localStorage.getItem('clientName') || 'Unknown';
+        }
+        if (addressDisplay) {
+          addressDisplay.textContent = localStorage.getItem('address') || 'Unknown';
+        }
+      }
+      
+    // Call this function when the page loads
+    window.addEventListener('load', () => {
+        restoreSavedCalculation();
+        restoreClientInfo();
+        document.getElementById('saveButton').addEventListener('click', saveCalculation);
+    });
+    
+    
+    async function saveCalculation() {
+        console.log('saveCalculation function called');
+    
+        const urlParams = new URLSearchParams(window.location.search);
+        const name = localStorage.getItem('clientName') || 'Unknown';
+        const address = localStorage.getItem('address') || 'Unknown';
+        const totalSqFt = parseFloat(localStorage.getItem('totalSqFt')) || 0;
+        const country = localStorage.getItem('country') || 'Unknown';
+        const cleaningType = localStorage.getItem('cleaningType') || 'window'; // Default to 'window'
+    
+        console.log('Retrieved values:', { name, address, totalSqFt, country, cleaningType });
+    
+        if (!totalSqFt || totalSqFt === 0) {
+            console.error('Missing or invalid total square feet');
+            alert('Please ensure total square feet is provided and valid.');
+            return;
+        }
+    
+        try {
+            const results = calculateFinalPrice(); // Make sure this function is defined and returns the expected results
+    
+            if (!results || !results.totals) {
+                console.error('Invalid calculation results');
+                alert('Failed to calculate final price. Please try again.');
+                return;
+            }
+    
             const response = await fetch('/api/calculations', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    name,
-                    address,
-                    totalSqFt,
+                    name: name,
+                    address: address,
+                    totalSqFt: totalSqFt,
                     totalPrice: results.totals.totalPrice,
                     discount: results.totals.discountAmount,
                     country: country,
+                    cleaningType: cleaningType // Include cleaningType in the request body
                 }),
             });
     
-    
             if (!response.ok) {
+                const error = await response.json();
+                console.log(error);
                 throw new Error('Failed to save calculation');
             }
     
@@ -704,6 +903,7 @@ function calculateFinalPrice() {
             alert('Failed to save calculation. Please try again.');
         }
     }
+    
     
     
     // Call this function when the user submits the form or clicks a save button

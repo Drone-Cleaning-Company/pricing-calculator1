@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Window Cleaning Calculator</title>
+    <title>Window and Facade Cleaning Calculator</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Window Cleaning Calculator</h1>
+    <h1>Window and Facade Cleaning Calculator</h1>
     
     <form id="calculatorForm">
         <div class="client-info">
@@ -17,6 +17,17 @@
                 <input type="text" id="clientName" required>
                 <label for="clientAddress">Client Address:</label>
                 <input type="text" id="clientAddress" required>
+            </div>
+        </div>
+
+        <div class="cleaning-type">
+            <h2>Cleaning Type</h2>
+            <div class="form-group">
+                <label for="cleaningType">Select Cleaning Type:</label>
+                <select id="cleaningType" required>
+                    <option value="window">Window Cleaning</option>
+                    <option value="facade">Facade Cleaning</option>
+                </select>
             </div>
         </div>
 
@@ -55,11 +66,9 @@
     
     <div class="navigation">
         <a href="#" id="backToHome" class="back-button">Back to Home</a>
-
     </div>
 
     <script src="script.js"></script>
     <script src="setHomeLinks.js"></script>
-
 </body>
 </html>

@@ -30,5 +30,10 @@ const calculationSchema = new mongoose.Schema({
         enum: ['USA', 'Canada', 'Mexico'],
         required: true
     },
+    cleaningType: { // Added cleaningType
+        type: String,
+        enum: ['window', 'facade'],
+        required: true
+    },
 });
 module.exports = mongoose.model('Calculation', calculationSchema);

@@ -2,6 +2,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('calculatorForm');
     const buildingCountSelect = document.getElementById('buildingCount');
     const buildingsContainer = document.getElementById('buildingsContainer');
+    const cleaningTypeSelect = document.getElementById('cleaningType');
+    const glassPercentageInput = document.getElementById('glassPercentage');
 
     if (form) {
         form.onsubmit = function (e) {
@@ -16,6 +18,15 @@ document.addEventListener('DOMContentLoaded', function () {
         });
         updateBuildingInputs(buildingCountSelect.value); // Initial setup
     }
+
+    cleaningTypeSelect.addEventListener('change', function() {
+        if (this.value === 'facade') {
+            glassPercentageInput.value = 100;
+            glassPercentageInput.disabled = true;
+        } else {
+            glassPercentageInput.disabled = false;
+        }
+    });
 
     function updateBuildingInputs(count) {
         buildingsContainer.innerHTML = '';
@@ -44,8 +55,16 @@ document.addEventListener('DOMContentLoaded', function () {
 function calculatePrice() {
     const clientName = document.getElementById('clientName').value.trim();
     const address = document.getElementById('clientAddress').value.trim();
-    const glassPercentage = parseFloat(document.getElementById('glassPercentage').value) / 100;
+    const cleaningType = document.getElementById('cleaningType').value;
+    let glassPercentage;
     const buildingCount = parseInt(document.getElementById('buildingCount').value);
+
+    if (cleaningType === 'facade') {
+        glassPercentage = 1; // 100% coverage for facade cleaning
+        document.getElementById('glassPercentage').value = 100; // Update the input field
+    } else {
+        glassPercentage = parseFloat(document.getElementById('glassPercentage').value) / 100;
+    }
 
     if (isNaN(glassPercentage) || glassPercentage < 0 || glassPercentage > 1) {
         alert('Please enter a valid glass percentage between 0 and 100.');
@@ -79,18 +98,19 @@ function calculatePrice() {
 
     const totalGlassArea = totalArea * glassPercentage;
 
-    displayCalculationDetails(clientName, address, totalArea, glassPercentage, totalGlassArea, details);
-    setupContinueButton(totalGlassArea);
-    saveCalculation(clientName, totalGlassArea);
+    displayCalculationDetails(clientName, address, totalArea, glassPercentage, totalGlassArea, details, cleaningType);
+    setupContinueButton(totalGlassArea, cleaningType);
+    saveCalculation(clientName, totalGlassArea, cleaningType);
 }
 
-function displayCalculationDetails(clientName, address, totalArea, glassPercentage, totalGlassArea, details) {
+function displayCalculationDetails(clientName, address, totalArea, glassPercentage, totalGlassArea, details, cleaningType) {
     const result = document.getElementById('result');
     result.style.display = 'block';
 
     let detailsHTML = `
         <h3>Calculation Details for ${clientName}</h3>
         <p>Address: ${address}</p>
+        <p>Cleaning Type: ${cleaningType === 'facade' ? 'Facade Cleaning' : 'Window Cleaning'}</p>
         <table>
             <tr>
                 <th>Building</th>
@@ -118,7 +138,7 @@ function displayCalculationDetails(clientName, address, totalArea, glassPercenta
         <h4>Summary:</h4>
         <p>Total Wall Area: ${totalArea.toFixed(2)} sq ft</p>
         <p>Glass Coverage: ${(glassPercentage * 100).toFixed(2)}%</p>
-        <p>Total Glass Area to Clean: ${totalGlassArea.toFixed(2)} sq ft</p>
+        <p>Total Area to Clean: ${totalGlassArea.toFixed(2)} sq ft</p>
     `;
 
     result.innerHTML = detailsHTML;
@@ -127,7 +147,9 @@ function displayCalculationDetails(clientName, address, totalArea, glassPercenta
     continueSection.style.display = 'block';
 }
 
-function setupContinueButton(totalGlassArea) {
+function setupContinueButton(totalGlassArea, cleaningType) {
+    console.log('setupContinueButton called'); // For debugging
+
     const clientName = document.getElementById('clientName').value.trim();
     const address = document.getElementById('clientAddress').value.trim();
 
@@ -137,19 +159,29 @@ function setupContinueButton(totalGlassArea) {
     }
 
     document.getElementById('continueButton').addEventListener('click', function () {
-        window.location.href = `pricingDetails.html?sqft=${totalGlassArea.toFixed(2)}&clientName=${encodeURIComponent(clientName)}&address=${encodeURIComponent(address)}`;
+        console.log('Continue button clicked'); // For debugging
+
+        // Store data in localStorage
+        localStorage.setItem('clientName', clientName);
+        localStorage.setItem('address', address);
+        localStorage.setItem('totalSqFt', totalGlassArea.toString());
+        localStorage.setItem('cleaningType', cleaningType);
+
+        // Navigate to pricing details page with parameters
+        window.location.href = `pricingDetails.html?sqft=${encodeURIComponent(totalGlassArea)}&clientName=${encodeURIComponent(clientName)}&address=${encodeURIComponent(address)}&cleaningType=${encodeURIComponent(cleaningType)}`;
     });
-}        localStorage.setItem('address', address);
+}
 
-
-async function saveCalculation(clientName, totalGlassArea) {
+async function saveCalculation(clientName, totalGlassArea, cleaningType) {
     try {
         const response = await fetch('/api/calculations', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                clientName,
-                totalGlassArea,
+                name: clientName, // Changed to 'name' to match backend
+                totalSqFt: totalGlassArea, // Changed to 'totalSqFt' to match backend
+                cleaningType: cleaningType,
+                address: address, // Added address
                 // Add other necessary fields here
             }),
         });
