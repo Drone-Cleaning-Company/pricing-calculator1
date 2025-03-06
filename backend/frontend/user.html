@@ -4,28 +4,110 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Drone Cleaning Services Price Calculator</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #312450;
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .admin-dashboard {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+        }
+        h1 {
+            font-size: 1.8em;
+            color: #a270db;
+            margin-bottom: 5px;
+        }
+        h3 {
+            font-size: 1.2em;
+            color: #bb8fce;
+            margin-bottom: 5px;
+        }
+        h4 {
+            font-size: 1em;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 5px;
+        }
+        .button-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+        .service-button, .debug-button, .logout-button {
+            background-color: #a270db;
+            color: white;
+            border: none;
+            padding: 10px 60px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            font-size: 1em;
+            width: calc(50% - 7.5px);
+            text-align: center;
+        }
+        .service-button:hover, .debug-button:hover {
+            background-color: #8058b3;
+        }
+        .logout-button {
+            background-color: #ff6b6b;
+            margin-top: auto;
+        }
+        .logout-button:hover {
+            background-color: #ff4757;
+        }
+        .single-button-row {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+        .top-info {
+            margin-bottom: 30px;
+        }
+    </style>
 </head>
 <body>
-    <h1>The Drone Cleaning Services Price Calculator</h1>
-    <! -- user.html -->
-    <h3>User Dashboard</h3>
-     <!-- ADD THIS LINE -->
-     <h4>Welcome, <span id="userName"></span>!</h4>
+    <div class="admin-dashboard">
+        <h1>The Drone Cleaning Services Price Calculator</h1>
+        <h3>User Dashboard</h3>
+        <div class="top-info">
+            <h4>Country: <span id="userCountry"></span></h4>
+            <h4>Welcome, <span id="userName"></span>!</h4>
+        </div>
 
-    <h4>Country: <span id="userCountry"></span></h4>
-    
-    <div class="service-buttons">
-        <a href="window-cleaning.html" class="service-button">Window Cleaning</a>
-        <a href="operational-costs.html" class="service-button">Operational Cost</a>
-        <a href="other-costs.html" class="service-button">View Other Costs</a>
-        <a href="calculations.html" class="service-button">Saved Calculations</a>
+        <div class="button-row">
+            <a href="window-cleaning.html" class="service-button">Window Cleaning</a>
+            <a href="operational-costs.html" class="service-button">Operational Cost</a>
+        </div>
 
-        
+        <div class="button-row">
+            <a href="other-costs.html" class="service-button">View Other Costs</a>
+            <a href="calculations.html" class="service-button">Saved Calculations</a>
+        </div>
 
+       
+
+        <div class="single-button-row">
+            <button id="logoutBtn" class="logout-button">Logout</button>
+        </div>
     </div>
-    <button id="logoutBtn">Logout</button>
+
     <script src="logout.js"></script>
-    <script src="user.js"></script>
+    <script src="admin.js"></script>
 </body>
 </html>

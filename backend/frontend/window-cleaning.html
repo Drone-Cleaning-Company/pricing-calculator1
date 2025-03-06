@@ -4,7 +4,171 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Window and Facade Cleaning Calculator</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #312450;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1, h2, h3, h4 {
+            color: #bb8fce;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"], input[type="number"], select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            background-color: rgba(255, 255, 255, 0.05);
+            color: white;
+            box-sizing: border-box;
+        }
+
+        .measurements .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .measurements .form-group input {
+            margin-bottom: 15px;
+        }
+
+        #buildingsContainer > div {
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 5px;
+        }
+
+        .service-button {
+            background-color: #a270db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .service-button:hover {
+            background-color: #8058b3;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-top: 20px;
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+        }
+
+        .back-button:hover {
+            text-decoration: underline;
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        #result table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        #result th, #result td {
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            text-align: left;
+        }
+
+        #result th {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        #continueSection {
+            margin-top: 20px;
+        }
+
+        @media (max-width: 600px) {
+            #result {
+                font-size: 14px;
+            }
+
+            #result th, #result td {
+                padding: 5px;
+            }
+        }
+        .cleaning-type {
+    margin-bottom: 20px;
+}
+
+.cleaning-type h2 {
+    color: #bb8fce;
+    margin-bottom: 10px;
+}
+
+.cleaning-type .form-group {
+    position: relative;
+}
+
+.cleaning-type label {
+    display: block;
+    margin-bottom: 5px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.cleaning-type select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.05);
+    color: white;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+}
+
+.cleaning-type .form-group::after {
+    content: '\25BC';
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    color: #bb8fce;
+    pointer-events: none;
+}
+
+.cleaning-type select:focus {
+    outline: none;
+    border-color: #a270db;
+}
+
+.cleaning-type select option {
+    background-color: #312450;
+    color: white;
+}
+
+    </style>
 </head>
 <body>
     <h1>Window and Facade Cleaning Calculator</h1>

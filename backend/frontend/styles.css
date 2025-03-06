@@ -1,576 +1,339 @@
-/* General Body and Layout Styling (Existing styles - no changes here) */
+/* General Styles */
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f9f9f9;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
-    padding: 20px;
+    padding: 0;
+    background-color: #312450;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.register-container {
+    display: flex;
+    width: 90%;
     max-width: 1200px;
-    margin: 0 auto;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Left Section */
+.left-section {
+    width: 50%;
+    padding: 40px;
+    box-sizing: border-box;
+}
+
+.logo {
+    font-size: 2em;
+    font-weight: bold;
+    margin-bottom: 20px;
 }
 
 h1 {
-    text-align: center;
-    color: #333;
-    margin-bottom: 20px;
-    font-size: 32px;
-}
-
-h2 {
-    font-size: 28px;
-    color: #007bff;
+    font-size: 2.5em;
     margin-bottom: 15px;
 }
 
-/* Service Buttons Section (Existing styles - no changes here) */
-.service-buttons {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    margin: 40px 0;
+hr {
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    margin: 20px 0;
 }
 
-.service-button {
-    padding: 16px 32px;
-    font-size: 18px;
-    border-radius: 8px;
-    background-color: #007bff;
+p {
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.learn-more-button {
+    background-color: #a270db;
     color: white;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 30px;
     cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s;
-}
-
-.service-button:hover {
-    background-color: #0056b3;
-    transform: scale(1.05);
-}
-
-.service-button:disabled {
-    background-color: #bbb;
-    cursor: not-allowed;
-}
-
-/* Form and Input Section (Existing styles - no changes here) */
-.form-section {
-    background-color: #fff;
-    padding: 25px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 30px;
-}
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-label {
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 8px;
-    display: block;
-}
-
-input[type="number"], input[type="text"], input[type="radio"] {
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    margin-top: 5px;
-    border-radius: 6px;
-    border: 1px solid #ddd;
-    box-sizing: border-box;
-    background-color: #fff;
-}
-
-.readonly-input {
-    background-color: #f5f5f5;
-    color: #666;
-}
-
-/* Radio Buttons Layout (Existing styles - no changes here) */
-.radio-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    margin-top: 10px;
-}
-
-.radio-item {
-    display: flex;
-    align-items: center;
-    font-size: 16px;
-    gap: 10px;
-    cursor: pointer;
-}
-
-/* Results Section (Existing styles - no changes here) */
-#result {
     margin-top: 30px;
-    padding: 20px;
-    background-color: #e9ecef;
-    border-radius: 8px;
-    display: none;
-}
-
-#result table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-#result table th,
-#result table td {
-    padding: 10px;
-    border: 1px solid #ddd;
-    text-align: left;
-}
-
-#result table th {
-    background-color: #f8f9fa;
-}
-
-#finalPriceDisplay {
-    font-size: 24px;
-    font-weight: bold;
-    color: #333;
-    margin-top: 20px;
-}
-
-/* Optional: Add Navigation Styling (Existing styles - no changes here) */
-.navigation {
-    margin-top: 30px;
-    text-align: center;
-}
-
-.navigation a.service-button {
-    background-color: #2196F3;
-    color: white;
-    text-decoration: none;
-    padding: 12px 20px;
-    border-radius: 6px;
-    font-size: 16px;
     transition: background-color 0.3s;
 }
 
-.navigation a.service-button:hover {
-    background-color: #0b7dda;
+.learn-more-button:hover {
+    background-color: #8058b3;
 }
 
-/* Side Sections (Existing styles - no changes here) */
-.side-section {
-    background-color: #f0f0f0;
-    padding: 20px;
-    border-radius: 8px;
-    margin-bottom: 20px;
+/* Right Section */
+.right-section {
+    width: 50%;
+    padding: 40px;
+    box-sizing: border-box;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 0 20px 20px 0;
 }
 
-.side-section h3 {
-    color: #333;
-    margin-top: 0;
-}
-
-/* Special Glass Estimate Box (Existing styles - no changes here) */
-.glass-estimate {
-    background-color: #e6f3ff;
-    padding: 20px;
-    border-radius: 8px;
-    margin: 30px 0;
-}
-
-/* Button Styling for Service Buttons (Existing styles - no changes here) */
-button.service-button {
-    padding: 12px 20px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 6px;
-    transition: background-color 0.3s ease;
-    margin-top: 30px;
-    display: inline-block;
-    width: 100%;
-}
-
-button.service-button:hover {
-    background-color: #45a049;
-}
-
-button.service-button:disabled {
-    background-color: #bbb;
-    cursor: not-allowed;
-}
-
-/* Responsive Design (Existing styles - no changes here) */
-@media (max-width: 768px) {
-    .service-buttons {
-        flex-direction: column;
-        gap: 15px;
-    }
-
-    .service-button {
-        width: 100%;
-        text-align: center;
-    }
-
-    .form-section {
-        padding: 15px;
-    }
-
-    .side-section {
-        padding: 15px;
-    }
-
-    .radio-group {
-        flex-direction: column;
-    }
-
-    .radio-item {
-        width: 100%;
-    }
-}
-
-/* Additional Styling for the Calculator (Existing styles - no changes here) */
-#calculatorForm {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.measurements {
-    margin: 30px 0;
-}
-
-/* Animation on page load (Existing styles - no changes here) */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-body {
-    animation: fadeIn 1s ease-in;
-}
-
-/* Discount Section (Existing styles - no changes here) */
-.discount-section {
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 15px;
-    margin-top: 20px;
-    background-color: #f9f9f9;
-    max-width: 400px;
-}
-
-.discount-section h3 {
-    font-size: 20px;
-    color: #333;
-    margin-bottom: 10px;
-}
-
-.discount-section label {
-    font-size: 14px;
-    color: #555;
-    display: block;
-    margin-bottom: 5px;
-}
-
-.discount-section select,
-.discount-section input {
-    width: 100%;
-    padding: 8px;
-    font-size: 14px;
-    color: #333;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-bottom: 15px;
-    background-color: #fff;
-}
-
-.discount-section input:focus,
-.discount-section select:focus {
-    outline: none;
-    border-color: #007bff;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-}
-
-#discountValueSection {
-    margin-top: 10px;
-    display: none; /* Keep this hidden until needed */
-}
-
-/* Saved Calculations Table (Existing styles - no changes here) */
-.saved-calculations-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-.saved-calculations-table th,
-.saved-calculations-table td {
-    padding: 8px;
-    border: 1px solid #ddd;
-    text-align: left;
-}
-
-.saved-calculations-table th {
-    background-color: #f4f4f4;
-}
-
-/* Style the toggle button (Existing styles - no changes here) */
-button {
-    background-color: #4CAF50; /* Green background */
-    color: white; /* White text */
-    border: none; /* Remove borders */
-    padding: 10px 15px; /* Add padding */
-    text-align: center; /* Center the text */
-    text-decoration: none; /* Remove underline */
-    display: inline-block; /* Display inline with other elements */
-    font-size: 16px; /* Increase font size */
-    margin: 10px 0; /* Add margin around the button */
-    cursor: pointer; /* Show a pointer cursor on hover */
-    border-radius: 5px; /* Rounded corners */
-    transition: background-color 0.3s ease; /* Smooth background color transition */
-}
-
-/* Button hover effect (Existing styles - no changes here) */
-button:hover {
-    background-color: #45a049; /* Darker green when hovered */
-}
-
-/* Button focus effect (Existing styles - no changes here) */
-button:focus {
-    outline: none; /* Remove focus outline */
-    box-shadow: 0 0 5px 2px rgba(72, 245, 110, 0.7); /* Green glow around the button */
-}
-
-/* General Body and Layout Styling (Continued from above - no changes here) */
-body {
-    font-family: Arial, sans-serif;
-    padding: 20px;
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-h1 {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-table th, table td {
-    padding: 10px;
-    border: 1px solid #ddd;
+h2 {
+    font-size: 2em;
+    margin-bottom: 30px;
     text-align: center;
 }
 
-/* ... table th { (Continued from above - no changes here) */
-table th {
-    background-color: #f4f4f4;
-}
-
-/* Toggle Labor Costs Button (Existing styles - no changes here) */
-#toggleLaborCostsButton {
-    background-color: white;
-    color: black;
-    border: 1px solid black;
-    padding: 10px 15px;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 5px; /* Optional: for rounded corners */
-}
-
-#toggleLaborCostsButton:hover {
-    background-color: #f0f0f0; /* Optional: a slight grey background on hover */
-}
-
-/* Back Button (Existing styles - no changes here) */
-.back-button {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    font-size: 16px;
-    margin-top: 20px;
-}
-
-.back-button:hover {
-    background-color: #0056b3;
-}
-
-/* Back to Login Button - MODIFIED */
-.back-to-login-button {
-    font-size: 14px; /* Make it smaller */
-    background-color: white; /* Make the background white */
-    color: black; /* Change the text color to black for visibility */
-    padding: 5px 10px; /* Adjust padding as needed */
-    border: 1px solid black; /* Add a border for definition */
-}
-
-/* Back to Login Button Hover - MODIFIED */
-.back-to-login-button:hover {
-    background-color: #f0f0f0; /* Keep the background light on hover */
-    color: black; /* Ensure the text color remains black on hover */
-}
-
-/* Form Styles (Existing styles - no changes here) */
 form {
     display: flex;
     flex-direction: column;
 }
 
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 label {
-    font-weight: bold;
+    font-size: 0.9em;
     margin-bottom: 5px;
-    display: block;
 }
 
-input[type="text"],
-input[type="email"],
-input[type="password"],
+input,
 select {
+    padding: 12px;
+    border-radius: 30px;
+    border: none;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
     width: 100%;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
     box-sizing: border-box;
 }
 
-select {
-    height: 38px;
+input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
 }
 
-button {
-    background-color: #007bff;
+/* Button Styling */
+.register-button {
+    background-color: #a270db;
     color: white;
-    padding: 10px 15px;
     border: none;
-    border-radius: 4px;
+    padding: 12px 24px;
+    border-radius: 30px;
     cursor: pointer;
-    font-size: 16px;
+    margin-top: 20px;
+    transition: background-color 0.3s;
 }
 
-button:hover {
-    background-color: #0056b3;
+.register-button:hover {
+    background-color: #8058b3;
 }
 
-/* Link Styles (Existing styles - no changes here) */
+/* Responsive Design */
+@media (max-width: 768px) {
+    .register-container {
+        flex-direction: column;
+        width: 100%;
+        border-radius: 0;
+    }
+
+    .left-section,
+    .right-section {
+        width: 100%;
+        padding: 20px;
+    }
+
+    .right-section {
+        border-radius: 0;
+    }
+}
+/* Link Styling */
 a {
-    color: #007bff;
+    color: #fff; /* White link color */
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+a:hover {
+    color: #ccc; /* Light gray on hover */
+    text-decoration: underline;
+}
+/* Dropdown Styling */
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 10px top 50%;
+    background-size: 24px;
+    padding-right: 30px; /* To prevent text from overlapping with the arrow */
+}
+
+select::-ms-expand {
+    display: none; /* Remove default arrow in Internet Explorer */
+}
+
+/* Hover and Focus effects for both input and select */
+input:hover,
+select:hover,
+input:focus,
+select:focus {
+    background-color: rgba(255, 255, 255, 0.3);
+    outline: none;
+}
+/* Dropdown Option Styling */
+option {
+    background-color: #333; /* Dark background for options */
+    color: white; /* White text for options */
+}
+
+select {
+    padding: 12px;
+    border-radius: 30px;
+    border: none;
+    background-color: rgba(255, 255, 255, 0.2); /* Light background for dropdown */
+    color: white; /* White text for dropdown */
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Dropdown hover effect */
+select:hover {
+    background-color: rgba(255, 255, 255, 0.3); /* Darken on hover */
+}
+
+/* Dropdown focus effect */
+select:focus {
+    background-color: rgba(255, 255, 255, 0.3); /* Darken on focus */
+    outline: none;
+}
+/* General Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #312450; /* Dark purple background */
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.login-container {
+    display: flex;
+    width: 90%;
+    max-width: 1200px;
+    background-color: rgba(255, 255, 255, 0.05); /* Frosted glass effect */
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Left Section */
+.left-section {
+    width: 50%;
+    padding: 40px;
+    box-sizing: border-box;
+}
+
+.logo {
+    font-size: 1.5em; /* Smaller logo font */
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-size: 2em; /* Reduced heading size */
+}
+
+hr {
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    margin: 20px 0;
+}
+
+p {
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+a {
+    color: #bb8fce; /* Light purple link */
     text-decoration: none;
 }
 
 a:hover {
-    text-decoration: underline;
+    color: #d7bde2; /* Lighter purple on hover */
 }
 
-/* Message Style (Existing styles - no changes here) */
-#message {
-    text-align: center;
-    margin-top: 15px;
-    color: #dc3545;
-}
-.readme-content {
-    display: none; /* Initially hidden */
-    margin-top: 20px;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-family: 'Arial', sans-serif; /* Change font family */
-    line-height: 1.6; /* Improve line height for readability */
+/* Right Section */
+.right-section {
+    width: 50%;
+    padding: 40px;
+    box-sizing: border-box;
 }
 
-.readme-content h1 {
-    color: #2c3e50;
-    border-bottom: 2px solid #3498db;
-    padding-bottom: 10px;
-    margin-bottom: 15px; /* Add space below the heading */
+h2 {
+    font-size: 2em;
+    margin-bottom: 30px;
 }
 
-.readme-content h2 {
-    color: #2980b9;
-    margin-top: 30px; /* Space above the heading */
-    margin-bottom: 10px; /* Space below the heading */
+/* Form Styling */
+form {
+    display: flex;
+    flex-direction: column;
 }
 
-.readme-content h3 {
-    color: #16a085;
-    margin-top: 25px; /* Space above the heading */
-    margin-bottom: 8px; /* Space below the heading */
+.form-group {
+    margin-bottom: 20px;
 }
 
-.readme-content ul, .readme-content ol {
-    padding-left: 20px;
-    margin-top: 10px; /* Space above lists */
-    margin-bottom: 10px; /* Space below lists */
+label {
+    font-size: 0.9em;
 }
 
-.readme-content .important {
-    color: #c0392b;
-    font-weight: bold;
-}
-
-.readme-content .admin-key {
-    background-color: #f1c40f;
-    padding: 2px 5px;
-    border-radius: 3px;
-}
-.dropdown {
-    position: relative;
-    display: inline-block;
-  }
-  
-  .dropbtn {
-    background-color: #3498DB;
-    color: white;
-    padding: 16px;
-    font-size: 16px;
+input {
+    padding: 12px;
+    border-radius: 30px; /* Rounded input fields */
     border: none;
-    cursor: pointer;
-  }
-  
-  .dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f1f1f1;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-  }
-  
-  .dropdown-content a {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-  }
-  
-  .dropdown-content a:hover {background-color: #ddd;}
-  
-  .dropdown:hover .dropdown-content {display: block;}
-  
-  .dropdown:hover .dropbtn {background-color: #2980B9;}
-  
+    background-color: rgba(255, 255, 255, 0.2); /* Light frosted background */
+    color: white; /* White text */
+}
 
+input::placeholder {
+    color: rgba(255, 255, 255, 0.7); /* Lighter placeholder text */
+}
+
+/* Input Hover and Focus Effects */
+input:hover,
+input:focus {
+    background-color: rgba(255, 255, 255, 0.3); /* Slightly darker on hover/focus */
+}
+
+/* Button Styling */
+button {
+    padding: 12px;
+    border-radius: 30px; /* Rounded button corners */
+}
+
+/* Login Button */
+.login-button {
+    background-color: #a270db; /* Purple button color */
+    color: white; /* White text */
+    border: none; /* Remove default border */
+}
+
+.login-button:hover {
+    background-color: #8058b3; /* Darker purple on hover */
+}
+
+/* README Button */
+.readme-button {
+    margin-top: 20px;
+     background-color: #a270db; /* Purple button color */
+    color: white; /* White text */
+    border: none; /* Remove default border */
+}
+
+.readme-button:hover {
+   background:#d9d9
+
+}

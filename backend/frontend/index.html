@@ -1,39 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Drone Cleaning Company</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
-   
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        #readmeModal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.7);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: rgba(49, 36, 80, 0.9); /* Darker, less transparent background */
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            width: 90%;
+            max-width: 800px;
+            border-radius: 10px;
+            position: relative;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .close {
+            color: #a270db;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #8058b3;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-content h1, .modal-content h2, .modal-content p, .modal-content ol, .modal-content li {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .modal-content a {
+            color: #bb8fce;
+        }
+
+        .modal-content a:hover {
+            color: #d7bde2;
+        }
+    </style>
 </head>
 <body>
-
     <div class="login-container">
-        <h2>Login</h2>
-        <form id="loginForm">
-            <div class="form-group">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" placeholder="Enter your username" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" placeholder="Enter your password" required>
-            </div>
-            <button type="submit" class="login-button">Login</button>
-        </form>
-
-        <p id="message"></p>
-
-        <div class="register-link">
+        <!-- Left Section -->
+        <div class="left-section">
+            <div class="logo">Drone Cleaning Co.</div>
+            <h1>Welcome Back!</h1>
             <p>Don't have an account? <a href="register.html">Register here</a></p>
+            <hr>
+             <!-- README Button -->
+             <button onclick="openReadme()">Instructions</button>
         </div>
 
-        <!-- README Button -->
-        <button class="readme-button" onclick="toggleReadme()">READ ME!</button>
+        <!-- Right Section -->
+        <div class="right-section">
+            <h2>Login</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" placeholder="Enter your username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="login-button">Login</button>
+            </form>
 
-        <!-- README Content -->
-        <div class="readme-content" id="readmeContent">
+            <!-- Message Section -->
+            <p id="message"></p>
+        </div>
+    </div><!-- End of Login Container -->
+
+    <!-- README Modal -->
+    <div id="readmeModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeReadme()">&times;</span>
             <h1>Window Cleaning Pricing Calculator</h1>
 
             <h2>Table of Contents</h2>
@@ -128,25 +190,31 @@
                 <li>Country-specific view for users.</li>
                 <li>Comprehensive admin controls including P&L analysis and user management.</li>
             </ul>
-            
-            
-            
-        </div><!-- End of README Content -->
-    </div><!-- End of Login Container -->
+        </div>
+    </div>
 
-    <!-- JavaScript for toggling README content -->
     <script>
-        function toggleReadme() {
-            const readmeContent = document.getElementById("readmeContent");
-            
-            // Toggle between showing and hiding the README content
-            if (readmeContent.style.display === "none" || readmeContent.style.display === "") {
-                readmeContent.style.display = "block";
-            } else {
-                readmeContent.style.display = "none";
+        // Get the modal
+        var modal = document.getElementById("readmeModal");
+
+        // Function to open the modal
+        function openReadme() {
+            modal.style.display = "block";
+        }
+
+        // Function to close the modal
+        function closeReadme() {
+            modal.style.display = "none";
+        }
+
+        // Close the modal when clicking outside of it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
             }
         }
     </script>
+    
     <script src="login.js"></script>
 
 </body>

@@ -33,20 +33,21 @@ document.addEventListener('DOMContentLoaded', function () {
         for (let i = 1; i <= count; i++) {
             buildingsContainer.innerHTML += `
                 <div class="building-section">
-                    <h3>Building ${i}</h3>
-                    <div class="form-group">
-                        <label for="length${i}">Length (ft):</label>
-                        <input type="number" id="length${i}" required step="0.01">
-                    </div>
-                    <div class="form-group">
-                        <label for="height${i}">Height (ft):</label>
-                        <input type="number" id="height${i}" required step="0.01">
-                    </div>
-                    <div class="form-group">
-                        <label for="floors${i}">Number of Floors:</label>
-                        <input type="number" id="floors${i}" required>
-                    </div>
-                </div>
+    <h3>Building ${i}</h3>
+    <div class="form-group">
+        <label for="length${i}">Perimeter (ft):</label>
+        <input type="number" id="length${i}" required step="0.01">
+    </div>
+    <div class="form-group">
+        <label for="height${i}">Height of floor (ft):</label>
+        <input type="number" id="height${i}" required step="0.01" value="10"> <!-- Default value set to 10 -->
+    </div>
+    <div class="form-group">
+        <label for="floors${i}">Number of Floors:</label>
+        <input type="number" id="floors${i}" required>
+    </div>
+</div>
+
             `;
         }
     }
@@ -114,8 +115,8 @@ function displayCalculationDetails(clientName, address, totalArea, glassPercenta
         <table>
             <tr>
                 <th>Building</th>
-                <th>Length (ft)</th>
-                <th>Height (ft)</th>
+                <th>Perimeter (ft)</th>
+                <th>Height of floor (ft)</th>
                 <th>Floors</th>
                 <th>Area (sq ft)</th>
             </tr>
