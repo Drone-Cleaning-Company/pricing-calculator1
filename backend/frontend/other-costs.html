@@ -4,8 +4,93 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Other Costs Configuration</title>
-    <link rel="stylesheet" href="styles.css">
-    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #312450;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+        h1, h2 {
+            color: #bb8fce;
+        }
+
+        .section-header {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 10px;
+            margin-top: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #bb8fce;
+        }
+
+        .help-text {
+            font-size: 0.9em;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 5px;
+        }
+
+        button {
+            background-color: #a270db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #8058b3;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-top: 20px;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border: 1px solid #bb8fce;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.1);
+            transition: background-color 0.3s ease;
+        }
+
+        .back-button:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -30,11 +115,6 @@
                 <input type="number" id="solutionCosts" name="solutionCosts" step="0.01" required>
             </div>
 
-            <div class="form-group">
-                <label for="travelCharge">Travel Charge ($):</label>
-                <input type="number" id="travelCharge" name="travelCharge" step="0.01" required>
-            </div>
-
             <!-- Water Filtration Constants Section -->
             <h2 class="section-header">Water Filtration Constants</h2>
             
@@ -52,13 +132,11 @@
 
             <button type="submit">Save Configuration</button>
             <a href="#" id="backToHome" class="back-button">Back to Home</a>
-
         </form>
     </div>
 
-    <!-- Link to the JavaScript file -->
+    <!-- Link to the JavaScript files -->
     <script src="other-costs.js"></script>
     <script src="setHomeLinks.js"></script>
-
 </body>
 </html>

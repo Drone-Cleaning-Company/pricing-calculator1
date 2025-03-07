@@ -20,6 +20,24 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleFloorDistributionButton = document.getElementById('toggleFloorDistribution');
+    const floorDistributionSection = document.getElementById('floorDistributionSection');
+    const toggleSquareFootageByRiseButton = document.getElementById('toggleSquareFootageByRise');
+    const squareFootageByRiseSection = document.getElementById('squareFootageByRiseSection');
+
+    // Function to toggle the visibility of a section
+    function toggleSection(button, section) {
+        button.addEventListener('click', function() {
+            section.style.display = section.style.display === 'none' ? 'block' : 'none';
+        });
+    }
+
+    // Set up the toggle functionality for each section
+    toggleSection(toggleFloorDistributionButton, floorDistributionSection);
+    toggleSection(toggleSquareFootageByRiseButton, squareFootageByRiseSection);
+});
+
 
 document.getElementById('discountType').addEventListener('change', function() {
     const discountType = this.value;
@@ -32,20 +50,22 @@ document.getElementById('discountType').addEventListener('change', function() {
     }
 });
 
-
-
 document.addEventListener('DOMContentLoaded', function () {
     // Retrieve parameters from URL
     const urlParams = new URLSearchParams(window.location.search);
     const totalSqFt = parseFloat(urlParams.get('sqft') || 0);
     const address = decodeURIComponent(urlParams.get('address') || '');
+    const totalFloors = parseInt(urlParams.get('totalFloors') || 0);
 
     // Set total square footage in the readonly input field
     const totalSqFtInput = document.getElementById('totalSqFt');
     if (totalSqFtInput) {
         totalSqFtInput.value = totalSqFt.toFixed(2);
     }
-
+    
+    console.log('Total Floors (raw):', urlParams.get('totalFloors'));
+    console.log('Total Floors (parsed):', totalFloors);
+    
     // Set address in the readonly input field
     const addressInput = document.getElementById('address');
     if (addressInput) {
@@ -54,8 +74,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Function to calculate floor distribution
     function calculateFloorDistribution() {
-        const totalFloors = parseInt(document.getElementById('totalFloors').value) || 0;
-
         // Validate inputs
         if (isNaN(totalSqFt) || totalSqFt <= 0) {
             console.error('Invalid total square footage.');
@@ -72,10 +90,10 @@ document.addEventListener('DOMContentLoaded', function () {
         // Update the read-only fields
         document.getElementById('sqFtPerFloor').value = sqFtPerFloor.toFixed(2);
 
-        // Example: Distribute floors into low, mid, and high rise categories
-        const lowRiseFloors = Math.min(totalFloors, 5); // Max 5 floors for low-rise
-        const midRiseFloors = Math.max(0, Math.min(totalFloors - 5, 5)); // Next 5 floors for mid-rise
-        const highRiseFloors = Math.max(0, totalFloors - 10); // Remaining floors for high-rise
+        // Distribute floors into low, mid, and high rise categories
+        const lowRiseFloors = Math.min(totalFloors, 5);
+        const midRiseFloors = Math.max(0, Math.min(totalFloors - 5, 5));
+        const highRiseFloors = Math.max(0, totalFloors - 10);
 
         // Update floor counts
         document.getElementById('lowRiseFloors').value = lowRiseFloors;
@@ -92,18 +110,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('midRiseSqFt').value = midRiseSqFt.toFixed(2);
         document.getElementById('highRiseSqFt').value = highRiseSqFt.toFixed(2);
     }
-
-    // Add event listeners
-    const totalFloorsInput = document.getElementById('totalFloors');
-    if (totalFloorsInput) {
-        totalFloorsInput.addEventListener('input', calculateFloorDistribution);
-    }
-
-    // Trigger calculation on page load if totalFloors is pre-filled
-    const totalFloorsValue = parseInt(totalFloorsInput?.value) || 0;
-    if (totalFloorsValue > 0) {
-        calculateFloorDistribution();
-    }
+    calculateFloorDistribution();
 
     // Form submission handler
     const form = document.getElementById('pricingForm');
@@ -120,6 +127,7 @@ document.addEventListener('DOMContentLoaded', function () {
         input.style.color = '#666';
     });
 });
+
 
 // Add this after your DOMContentLoaded event listener
 function initializeDiscountFeature() {
@@ -142,37 +150,72 @@ function initializeDiscountFeature() {
     // Add styles for discount section
     const styles = document.createElement('style');
     styles.textContent = `
-        .discount-section {
-            margin: 20px 0;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-        
-        .discount-controls {
-            display: flex;
-            gap: 10px;
-            margin: 10px 0;
-        }
-        
-        .discount-input {
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        
-        .discount-button {
-            padding: 8px 16px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        
-        .discount-button:hover {
-            background-color: #45a049;
-        }
+       .discount-section {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.discount-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.discount-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.discount-input:focus {
+    outline: none;
+    border-color: #bb8fce;
+}
+
+.discount-button {
+    background-color: #a270db;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.discount-button:hover {
+    background-color: #8058b3;
+}
+
+#discountError {
+    display: none;
+    color: red;
+}
+
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+    background-repeat: no-repeat;
+    background-position-x: 98%;
+    background-position-y: 50%;
+}
+
+select option {
+    background-color: #312450;
+    color: white;
+}
+
+::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
     `;
 
     document.head.appendChild(styles);
@@ -344,33 +387,46 @@ function toggleLaborCosts() {
 
 
 function calculateFinalPrice() {
+    const urlParams = new URLSearchParams(window.location.search);
 
-          // Retrieve inputs
+    // Retrieve inputs
     const totalSqFt = parseFloat(document.getElementById('totalSqFt').value) || 0;
-    const totalFloors = parseInt(document.getElementById('totalFloors').value) || 0;
+    let totalFloors = parseInt(urlParams.get('totalFloors')) || 0;
     const frequency = document.querySelector('input[name="frequency"]:checked')?.value;
     const heightCategory = document.querySelector('input[name="heightCategory"]:checked')?.value;
     const discountType = document.getElementById('discountType').value;
     const discountValue = parseFloat(document.getElementById('discountValue').value) || 0;
-
+    if (totalFloors === 0) {
+        totalFloors = parseInt(localStorage.getItem('totalFloors')) || 0;
+    }
+    const complexityCost = parseFloat(document.getElementById('complexityCost').value) || 0;
+    const travelCost = parseFloat(document.getElementById('travelCost').value) || 0;
+    console.log('Total Floors:', totalFloors); 
     // Validate inputs
-    if (!frequency || !heightCategory || totalFloors <= 0 || totalSqFt <= 0) {
+    if (!frequency ||  totalSqFt <= 0) {
         alert('Please fill out all fields correctly.');
         return;
     }
+
+    console.log(`Total Floors: ${totalFloors}`);
+    console.log(`Total SqFt: ${totalSqFt}`);
 
     // Calculate square footage per floor
     const sqFtPerFloor = totalSqFt / totalFloors;
 
     // Floor categorization
-    const lowRiseFloors = Math.min(totalFloors, 5);
-    const midRiseFloors = Math.min(Math.max(totalFloors - 5, 0), 5);
-    const highRiseFloors = Math.max(totalFloors - 10, 0);
+    const lowRiseFloors = Math.min(totalFloors, 5); // First 5 floors are low-rise
+    const midRiseFloors = Math.min(Math.max(totalFloors - 5, 0), 5); // Next 5 floors are mid-rise
+    const highRiseFloors = Math.max(totalFloors - 10, 0); // Remaining floors are high-rise
+
+    console.log(`Low Rise Floors: ${lowRiseFloors}, Mid Rise Floors: ${midRiseFloors}, High Rise Floors: ${highRiseFloors}`);
 
     // Calculate prices for each category
-    const lowRisePrice = lowRiseFloors * sqFtPerFloor * 0.1;
-    const midRisePrice = midRiseFloors * sqFtPerFloor * 0.25;
-    const highRisePrice = highRiseFloors * sqFtPerFloor * 0.4;
+    const lowRisePrice = lowRiseFloors * sqFtPerFloor * 0.1; // Example price multiplier for low-rise
+    const midRisePrice = midRiseFloors * sqFtPerFloor * 0.25; // Example price multiplier for mid-rise
+    const highRisePrice = highRiseFloors * sqFtPerFloor * 0.4; // Example price multiplier for high-rise
+
+    console.log(`Low Rise Price: ${lowRisePrice}, Mid Rise Price: ${midRisePrice}, High Rise Price: ${highRisePrice}`);
 
     // Calculate operational costs
     const operationalCosts = calculateOperationalCosts(totalSqFt);
@@ -379,12 +435,16 @@ function calculateFinalPrice() {
         return;
     }
 
+    console.log(`Operational Costs:`, operationalCosts);
+
     // Calculate water costs
     const waterCosts = calculateSimpleWaterCosts(totalSqFt);
     if (!waterCosts) {
         alert("Water costs calculation failed. Please check water filtration settings on the Other Costs page.");
         return;
     }
+
+    console.log(`Water Costs:`, waterCosts);
 
     // Get other costs from localStorage with validation
     const otherCosts = JSON.parse(localStorage.getItem('otherCosts'));
@@ -393,32 +453,52 @@ function calculateFinalPrice() {
         return;
     }
 
+    console.log(`Other Costs:`, otherCosts);
+
     // Calculate other costs subtotal
-    const otherCostSubtotal = 
-        otherCosts.miscellaneous + 
-        otherCosts.fixedCosts + 
-        otherCosts.solutionCosts + 
-        otherCosts.travelCharge;
+    const otherCostSubtotal =
+        otherCosts.miscellaneous +
+        otherCosts.fixedCosts +
+        otherCosts.solutionCosts
+
+    console.log(`Other Costs Subtotal: ${otherCostSubtotal}`);
 
     // Calculate base subtotal
-    const baseSubtotal = lowRisePrice + midRisePrice + highRisePrice + waterCosts.totalWaterCost + otherCostSubtotal;
+    const baseSubtotal =
+        lowRisePrice +
+        midRisePrice +
+        highRisePrice +
+        waterCosts.totalWaterCost +
+        otherCostSubtotal+
+        complexityCost + travelCost;
+
+    console.log(`Base Subtotal: ${baseSubtotal}`);
 
     // Apply frequency multiplier
     const frequencyMultiplier = {
-        'annually': 1,
+        annually: 1,
         'semi-annually': 1.5,
-        'quarterly': 2,
-        'monthly': 12
+        quarterly: 2,
+        monthly: 12,
     }[frequency];
-    
+
+    if (!frequencyMultiplier) {
+        alert("Invalid frequency selected.");
+        return;
+    }
+
+    console.log(`Frequency Multiplier: ${frequencyMultiplier}`);
 
     const subtotal = baseSubtotal * frequencyMultiplier;
+
+    console.log(`Subtotal After Frequency Multiplier: ${subtotal}`);
 
     // Calculate discount
     let discountAmount = 0;
     try {
         if (discountType !== 'none' && !isNaN(discountValue)) {
             discountAmount = calculateDiscount(subtotal, discountType, discountValue);
+            console.log(`Discount Amount: ${discountAmount}`);
         }
     } catch (error) {
         document.getElementById('discountError').textContent = error.message;
@@ -426,8 +506,10 @@ function calculateFinalPrice() {
         return;
     }
 
-    // Calculate final total
+    // Calculate final total price after discount
     const totalPrice = subtotal - discountAmount;
+
+    console.log(`Total Price After Discount: ${totalPrice}`);
 
     // Display result
     const resultDiv = document.getElementById('result');

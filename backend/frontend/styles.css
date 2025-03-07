@@ -337,3 +337,18 @@ button {
    background:#d9d9
 
 }
+.back-button {
+    display: inline-block;
+    margin-top: 20px;
+    color: white; /* Changed to white for better visibility */
+    text-decoration: none;
+    padding: 10px 20px; /* Add padding to create a box effect */
+    border: 1px solid #bb8fce; /* Add a border */
+    border-radius: 5px; /* Add rounded corners */
+    background-color: rgba(255, 255, 255, 0.1); /* Add a background color */
+}
+
+.back-button:hover {
+    text-decoration: underline;
+    background-color: rgba(255, 255, 255, 0.2); /* Change background on hover */
+}

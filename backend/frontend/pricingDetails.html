@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,7 +16,9 @@
             margin: 0 auto;
         }
 
-        h1, h2, h3 {
+        h1,
+        h2,
+        h3 {
             color: #bb8fce;
         }
 
@@ -35,7 +38,9 @@
             margin-bottom: 5px;
         }
 
-        input[type="number"], input[type="text"], select {
+        input[type="number"],
+        input[type="text"],
+        select {
             width: 100%;
             padding: 8px;
             border: 1px solid rgba(255, 255, 255, 0.2);
@@ -44,8 +49,17 @@
             color: white;
         }
 
+        input[type="number"]:focus,
+        input[type="text"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #bb8fce;
+        }
+
         .readonly-input {
-            background-color: rgba(255, 255, 255, 0.05);
+            background-color: rgba(255, 255, 255, 0.05) !important;
+            color: rgba(255, 255, 255, 0.7) !important;
+            /* Increased the white color */
             cursor: not-allowed;
         }
 
@@ -62,9 +76,11 @@
 
         .radio-item input[type="radio"] {
             margin-right: 5px;
+            accent-color: #bb8fce;
         }
 
-        .service-button, .btn {
+        /* Style the service buttons */
+        .service-button {
             background-color: #a270db;
             color: white;
             border: none;
@@ -72,22 +88,71 @@
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
+            transition: background-color 0.3s ease;
             margin-top: 10px;
+            display: block;
+            width: 100%;
+            text-align: center;
+            text-decoration: none;
+            /* Prevent underline on hover */
         }
 
-        .service-button:hover, .btn:hover {
+        .service-button:hover {
             background-color: #8058b3;
         }
 
+        /* Style the secondary buttons */
+        .secondary-buttons {
+            display: flex;
+            justify-content: space-between;
+            /* Place buttons on the same line */
+            gap: 10px;
+            /* Add some space between buttons */
+            margin-top: 10px;
+            width: 100%; /* Make secondary buttons take the full width */
+        }
+
+        .secondary-buttons button {
+            background-color: #a270db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+            display: inline-block;
+            /* Display buttons inline */
+            width: 48%;
+            /* Make buttons take up 48% width */
+            text-align: center;
+        }
+
+        .secondary-buttons button:hover {
+            background-color: #8058b3;
+        }
+
+        /* Back to Home button style */
         .back-button {
             display: inline-block;
             margin-top: 20px;
-            color: rgba(255, 255, 255, 0.6);
+            color: white;
+            /* Changed to white for better visibility */
             text-decoration: none;
+            padding: 10px 20px;
+            /* Add padding to create a box effect */
+            border: 1px solid #bb8fce;
+            /* Add a border */
+            border-radius: 5px;
+            /* Add rounded corners */
+            background-color: rgba(255, 255, 255, 0.1);
+            /* Add a background color */
         }
 
         .back-button:hover {
             text-decoration: underline;
+            background-color: rgba(255, 255, 255, 0.2);
+            /* Change background on hover */
         }
 
         #result {
@@ -102,11 +167,201 @@
             display: flex;
             justify-content: space-between;
         }
+
+        /* New styles for select and option elements */
+        select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+            background-repeat: no-repeat;
+            background-position-x: 98%;
+            background-position-y: 50%;
+        }
+
+        select option {
+            background-color: #312450;
+            color: white;
+        }
+
+        /* Style for placeholder text */
+        ::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .discount-section {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .discount-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .discount-input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .discount-input:focus {
+            outline: none;
+            border-color: #bb8fce;
+        }
+
+        .discount-button {
+            background-color: #a270db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .discount-button:hover {
+            background-color: #8058b3;
+        }
+
+        #discountError {
+            display: none;
+            color: red;
+        }
+
+        select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+            background-repeat: no-repeat;
+            background-position-x: 98%;
+            background-position-y: 50%;
+        }
+
+        select option {
+            background-color: #312450;
+            color: white;
+        }
+
+        ::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* General table styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background-color: rgba(255, 255, 255, 0.05);
+            /* Dark background for tables */
+            border-radius: 5px;
+            overflow: hidden;
+            /* Hide any overflowing content */
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            /* Subtle border color */
+            color: rgba(255, 255, 255, 0.8);
+            /* White text */
+        }
+
+        th {
+            background-color: rgba(255, 255, 255, 0.1);
+            /* Slightly lighter background for headers */
+            font-weight: bold;
+            color: #bb8fce;
+            /* Header text color */
+        }
+
+        /* Style for the last row (Total) */
+        table tr:last-child td {
+            border-bottom: none;
+            /* Remove border for the last row */
+        }
+
+        /* Style for the "Final Price Breakdown" table */
+        /* Add specific styles if you want to differentiate this table */
+
+        /* Button style */
+        #toggleLaborCostsButton {
+            background-color: #a270db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        #toggleLaborCostsButton:hover {
+            background-color: #8058b3;
+        }
+
+        /* Style for labor costs section */
+        #laborCostsSection {
+            margin-top: 10px;
+        }
+
+        /* Add styling for the toggle buttons */
+        .toggle-button {
+            background-color: #a270db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+            display: block;
+            /* Make the button take the full width */
+            width: 100%;
+            /* Ensure the button takes the full width */
+            text-align: left;
+            /* Align the text to the left */
+        }
+
+        .toggle-button:hover {
+            background-color: #8058b3;
+        }
+
+        /* Style for the Profit & Loss Statement button */
+        button[onclick="showPnLPage()"] {
+            background-color: #a270db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        button[onclick="showPnLPage()"]:hover {
+            background-color: #8058b3;
+        }
     </style>
+
 </head>
+
 <body>
     <h1>Pricing Details Calculator</h1>
-    
+
     <form id="pricingForm">
         <div class="form-section">
             <h2>Building Details</h2>
@@ -114,26 +369,8 @@
                 <label for="totalSqFt">Total Square Feet (from previous calculation):</label>
                 <input type="number" id="totalSqFt" readonly class="readonly-input" value="10000">
             </div>
-            
-            <div class="form-group">
-                <label>Building Height Category:</label>
-                <div class="radio-group">
-                    <label class="radio-item">
-                        <input type="radio" name="heightCategory" value="0-5" required> 1-5 Floors
-                    </label>
-                    <label class="radio-item">
-                        <input type="radio" name="heightCategory" value="6-10"> 6-10 Floors
-                    </label>
-                    <label class="radio-item">
-                        <input type="radio" name="heightCategory" value="10+"> 10+ Floors
-                    </label>
-                </div>
-            </div>
 
-            <div class="form-group">
-                <label for="totalFloors">Total Number of Floors:</label>
-                <input type="number" id="totalFloors" required min="1" oninput="calculateDistribution()">
-            </div>
+
 
             <div class="form-group">
                 <label>Cleaning Frequency:</label>
@@ -152,49 +389,69 @@
                     </label>
                 </div>
             </div>
-            
+
         </div>
 
         <div class="form-section">
-            <h2>Floor Distribution</h2>
-            <div class="form-group">
-                <label for="sqFtPerFloor">Square Feet per Floor:</label>
-                <input type="number" id="sqFtPerFloor" readonly class="readonly-input">
-            </div>
+            <h2>
+                <button id="toggleFloorDistribution" class="toggle-button">Floor Distribution</button>
+            </h2>
+            <div id="floorDistributionSection" style="display: none;">
+                <div class="form-group">
+                    <label for="sqFtPerFloor">Square Feet per Floor:</label>
+                    <input type="number" id="sqFtPerFloor" readonly class="readonly-input">
+                </div>
 
-            <div class="form-group">
-                <label for="lowRiseFloors">Low Rise Floors (1-5):</label>
-                <input type="number" id="lowRiseFloors" readonly class="readonly-input">
-            </div>
+                <div class="form-group">
+                    <label for="lowRiseFloors">Low Rise Floors (1-5):</label>
+                    <input type="number" id="lowRiseFloors" readonly class="readonly-input">
+                </div>
 
-            <div class="form-group">
-                <label for="midRiseFloors">Mid Rise Floors (6-10):</label>
-                <input type="number" id="midRiseFloors" readonly class="readonly-input">
-            </div>
+                <div class="form-group">
+                    <label for="midRiseFloors">Mid Rise Floors (6-10):</label>
+                    <input type="number" id="midRiseFloors" readonly class="readonly-input">
+                </div>
 
-            <div class="form-group">
-                <label for="highRiseFloors">High Rise Floors (10+):</label>
-                <input type="number" id="highRiseFloors" readonly class="readonly-input">
+                <div class="form-group">
+                    <label for="highRiseFloors">High Rise Floors (10+):</label>
+                    <input type="number" id="highRiseFloors" readonly class="readonly-input">
+                </div>
             </div>
         </div>
 
         <div class="form-section">
-            <h2>Square Footage by Rise</h2>
-            <div class="form-group">
-                <label for="lowRiseSqFt">Low Rise Square Footage:</label>
-                <input type="number" id="lowRiseSqFt" readonly class="readonly-input">
-            </div>
+            <h2>
+                <button id="toggleSquareFootageByRise" class="toggle-button">Square Footage by Rise</button>
+            </h2>
+            <div id="squareFootageByRiseSection" style="display: none;">
+                <div class="form-group">
+                    <label for="lowRiseSqFt">Low Rise Square Footage:</label>
+                    <input type="number" id="lowRiseSqFt" readonly class="readonly-input">
+                </div>
 
-            <div class="form-group">
-                <label for="midRiseSqFt">Mid Rise Square Footage:</label>
-                <input type="number" id="midRiseSqFt" readonly class="readonly-input">
-            </div>
+                <div class="form-group">
+                    <label for="midRiseSqFt">Mid Rise Square Footage:</label>
+                    <input type="number" id="midRiseSqFt" readonly class="readonly-input">
+                </div>
 
-            <div class="form-group">
-                <label for="highRiseSqFt">High Rise Square Footage:</label>
-                <input type="number" id="highRiseSqFt" readonly class="readonly-input">
+                <div class="form-group">
+                    <label for="highRiseSqFt">High Rise Square Footage:</label>
+                    <input type="number" id="highRiseSqFt" readonly class="readonly-input">
+                </div>
             </div>
         </div>
+        <div class="form-section">
+            <h2>Additional Costs</h2>
+            <div class="form-group">
+                <label for="complexityCost">Complexity Cost:</label>
+                <input type="number" id="complexityCost" value="0" min="0" step="0.01">
+            </div>
+            <div class="form-group">
+                <label for="travelCost">Travel Cost:</label>
+                <input type="number" id="travelCost" value="0" min="0" step="0.01">
+            </div>
+        </div>
+        
 
         <div class="discount-section">
             <h3>Apply Discount</h3>
@@ -210,7 +467,7 @@
                 <input type="number" id="discountValue" placeholder="Enter discount value" min="0" />
             </div>
         </div>
-        
+
 
         <button type="button" id="calculatePriceButton" class="service-button">Calculate Final Price</button>
 
@@ -219,13 +476,31 @@
     <div id="result" style="display: none;">
         <!-- Results will be dynamically populated by JavaScript -->
     </div>
-    <button id="saveButton" class="btn btn-primary">Save Calculation</button>
 
-    <!-- Button to show the P&L page -->
-    <button onclick="showPnLPage()">View Profit & Loss Statement</button>
+    <div class="secondary-buttons">
+        <button id="saveButton" style="background-color: #a270db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;">Save Calculation</button>
+        <button onclick="showPnLPage()" style="background-color: #a270db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;">View Profit & Loss Statement</button>
+    </div>
 
     <div class="navigation">
-        <a href="window-cleaning.html" class="service-button">Back to Measurements</a>
+        <a href="window-cleaning.html" class="back-button">Back to Measurements</a>
+
         <a href="#" id="backToHome" class="back-button">Back to Home</a>
 
     </div>
@@ -234,4 +509,5 @@
     <script src="setHomeLinks.js"></script>
 
 </body>
+
 </html>

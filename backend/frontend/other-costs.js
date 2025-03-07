@@ -16,7 +16,7 @@ function loadOtherCosts() {
         miscellaneous: 500,
         fixedCosts: 661.56,
         solutionCosts: 100,
-        travelCharge: 0,
+       
         waterFiltrationConstants: {
             costPerCubicFoot: DEFAULT_COST_PER_CUBIC_FOOT,
             gallonsPerResin: DEFAULT_GALLONS_PER_RESIN
@@ -27,7 +27,7 @@ function loadOtherCosts() {
     document.getElementById('miscellaneous').value = otherCosts.miscellaneous;
     document.getElementById('fixedCosts').value = otherCosts.fixedCosts;
     document.getElementById('solutionCosts').value = otherCosts.solutionCosts;
-    document.getElementById('travelCharge').value = otherCosts.travelCharge;
+    
     
     // Fill water filtration constants
     document.getElementById('costPerCubicFoot').value = otherCosts.waterFiltrationConstants.costPerCubicFoot;
@@ -43,7 +43,7 @@ otherCostsForm.addEventListener('submit', (e) => {
         miscellaneous: parseFloat(document.getElementById('miscellaneous').value),
         fixedCosts: parseFloat(document.getElementById('fixedCosts').value),
         solutionCosts: parseFloat(document.getElementById('solutionCosts').value),
-        travelCharge: parseFloat(document.getElementById('travelCharge').value),
+       
         waterFiltrationConstants: {
             costPerCubicFoot: parseFloat(document.getElementById('costPerCubicFoot').value),
             gallonsPerResin: parseFloat(document.getElementById('gallonsPerResin').value)

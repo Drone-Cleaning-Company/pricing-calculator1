@@ -8,15 +8,15 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #312450;
-            color: rgba(255, 255, 255, 0.8);
+            color: white;
             line-height: 1.6;
             padding: 20px;
             max-width: 800px;
             margin: 0 auto;
         }
 
-        h1, h2, h3, h4 {
-            color: #bb8fce;
+        h1, h2 {
+            color: #a270db;
         }
 
         .form-group {
@@ -31,27 +31,10 @@
         input[type="text"], input[type="number"], select {
             width: 100%;
             padding: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid #bb8fce;
             border-radius: 4px;
-            background-color: rgba(255, 255, 255, 0.05);
+            background-color: rgba(255, 255, 255, 0.1);
             color: white;
-            box-sizing: border-box;
-        }
-
-        .measurements .form-group {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .measurements .form-group input {
-            margin-bottom: 15px;
-        }
-
-        #buildingsContainer > div {
-            margin-bottom: 15px;
-            padding: 10px;
-            background-color: rgba(255, 255, 255, 0.05);
-            border-radius: 5px;
         }
 
         .service-button {
@@ -67,106 +50,125 @@
         .service-button:hover {
             background-color: #8058b3;
         }
-
         .back-button {
-            display: inline-block;
-            margin-top: 20px;
-            color: rgba(255, 255, 255, 0.6);
-            text-decoration: none;
-        }
+    display: inline-block;
+    margin-top: 20px;
+    color: white; /* Changed to white for better visibility */
+    text-decoration: none;
+    padding: 10px 20px; /* Add padding to create a box effect */
+    border: 1px solid #bb8fce; /* Add a border */
+    border-radius: 5px; /* Add rounded corners */
+    background-color: rgba(255, 255, 255, 0.1); /* Add a background color */
+}
 
-        .back-button:hover {
-            text-decoration: underline;
-        }
+.back-button:hover {
+    text-decoration: underline;
+    background-color: rgba(255, 255, 255, 0.2); /* Change background on hover */
+}
+
 
         #result {
             margin-top: 20px;
-            padding: 20px;
-            background-color: rgba(255, 255, 255, 0.05);
-            border-radius: 5px;
-            overflow-x: auto;
-        }
-
-        #result table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-
-        #result th, #result td {
-            border: 1px solid rgba(255, 255, 255, 0.2);
             padding: 10px;
-            text-align: left;
-        }
-
-        #result th {
             background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
         }
 
         #continueSection {
             margin-top: 20px;
         }
 
-        @media (max-width: 600px) {
-            #result {
-                font-size: 14px;
-            }
-
-            #result th, #result td {
-                padding: 5px;
-            }
+        #buildingsContainer {
+            margin-top: 20px;
         }
-        .cleaning-type {
-    margin-bottom: 20px;
-}
 
-.cleaning-type h2 {
-    color: #bb8fce;
-    margin-bottom: 10px;
-}
-
-.cleaning-type .form-group {
-    position: relative;
-}
-
-.cleaning-type label {
-    display: block;
-    margin-bottom: 5px;
-    color: rgba(255, 255, 255, 0.8);
-}
-
-.cleaning-type select {
+        #buildingsContainer > div {
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 5px;
+        }
+        select {
     width: 100%;
-    padding: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 8px;
+    border: 1px solid #bb8fce;
     border-radius: 4px;
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: rgba(255, 255, 255, 0.1);
     color: white;
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    cursor: pointer;
 }
 
-.cleaning-type .form-group::after {
-    content: '\25BC';
-    position: absolute;
-    top: 50%;
-    right: 10px;
-    transform: translateY(-50%);
-    color: #bb8fce;
-    pointer-events: none;
-}
-
-.cleaning-type select:focus {
-    outline: none;
-    border-color: #a270db;
-}
-
-.cleaning-type select option {
+select option {
     background-color: #312450;
     color: white;
 }
+/* Styles for the calculation details section */
+#result h3 {
+    color: #a270db;
+    margin-bottom: 10px;
+}
+
+#result p {
+    margin-bottom: 10px;
+}
+
+/* Table styles */
+#result table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    color: white;
+}
+
+#result th,
+#result td {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 10px;
+    text-align: left;
+}
+
+#result th {
+    background-color: rgba(255, 255, 255, 0.1);
+    font-weight: bold;
+    color: #bb8fce;
+}
+
+/* Summary styles */
+#result h4 {
+    color: #a270db;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    #result table {
+        font-size: 14px;
+    }
+
+    #result th,
+    #result td {
+        padding: 5px;
+    }
+}
+#buildingsContainer > div {
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 5px;
+    overflow: hidden; /* Add this line */
+}
+
+input[type="text"], input[type="number"], select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #bb8fce;
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    box-sizing: border-box; /* Add this line */
+}
+
+
 
     </style>
 </head>

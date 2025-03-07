@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const buildingsContainer = document.getElementById('buildingsContainer');
     const cleaningTypeSelect = document.getElementById('cleaningType');
     const glassPercentageInput = document.getElementById('glassPercentage');
+    const calculateButton = document.getElementById('calculateButton');
 
     if (form) {
         form.onsubmit = function (e) {
@@ -17,6 +18,10 @@ document.addEventListener('DOMContentLoaded', function () {
             updateBuildingInputs(this.value);
         });
         updateBuildingInputs(buildingCountSelect.value); // Initial setup
+    }
+
+    if (calculateButton) {
+        calculateButton.addEventListener('click', calculatePrice);
     }
 
     cleaningTypeSelect.addEventListener('change', function() {
@@ -33,21 +38,20 @@ document.addEventListener('DOMContentLoaded', function () {
         for (let i = 1; i <= count; i++) {
             buildingsContainer.innerHTML += `
                 <div class="building-section">
-    <h3>Building ${i}</h3>
-    <div class="form-group">
-        <label for="length${i}">Perimeter (ft):</label>
-        <input type="number" id="length${i}" required step="0.01">
-    </div>
-    <div class="form-group">
-        <label for="height${i}">Height of floor (ft):</label>
-        <input type="number" id="height${i}" required step="0.01" value="10"> <!-- Default value set to 10 -->
-    </div>
-    <div class="form-group">
-        <label for="floors${i}">Number of Floors:</label>
-        <input type="number" id="floors${i}" required>
-    </div>
-</div>
-
+                    <h3>Building ${i}</h3>
+                    <div class="form-group">
+                        <label for="length${i}">Perimeter (ft):</label>
+                        <input type="number" id="length${i}" required step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label for="height${i}">Height of floor (ft):</label>
+                        <input type="number" id="height${i}" required step="0.01" value="10">
+                    </div>
+                    <div class="form-group">
+                        <label for="floors${i}">Number of Floors:</label>
+                        <input type="number" id="floors${i}" required>
+                    </div>
+                </div>
             `;
         }
     }
@@ -74,6 +78,7 @@ function calculatePrice() {
 
     let totalArea = 0;
     let details = [];
+    let totalFloors = 0;
 
     for (let i = 1; i <= buildingCount; i++) {
         const length = parseFloat(document.getElementById(`length${i}`).value);
@@ -85,7 +90,8 @@ function calculatePrice() {
             return;
         }
 
-        const buildingArea = length * height * floors; // Assuming two sides of the building
+        totalFloors += floors;
+        const buildingArea = length * height * floors;
         totalArea += buildingArea;
 
         details.push({
@@ -97,11 +103,13 @@ function calculatePrice() {
         });
     }
 
+    localStorage.setItem('totalFloors', totalFloors.toString());
+
     const totalGlassArea = totalArea * glassPercentage;
 
     displayCalculationDetails(clientName, address, totalArea, glassPercentage, totalGlassArea, details, cleaningType);
-    setupContinueButton(totalGlassArea, cleaningType);
-    saveCalculation(clientName, totalGlassArea, cleaningType);
+    setupContinueButton(totalGlassArea, cleaningType, totalFloors); // Pass totalFloors
+    saveCalculation(clientName, totalGlassArea, cleaningType, address);
 }
 
 function displayCalculationDetails(clientName, address, totalArea, glassPercentage, totalGlassArea, details, cleaningType) {
@@ -148,52 +156,30 @@ function displayCalculationDetails(clientName, address, totalArea, glassPercenta
     continueSection.style.display = 'block';
 }
 
-function setupContinueButton(totalGlassArea, cleaningType) {
+function setupContinueButton(totalGlassArea, cleaningType, totalFloors) {
     console.log('setupContinueButton called'); // For debugging
-
-    const clientName = document.getElementById('clientName').value.trim();
-    const address = document.getElementById('clientAddress').value.trim();
-
-    if (!clientName || !address) {
-        alert('Please enter client name and address.');
-        return;
-    }
 
     document.getElementById('continueButton').addEventListener('click', function () {
         console.log('Continue button clicked'); // For debugging
+
+        const clientName = document.getElementById('clientName').value.trim();
+        const address = document.getElementById('clientAddress').value.trim();
+
+        if (!clientName || !address) {
+            alert('Please enter client name and address.');
+            return;
+        }
 
         // Store data in localStorage
         localStorage.setItem('clientName', clientName);
         localStorage.setItem('address', address);
         localStorage.setItem('totalSqFt', totalGlassArea.toString());
         localStorage.setItem('cleaningType', cleaningType);
+        localStorage.setItem('totalFloors', totalFloors);
 
         // Navigate to pricing details page with parameters
-        window.location.href = `pricingDetails.html?sqft=${encodeURIComponent(totalGlassArea)}&clientName=${encodeURIComponent(clientName)}&address=${encodeURIComponent(address)}&cleaningType=${encodeURIComponent(cleaningType)}`;
+        window.location.href = `pricingDetails.html?sqft=${encodeURIComponent(totalGlassArea)}&clientName=${encodeURIComponent(clientName)}&address=${encodeURIComponent(address)}&cleaningType=${encodeURIComponent(cleaningType)}&totalFloors=${encodeURIComponent(totalFloors)}`;
     });
 }
 
-async function saveCalculation(clientName, totalGlassArea, cleaningType) {
-    try {
-        const response = await fetch('/api/calculations', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                name: clientName, // Changed to 'name' to match backend
-                totalSqFt: totalGlassArea, // Changed to 'totalSqFt' to match backend
-                cleaningType: cleaningType,
-                address: address, // Added address
-                // Add other necessary fields here
-            }),
-        });
 
-        if (!response.ok) {
-            const error = await response.json();
-            console.error('Error saving calculation:', error.message);
-        } else {
-            console.log('Calculation saved successfully!');
-        }
-    } catch (error) {
-        console.error('Error saving calculation:', error);
-    }
-}
