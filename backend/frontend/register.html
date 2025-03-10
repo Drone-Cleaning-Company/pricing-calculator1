@@ -4,61 +4,494 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Register - Drone Cleaning Company</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #0a0a1f;
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Animated Background */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(217deg, rgba(6, 11, 40, 0.8), rgba(6, 11, 40, 0.1) 70.71%),
+                linear-gradient(127deg, rgba(0, 255, 255, 0.1), rgba(0, 255, 255, 0) 70.71%),
+                linear-gradient(336deg, rgba(128, 0, 255, 0.1), rgba(128, 0, 255, 0) 70.71%);
+            z-index: -2;
+        }
+
+        /* Geometric Pattern */
+        .geometric-pattern {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(45deg, transparent 48%, rgba(255, 255, 255, 0.05) 50%, transparent 52%),
+                linear-gradient(-45deg, transparent 48%, rgba(255, 255, 255, 0.05) 50%, transparent 52%);
+            background-size: 60px 60px;
+            z-index: -1;
+            animation: patternMove 20s linear infinite;
+        }
+
+        @keyframes patternMove {
+            from { background-position: 0 0; }
+            to { background-position: 60px 60px; }
+        }
+
+        .register-container {
+            display: flex;
+            width: 90%;
+            max-width: 1400px;
+            min-height: 600px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        /* Left Section - Hero Image */
+        .left-section {
+            width: 45%;
+            padding: 0;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            background: url('https://images.unsplash.com/photo-1579829366248-204fe8413f31?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') center/cover;
+        }
+
+        .left-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                rgba(10, 10, 31, 0.2),
+                rgba(10, 10, 31, 0.8)
+            );
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 3rem;
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .logo::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: cyan;
+            box-shadow: 0 0 10px cyan;
+        }
+
+        .hero-text {
+            max-width: 500px;
+            margin-bottom: 2rem;
+        }
+
+        .hero-text h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.2em;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #fff, #0ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-text p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        /* Right Section - Registration Form */
+        .right-section {
+            width: 55%;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.02);
+            position: relative;
+        }
+
+        .right-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 1px;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent, rgba(0, 255, 255, 0.2), transparent);
+        }
+
+        h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2em;
+            margin-bottom: 2rem;
+            color: #fff;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9em;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(0, 255, 255, 0.5);
+        }
+
+        input, select {
+            width: 100%;
+            padding: 1rem 1rem 1rem 45px;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            color: white;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        select {
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='cyan' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1.2em;
+        }
+
+        select option {
+            background-color: #0a0a1f;
+            color: white;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: cyan;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+        }
+
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .register-button {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(45deg, #00f2fe, #4facfe);
+            color: white;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .register-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .register-button:hover::before {
+            left: 100%;
+        }
+
+        .register-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 242, 254, 0.3);
+        }
+
+        .links {
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        a {
+            color: cyan;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: cyan;
+            transition: width 0.3s ease;
+        }
+
+        a:hover::after {
+            width: 100%;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .register-container {
+                width: 95%;
+                flex-direction: column;
+            }
+
+            .left-section,
+            .right-section {
+                width: 100%;
+            }
+
+            .left-section {
+                min-height: 300px;
+            }
+
+            .right-section::before {
+                width: 100%;
+                height: 1px;
+                top: 0;
+                background: linear-gradient(to right, transparent, rgba(0, 255, 255, 0.2), transparent);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 2em;
+            }
+
+            .hero-text h1 {
+                font-size: 1.8em;
+            }
+
+            .right-section {
+                padding: 2rem;
+            }
+        }
+    </style>
 </head>
 
 <body>
+    <div class="geometric-pattern"></div>
     <div class="register-container">
         <div class="left-section">
-            <div class="logo">Drone Cleaning Company</div>
-            <h1>Create New Account</h1>
-            <p>Already Registered? <a href="index.html">Login</a></p>
-            <hr>
-           
+            <div class="left-overlay">
+                <div class="logo">Drone Cleaning Co.</div>
+                <div class="hero-text">
+                    <h1>Join the Revolution</h1>
+                    <p>Be part of the future in building maintenance. Our drone technology is transforming the industry with precision, safety, and efficiency.</p>
+                </div>
+            </div>
         </div>
+
         <div class="right-section">
-            <h2>Register</h2>
+            <h2>Create Account</h2>
             <form id="registerForm">
                 <div class="form-group">
-                    <label for="name">Name:</label>
-                    <input type="text" id="name" name="name" placeholder="Enter your name" required>
+                    <label for="name">Full Name</label>
+                    <div class="input-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                    <label for="email">Email</label>
+                    <div class="input-group">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label for="username">Username:</label>
-                    <input type="text" id="username" name="username" placeholder="Choose a username" required>
+                    <label for="username">Username</label>
+                    <div class="input-group">
+                        <i class="fas fa-at"></i>
+                        <input type="text" id="username" name="username" placeholder="Choose a username" required>
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" placeholder="Create a password" required>
+                    <label for="password">Password</label>
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="password" name="password" placeholder="Create a password" required>
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label for="country">Country:</label>
-                    <select id="country" name="country">
-                        <option value="USA">USA</option>
-                        <option value="Canada">Canada</option>
-                        <option value="Mexico">Mexico</option>
-                    </select>
+                    <label for="country">Country</label>
+                    <div class="input-group">
+                        <i class="fas fa-globe"></i>
+                        <select id="country" name="country" required>
+                            <option value="" disabled selected>Select your country</option>
+                            <option value="USA">USA</option>
+                            <option value="Canada">Canada</option>
+                            <option value="Mexico">Mexico</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label for="adminKey">Admin Key:</label>
-                    <input type="password" id="adminKey" name="adminKey" placeholder="Enter Admin Key (if admin)">
+                    <label for="adminKey">Admin Key (Optional)</label>
+                    <div class="input-group">
+                        <i class="fas fa-key"></i>
+                        <input type="password" id="adminKey" name="adminKey" placeholder="Enter admin key if applicable">
+                    </div>
                 </div>
-                <button type="submit" class="register-button">Register</button>
+                <button type="submit" class="register-button">Create Account</button>
             </form>
-
+            <div class="links">
+                <p>Already have an account? <a href="index.html">Login here</a></p>
+            </div>
         </div>
     </div>
 
-    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('registerForm');
+            const submitButton = form.querySelector('button[type="submit"]');
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            document.body.appendChild(notification);
 
-   
-    <script src="register.js"></script>
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                // Disable submit button and show loading state
+                submitButton.disabled = true;
+                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Registering...';
 
+                const formData = {
+                    name: form.name.value,
+                    email: form.email.value,
+                    username: form.username.value,
+                    password: form.password.value,
+                    country: form.country.value
+                };
+
+                try {
+                    const response = await fetch('/api/auth/register', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(formData)
+                    });
+
+                    const data = await response.json();
+
+                    if (response.ok) {
+                        // Store email for verification page
+                        localStorage.setItem('pendingEmail', formData.email);
+                        
+                        // Show success message
+                        showNotification('Registration successful! Please check your email to verify your account.', 'success');
+                        
+                        // Redirect to verification page after a delay
+                        setTimeout(() => {
+                            window.location.href = '/verify-email.html';
+                        }, 2000);
+                    } else {
+                        // Show specific error message from server
+                        showNotification(data.message || 'Registration failed', 'error');
+                        console.error('Registration error:', data);
+                    }
+                } catch (error) {
+                    console.error('Registration error:', error);
+                    showNotification('An error occurred. Please try again.', 'error');
+                } finally {
+                    // Reset submit button
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = 'Create Account';
+                }
+            });
+
+            function showNotification(message, type = 'success') {
+                notification.textContent = message;
+                notification.className = `notification ${type}`;
+                notification.style.display = 'block';
+                
+                setTimeout(() => {
+                    notification.style.display = 'none';
+                }, 5000);
+            }
+        });
+    </script>
 </body>
 
 </html>

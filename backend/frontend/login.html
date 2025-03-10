@@ -1,0 +1,82 @@
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('loginForm');
+        const submitButton = form.querySelector('button[type="submit"]');
+        const notification = document.createElement('div');
+        notification.className = 'notification';
+        document.body.appendChild(notification);
+
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Disable submit button and show loading state
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
+
+            const formData = {
+                email: form.email.value,
+                password: form.password.value
+            };
+
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Store user data
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('name', data.user.name);
+                    localStorage.setItem('country', data.user.country);
+                    localStorage.setItem('isAdmin', data.user.isAdmin);
+
+                    // Show success message
+                    showNotification('Login successful!', 'success');
+                    
+                    // Redirect based on user role
+                    setTimeout(() => {
+                        window.location.href = data.user.isAdmin ? '/admin.html' : '/user.html';
+                    }, 1000);
+                } else {
+                    if (data.message === 'Please verify your email before logging in') {
+                        // Store email for verification page
+                        localStorage.setItem('pendingEmail', formData.email);
+                        
+                        // Show verification message
+                        showNotification('Please verify your email first. Redirecting to verification page...', 'warning');
+                        
+                        // Redirect to verification page
+                        setTimeout(() => {
+                            window.location.href = '/verify-email.html';
+                        }, 2000);
+                    } else {
+                        showNotification(data.message || 'Login failed', 'error');
+                    }
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                showNotification('An error occurred. Please try again.', 'error');
+            } finally {
+                // Reset submit button
+                submitButton.disabled = false;
+                submitButton.innerHTML = 'Login';
+            }
+        });
+
+        function showNotification(message, type = 'success') {
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.style.display = 'block';
+            
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 5000);
+        }
+    });
+</script> 

@@ -1,70 +1,38 @@
-
-
 document.addEventListener('DOMContentLoaded', function () {
-    const calculateButton = document.getElementById('calculatePriceButton');
+    // Initialize all components
+    initializeFormElements();
+    initializeEventListeners();
+    initializeTooltips();
+    restoreSavedCalculation();
+    restoreClientInfo();
 
-    calculateButton.addEventListener('click', function () {
-        calculateFinalPrice();
+    // Add animation classes for smooth transitions
+    document.querySelectorAll('.form-section').forEach(section => {
+        section.classList.add('fade-in');
     });
-});
-document.addEventListener('DOMContentLoaded', function() {
-    const isAdmin = localStorage.getItem('isAdmin') === 'true';
-    const pnlButton = document.getElementById('showPnLPage'); // Adjust the ID as necessary
-    
-    if (pnlButton) {
-        if (!isAdmin) {
-            pnlButton.style.display = 'none';
-        } else {
-            pnlButton.addEventListener('click', showPnLPage);
-        }
-    }
-});
 
-document.addEventListener('DOMContentLoaded', function() {
-    const toggleFloorDistributionButton = document.getElementById('toggleFloorDistribution');
-    const floorDistributionSection = document.getElementById('floorDistributionSection');
-    const toggleSquareFootageByRiseButton = document.getElementById('toggleSquareFootageByRise');
-    const squareFootageByRiseSection = document.getElementById('squareFootageByRiseSection');
-
-    // Function to toggle the visibility of a section
-    function toggleSection(button, section) {
-        button.addEventListener('click', function() {
-            section.style.display = section.style.display === 'none' ? 'block' : 'none';
-        });
-    }
-
-    // Set up the toggle functionality for each section
-    toggleSection(toggleFloorDistributionButton, floorDistributionSection);
-    toggleSection(toggleSquareFootageByRiseButton, squareFootageByRiseSection);
-});
-
-
-document.getElementById('discountType').addEventListener('change', function() {
-    const discountType = this.value;
-    const discountValueSection = document.getElementById('discountValueSection');
-    
-    if (discountType === 'none') {
-        discountValueSection.style.display = 'none';
-    } else {
-        discountValueSection.style.display = 'block';
-    }
-});
-
-document.addEventListener('DOMContentLoaded', function () {
     // Retrieve parameters from URL
     const urlParams = new URLSearchParams(window.location.search);
-    const totalSqFt = parseFloat(urlParams.get('sqft') || 0);
-    const address = decodeURIComponent(urlParams.get('address') || '');
-    const totalFloors = parseInt(urlParams.get('totalFloors') || 0);
+    const totalSqFt = parseFloat(urlParams.get('sqft') || localStorage.getItem('totalSqFt') || 0);
+    const totalFloors = parseInt(urlParams.get('totalFloors') || localStorage.getItem('totalFloors') || 0);
 
-    // Set total square footage in the readonly input field
+    // Set total square footage and floors in the readonly input fields
     const totalSqFtInput = document.getElementById('totalSqFt');
+    const totalFloorsInput = document.getElementById('totalFloors');
+    
     if (totalSqFtInput) {
         totalSqFtInput.value = totalSqFt.toFixed(2);
     }
     
-    console.log('Total Floors (raw):', urlParams.get('totalFloors'));
-    console.log('Total Floors (parsed):', totalFloors);
+    if (totalFloorsInput) {
+        totalFloorsInput.value = totalFloors;
+    }
+
+    // Calculate floor distribution
+    calculateFloorDistribution();
+
+    // Retrieve address from URL
+    const address = decodeURIComponent(urlParams.get('address') || '');
     
     // Set address in the readonly input field
     const addressInput = document.getElementById('address');
@@ -110,125 +78,244 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('midRiseSqFt').value = midRiseSqFt.toFixed(2);
         document.getElementById('highRiseSqFt').value = highRiseSqFt.toFixed(2);
     }
-    calculateFloorDistribution();
 
-    // Form submission handler
-    const form = document.getElementById('pricingForm');
-    if (form) {
-        form.addEventListener('submit', function (e) {
-            e.preventDefault(); // Prevent form submission
+    // Style readonly input fields for clarity
+    document.querySelectorAll('.readonly-input').forEach(input => {
+        input.style.backgroundColor = 'rgba(255, 255, 255, 0.02)';
+        input.style.color = 'rgba(255, 255, 255, 0.7)';
+    });
+});
+
+function initializeFormElements() {
+    // Set up readonly inputs with proper styling
+    document.querySelectorAll('.readonly-input').forEach(input => {
+        input.style.backgroundColor = 'rgba(255, 255, 255, 0.02)';
+        input.style.color = 'rgba(255, 255, 255, 0.7)';
+    });
+
+    // Initialize toggle sections with animation
+    const sections = [
+        { button: 'toggleFloorDistribution', section: 'floorDistributionSection' },
+        { button: 'toggleSquareFootageByRise', section: 'squareFootageByRiseSection' }
+    ];
+
+    sections.forEach(({ button, section }) => {
+        const btn = document.getElementById(button);
+        const sect = document.getElementById(section);
+        if (btn && sect) {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const isHidden = sect.style.display === 'none' || sect.style.display === '';
+                
+                // Rotate icon
+                const icon = btn.querySelector('i');
+                if (icon) {
+                    icon.style.transform = isHidden ? 'rotate(180deg)' : 'rotate(0deg)';
+                    icon.style.transition = 'transform 0.3s ease';
+                }
+
+                // Toggle section with animation
+                if (isHidden) {
+                    sect.style.display = 'block';
+                    sect.style.opacity = '0';
+                    setTimeout(() => {
+                        sect.style.opacity = '1';
+                        sect.style.transform = 'translateY(0)';
+                    }, 10);
+                } else {
+                    sect.style.opacity = '0';
+                    sect.style.transform = 'translateY(-10px)';
+                    setTimeout(() => {
+                        sect.style.display = 'none';
+                    }, 300);
+                }
+            });
+        }
+    });
+}
+
+function initializeEventListeners() {
+    // Calculate button event
+    const calculateButton = document.getElementById('calculatePriceButton');
+    if (calculateButton) {
+        calculateButton.addEventListener('click', function() {
+            calculateButton.classList.add('button-click');
+            setTimeout(() => calculateButton.classList.remove('button-click'), 200);
             calculateFinalPrice();
         });
     }
 
-    // Style readonly input fields for clarity
-    document.querySelectorAll('.readonly-input').forEach(input => {
-        input.style.backgroundColor = '#f5f5f5';
-        input.style.color = '#666';
+    // Discount type change event
+    const discountType = document.getElementById('discountType');
+    const discountValueSection = document.getElementById('discountValueSection');
+    if (discountType && discountValueSection) {
+        discountType.addEventListener('change', () => {
+            const showSection = discountType.value !== 'none';
+            if (showSection) {
+                discountValueSection.style.display = 'block';
+                discountValueSection.style.opacity = '0';
+                setTimeout(() => {
+                    discountValueSection.style.opacity = '1';
+                    discountValueSection.style.transform = 'translateY(0)';
+                }, 10);
+            } else {
+                discountValueSection.style.opacity = '0';
+                discountValueSection.style.transform = 'translateY(-10px)';
+                setTimeout(() => {
+                    discountValueSection.style.display = 'none';
+                }, 300);
+            }
+        });
+    }
+
+    // Save button event
+    const saveButton = document.getElementById('saveButton');
+    if (saveButton) {
+        saveButton.addEventListener('click', () => {
+            saveButton.classList.add('button-click');
+            setTimeout(() => saveButton.classList.remove('button-click'), 200);
+            saveCalculation();
+        });
+    }
+}
+
+function initializeTooltips() {
+    // Add tooltips to important elements
+    const tooltips = {
+        'totalSqFt': 'Total square footage calculated from previous step',
+        'complexityCost': 'Additional cost based on building complexity',
+        'travelCost': 'Cost of travel to the location',
+        'discountValue': 'Enter discount amount or percentage'
+    };
+
+    Object.entries(tooltips).forEach(([id, text]) => {
+        const element = document.getElementById(id);
+        if (element) {
+            const tooltip = document.createElement('span');
+            tooltip.className = 'tooltip';
+            tooltip.setAttribute('data-tooltip', text);
+            tooltip.innerHTML = '?';
+            element.parentNode.appendChild(tooltip);
+        }
     });
+}
+
+function showNotification(message, type = 'success') {
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.innerHTML = `
+        <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+        ${message}
+    `;
+    
+    // Add error styling if type is error
+    if (type === 'error') {
+        notification.style.background = 'rgba(255, 0, 0, 0.1)';
+        notification.style.borderColor = 'rgba(255, 0, 0, 0.2)';
+    }
+    
+    document.body.appendChild(notification);
+
+    // Animate notification
+    setTimeout(() => notification.classList.add('show'), 10);
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => notification.remove(), 300);
+    }, 3000);
+}
+
+// Add this CSS to the page
+const style = document.createElement('style');
+style.textContent = `
+    .fade-in {
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeIn 0.5s ease forwards;
+    }
+
+    @keyframes fadeIn {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .button-click {
+        transform: scale(0.95);
+        transition: transform 0.2s ease;
+    }
+
+    .notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 1rem;
+        border-radius: 8px;
+        background: rgba(0, 255, 255, 0.1);
+        border: 1px solid rgba(0, 255, 255, 0.2);
+        color: white;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transform: translateX(120%);
+        transition: transform 0.3s ease;
+        z-index: 1000;
+        backdrop-filter: blur(10px);
+    }
+
+    .notification.show {
+        transform: translateX(0);
+    }
+
+    .notification i {
+        color: #0ff;
+    }
+
+    .tooltip {
+        position: relative;
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        text-align: center;
+        line-height: 16px;
+        font-size: 12px;
+        cursor: help;
+        margin-left: 0.5rem;
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    .tooltip:hover::after {
+        content: attr(data-tooltip);
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 100%;
+        margin-bottom: 5px;
+        background: rgba(0, 0, 0, 0.9);
+        color: white;
+        padding: 0.5rem;
+        border-radius: 4px;
+        font-size: 12px;
+        white-space: nowrap;
+        z-index: 1000;
+    }
+`;
+document.head.appendChild(style);
+
+document.addEventListener('DOMContentLoaded', function() {
+    const isAdmin = localStorage.getItem('isAdmin') === 'true';
+    const pnlButton = document.getElementById('showPnLPage'); // Adjust the ID as necessary
+    
+    if (pnlButton) {
+        if (!isAdmin) {
+            pnlButton.style.display = 'none';
+        } else {
+            pnlButton.addEventListener('click', showPnLPage);
+        }
+    }
 });
-
-
-// Add this after your DOMContentLoaded event listener
-function initializeDiscountFeature() {
-    // Create and append discount UI elements
-    const discountSection = document.createElement('div');
-    discountSection.className = 'discount-section';
-    discountSection.innerHTML = `
-        <h3>Apply Discount</h3>
-        <div class="discount-controls">
-            <select id="discountType" class="discount-input">
-                <option value="${DISCOUNT_TYPES.PERCENTAGE}">Percentage (%)</option>
-                <option value="${DISCOUNT_TYPES.FIXED}">Fixed Amount ($)</option>
-            </select>
-            <input type="number" id="discountValue" class="discount-input" min="0" step="0.01" placeholder="Enter discount">
-            <button type="button" id="applyDiscount" class="discount-button">Apply Discount</button>
-        </div>
-        <p id="discountError" class="error-message" style="display: none; color: red;"></p>
-    `;
-
-    // Add styles for discount section
-    const styles = document.createElement('style');
-    styles.textContent = `
-       .discount-section {
-    background-color: rgba(255, 255, 255, 0.05);
-    border-radius: 5px;
-    padding: 20px;
-    margin-bottom: 20px;
-}
-
-.discount-controls {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
-
-.discount-input {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 4px;
-    background-color: rgba(255, 255, 255, 0.1);
-    color: white;
-}
-
-.discount-input:focus {
-    outline: none;
-    border-color: #bb8fce;
-}
-
-.discount-button {
-    background-color: #a270db;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
-}
-
-.discount-button:hover {
-    background-color: #8058b3;
-}
-
-#discountError {
-    display: none;
-    color: red;
-}
-
-select {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
-    background-repeat: no-repeat;
-    background-position-x: 98%;
-    background-position-y: 50%;
-}
-
-select option {
-    background-color: #312450;
-    color: white;
-}
-
-::placeholder {
-    color: rgba(255, 255, 255, 0.5);
-}
-
-    `;
-
-    document.head.appendChild(styles);
-
-    // Insert discount section before the result div
-    const resultDiv = document.getElementById('result');
-    resultDiv.parentNode.insertBefore(discountSection, resultDiv);
-
-    // Add event listener for discount application
-    document.getElementById('applyDiscount').addEventListener('click', applyDiscount);
-}
-
-
 
 function calculateSimpleWaterCosts(squareFeet) {
     try {
@@ -256,7 +343,6 @@ function calculateSimpleWaterCosts(squareFeet) {
         return null;
     }
 }
-
 
 // Calculate operational hours based on cleaning rate
 function calculateOperationalHours(squareFeet) {
@@ -328,6 +414,7 @@ function calculateFloorDistribution(totalSqFt, lowRiseFloors, midRiseFloors, hig
     document.getElementById('midRiseSqFt').value = midRiseSqFt.toFixed(2);
     document.getElementById('highRiseSqFt').value = highRiseSqFt.toFixed(2);
 }
+
 // Add this function to calculate discount
 function calculateDiscount(subtotal, discountType, discountValue) {
     let discountAmount = 0;
@@ -348,7 +435,6 @@ function calculateDiscount(subtotal, discountType, discountValue) {
 
     return discountAmount;
 }
-
 
 /// Modified applyDiscount function
 function applyDiscount() {
@@ -376,15 +462,6 @@ function applyDiscount() {
         }, 3000);
     }
 }
-function toggleLaborCosts() {
-    const section = document.getElementById('laborCostsSection');
-    if (section.style.display === 'none' || section.style.display === '') {
-        section.style.display = 'block';
-    } else {
-        section.style.display = 'none';
-    }
-}
-
 
 function calculateFinalPrice() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -404,7 +481,7 @@ function calculateFinalPrice() {
     console.log('Total Floors:', totalFloors); 
     // Validate inputs
     if (!frequency ||  totalSqFt <= 0) {
-        alert('Please fill out all fields correctly.');
+        showNotification('Please fill out all fields correctly.', 'error');
         return;
     }
 
@@ -501,8 +578,7 @@ function calculateFinalPrice() {
             console.log(`Discount Amount: ${discountAmount}`);
         }
     } catch (error) {
-        document.getElementById('discountError').textContent = error.message;
-        document.getElementById('discountError').style.display = 'block';
+        showNotification(error.message, 'error');
         return;
     }
 
@@ -572,7 +648,10 @@ function calculateFinalPrice() {
             </tr>
         </table>
        
-        <button id="toggleLaborCostsButton" onclick="toggleLaborCosts()">Labor Costs</button>
+        <button type="button" class="toggle-button" onclick="toggleLaborCosts()" style="margin: 1rem 0;">
+            <i class="fas fa-users"></i>
+            Labor Costs
+        </button>
         <div id="laborCostsSection" style="display: none; margin-top: 10px;">
          <table border="1" cellspacing="0" cellpadding="10">
              <tr>
@@ -674,6 +753,7 @@ function calculateFinalPrice() {
      return results;
 
 };
+
 // Function to store client info before navigating to P&L
 function storeClientInfo() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -856,7 +936,10 @@ function storeClientInfo() {
                         </tr>
                     </table>
     
-                   <button id="toggleLaborCostsButton" onclick="toggleLaborCosts()">Labor Costs</button>
+                   <button type="button" class="toggle-button" onclick="toggleLaborCosts()" style="margin: 1rem 0;">
+                       <i class="fas fa-users"></i>
+                       Labor Costs
+                   </button>
                    <div id="laborCostsSection" style="display: none; margin-top: 10px;">
                     <table border="1" cellspacing="0" cellpadding="10">
                         <tr>
@@ -926,68 +1009,91 @@ function storeClientInfo() {
     window.addEventListener('load', () => {
         restoreSavedCalculation();
         restoreClientInfo();
-        document.getElementById('saveButton').addEventListener('click', saveCalculation);
     });
     
     
     async function saveCalculation() {
-        console.log('saveCalculation function called');
-    
-        const urlParams = new URLSearchParams(window.location.search);
-        const name = localStorage.getItem('clientName') || 'Unknown';
-        const address = localStorage.getItem('address') || 'Unknown';
-        const totalSqFt = parseFloat(localStorage.getItem('totalSqFt')) || 0;
-        const country = localStorage.getItem('country') || 'Unknown';
-        const cleaningType = localStorage.getItem('cleaningType') || 'window'; // Default to 'window'
-    
-        console.log('Retrieved values:', { name, address, totalSqFt, country, cleaningType });
-    
-        if (!totalSqFt || totalSqFt === 0) {
-            console.error('Missing or invalid total square feet');
-            alert('Please ensure total square feet is provided and valid.');
+        try {
+            const token = localStorage.getItem('token');
+            const country = localStorage.getItem('country');
+            const name = document.getElementById('clientName').value;
+
+            if (!token || !country) {
+                showNotification('Please log in to save calculations', 'error');
             return;
         }
     
-        try {
-            const results = calculateFinalPrice(); // Make sure this function is defined and returns the expected results
-    
-            if (!results || !results.totals) {
-                console.error('Invalid calculation results');
-                alert('Failed to calculate final price. Please try again.');
+            if (!name) {
+                showNotification('Please enter a client name', 'error');
                 return;
             }
+
+            const totalPrice = parseFloat(document.getElementById('finalPrice').value);
+            const discount = parseFloat(document.getElementById('discountAmount').value) || 0;
+            const totalSqFt = parseFloat(document.getElementById('totalSqFt').value);
+            const address = document.getElementById('address').value;
+            const cleaningType = document.getElementById('cleaningType').value;
     
             const response = await fetch('/api/calculations', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({
-                    name: name,
-                    address: address,
-                    totalSqFt: totalSqFt,
-                    totalPrice: results.totals.totalPrice,
-                    discount: results.totals.discountAmount,
-                    country: country,
-                    cleaningType: cleaningType // Include cleaningType in the request body
-                }),
+                    name,
+                    totalPrice,
+                    discount,
+                    totalSqFt,
+                    address,
+                    country,
+                    cleaningType
+                })
             });
     
             if (!response.ok) {
                 const error = await response.json();
-                console.log(error);
-                throw new Error('Failed to save calculation');
+                throw new Error(error.message || 'Failed to save calculation');
             }
-    
-            alert('Calculation saved successfully!');
+
+            showNotification('Calculation saved successfully');
+            
+            // Redirect to calculations page after a short delay
+            setTimeout(() => {
+                window.location.href = '/calculations.html';
+            }, 1500);
+
         } catch (error) {
             console.error('Error saving calculation:', error);
-            alert('Failed to save calculation. Please try again.');
+            showNotification(error.message || 'Error saving calculation', 'error');
         }
     }
     
-    
-    
-    // Call this function when the user submits the form or clicks a save button
-    document.getElementById('saveButton').addEventListener('click', saveCalculation);
+// Add the toggleLaborCosts function
+function toggleLaborCosts() {
+    const section = document.getElementById('laborCostsSection');
+    const button = document.querySelector('button[onclick="toggleLaborCosts()"]');
+    const icon = button.querySelector('i');
+    const isHidden = section.style.display === 'none' || section.style.display === '';
+
+    // Rotate icon
+    icon.style.transform = isHidden ? 'rotate(180deg)' : 'rotate(0deg)';
+    icon.style.transition = 'transform 0.3s ease';
+
+    // Toggle section with animation
+    if (isHidden) {
+        section.style.display = 'block';
+        section.style.opacity = '0';
+        setTimeout(() => {
+            section.style.opacity = '1';
+            section.style.transform = 'translateY(0)';
+        }, 10);
+    } else {
+        section.style.opacity = '0';
+        section.style.transform = 'translateY(-10px)';
+        setTimeout(() => {
+            section.style.display = 'none';
+        }, 300);
+    }
+}
     

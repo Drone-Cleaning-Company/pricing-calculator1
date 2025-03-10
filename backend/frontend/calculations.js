@@ -10,14 +10,47 @@ document.addEventListener('DOMContentLoaded', function() {
 
     async function fetchAndDisplayCalculations() {
         try {
-            const response = await fetch(`/api/calculations`);
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            const calculations = await response.json();
+            // Get country and token from localStorage
+            const userCountry = localStorage.getItem('country') || 'USA';
+            const token = localStorage.getItem('token');
 
-            if (!calculations || calculations.length === 0) {
-                savedCalculationsContainer.innerHTML = "<p>No calculations saved yet.</p>";
+            if (!token) {
+                savedCalculationsContainer.innerHTML = `
+                    <div style="text-align: center; padding: 2rem;">
+                        <i class="fas fa-exclamation-triangle" style="font-size: 3rem; color: rgba(255, 0, 0, 0.3);"></i>
+                        <p style="margin-top: 1rem;">Please log in to view your calculations.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            console.log('Fetching calculations for country:', userCountry);
+            
+            const response = await fetch(`/api/calculations?country=${encodeURIComponent(userCountry)}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.message || `HTTP error! Status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            console.log('Received calculations:', data);
+            
+            // Ensure we have an array of calculations
+            const calculations = Array.isArray(data) ? data : [];
+            
+            if (calculations.length === 0) {
+                savedCalculationsContainer.innerHTML = `
+                    <div style="text-align: center; padding: 2rem;">
+                        <i class="fas fa-calculator" style="font-size: 3rem; color: rgba(0, 255, 255, 0.3);"></i>
+                        <p style="margin-top: 1rem;">No calculations found for ${userCountry}.</p>
+                    </div>
+                `;
                 return;
             }
 
@@ -25,15 +58,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 <table id="calculationsTable">
                     <thead>
                         <tr>
-                            <th>Name</th>
-                            <th>Address</th>
-                            <th>Total SqFt</th>
-                            <th>Original Price</th>
-                            <th>Total Price</th>
-                            <th>Discount</th>
-                            <th>Date</th>
-                            <th>Cleaning Type</th>
-                            
+                            <th><i class="fas fa-user"></i> Name</th>
+                            <th><i class="fas fa-map-marker-alt"></i> Address</th>
+                            <th><i class="fas fa-chart-area"></i> Total SqFt</th>
+                            <th><i class="fas fa-tag"></i> Original Price</th>
+                            <th><i class="fas fa-dollar-sign"></i> Total Price</th>
+                            <th><i class="fas fa-percentage"></i> Discount</th>
+                            <th><i class="fas fa-calendar"></i> Date</th>
+                            <th><i class="fas fa-broom"></i> Cleaning Type</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -41,36 +73,42 @@ document.addEventListener('DOMContentLoaded', function() {
 
             calculations.forEach(calculation => {
                 let currencyText;
+                let currencyIcon;
 
                 switch (calculation.country) {
                     case 'USA':
                         currencyText = 'USD';
+                        currencyIcon = 'dollar-sign';
                         break;
                     case 'Canada':
                         currencyText = 'CAD';
+                        currencyIcon = 'dollar-sign';
                         break;
                     case 'Mexico':
                         currencyText = 'MXN';
+                        currencyIcon = 'peso-sign';
                         break;
                     default:
                         currencyText = 'USD';
+                        currencyIcon = 'dollar-sign';
                 }
 
                 const date = new Date(calculation.createdAt);
                 const formattedDate = date.toLocaleDateString();
-                const originalPrice = calculation.totalPrice + calculation.discount; // Calculate original price
+                const originalPrice = Math.round((calculation.totalPrice + (calculation.discount || 0)) * 100) / 100;
+                const totalPrice = Math.round(calculation.totalPrice * 100) / 100;
+                const discount = Math.round((calculation.discount || 0) * 100) / 100;
 
                 tableHTML += `
-                    <tr data-id="${calculation._id}" data-original-price="${originalPrice.toFixed(2)}" data-total-price="${calculation.totalPrice}" data-discount-price="${calculation.discount}">
-                        <td>${calculation.name}</td>
-                        <td>${calculation.address}</td>
-                        <td>${calculation.totalSqFt}</td>
-                        <td class="originalPrice">${originalPrice.toFixed(2)} ${currencyText}</td>
-                        <td class="totalPrice">${calculation.totalPrice} ${currencyText}</td>
-                        <td class="discount">${calculation.discount}</td>
-                        <td>${formattedDate}</td>
-                        <td>${calculation.cleaningType}</td>
-                        
+                    <tr>
+                        <td><i class="fas fa-user-circle"></i> ${calculation.name || 'N/A'}</td>
+                        <td><i class="fas fa-building"></i> ${calculation.address || 'N/A'}</td>
+                        <td><i class="fas fa-ruler"></i> ${calculation.totalSqFt || 0}</td>
+                        <td class="price-cell"><i class="fas fa-${currencyIcon}"></i> ${originalPrice} ${currencyText}</td>
+                        <td class="price-cell"><i class="fas fa-${currencyIcon}"></i> ${totalPrice} ${currencyText}</td>
+                        <td class="price-cell"><i class="fas fa-tag"></i> ${discount}</td>
+                        <td><i class="far fa-calendar-alt"></i> ${formattedDate}</td>
+                        <td><i class="fas fa-spray-can"></i> ${calculation.cleaningType || 'N/A'}</td>
                     </tr>
                 `;
             });
@@ -82,12 +120,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
             savedCalculationsContainer.innerHTML = tableHTML;
 
-           
-
         } catch (error) {
             console.error("Error fetching calculations:", error);
-            savedCalculationsContainer.innerHTML = "<p>Error loading calculations.</p>";
+            savedCalculationsContainer.innerHTML = `
+                <div style="text-align: center; padding: 2rem;">
+                    <i class="fas fa-exclamation-triangle" style="font-size: 3rem; color: rgba(255, 0, 0, 0.3);"></i>
+                    <p style="margin-top: 1rem;">Error loading calculations: ${error.message}</p>
+                </div>
+            `;
         }
     }
-
-})
+});

@@ -1,14 +1,68 @@
 // frontend/logout.js
 document.addEventListener('DOMContentLoaded', () => {
     const logoutBtn = document.getElementById('logoutBtn');
-
+    
     if (logoutBtn) {
-        logoutBtn.addEventListener('click', () => {
-            // Clear the token from localStorage
-            localStorage.removeItem('token');
+        logoutBtn.addEventListener('click', async () => {
+            try {
+                // Add click animation
+                logoutBtn.classList.add('clicked');
+                
+                // Show loading state
+                const originalContent = logoutBtn.innerHTML;
+                logoutBtn.innerHTML = `
+                    <i class="fas fa-spinner fa-spin"></i>
+                    Logging out...
+                `;
 
-            // Redirect to the login page (index.html)
-            window.location.href = '/index.html';
+                try {
+                    // Attempt to logout from server
+                    const response = await fetch('/api/logout', {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${localStorage.getItem('token')}`
+                        }
+                    });
+                } catch (serverError) {
+                    console.warn('Server logout failed, proceeding with local logout:', serverError);
+                }
+
+                // Clear local storage regardless of server response
+                localStorage.clear();
+
+                // Show success animation
+                logoutBtn.innerHTML = `
+                    <i class="fas fa-check"></i>
+                    Success!
+                `;
+                logoutBtn.classList.add('success');
+
+                // Redirect after showing success message
+                setTimeout(() => {
+                    window.location.href = '/index.html';
+                }, 800);
+
+            } catch (error) {
+                console.error('Logout error:', error);
+                
+                // Show error state briefly
+                logoutBtn.innerHTML = `
+                    <i class="fas fa-exclamation-circle"></i>
+                    Error, retrying...
+                `;
+                logoutBtn.classList.add('error');
+
+                // Still clear localStorage and redirect
+                setTimeout(() => {
+                    localStorage.clear();
+                    window.location.href = '/index.html';
+                }, 1000);
+            } finally {
+                // Remove click animation
+                setTimeout(() => {
+                    logoutBtn.classList.remove('clicked');
+                }, 200);
+            }
         });
     }
 });

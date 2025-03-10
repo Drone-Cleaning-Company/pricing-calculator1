@@ -4,6 +4,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const buildingsContainer = document.getElementById('buildingsContainer');
     const cleaningTypeSelect = document.getElementById('cleaningType');
     const glassPercentageInput = document.getElementById('glassPercentage');
+    const glassPercentageSlider = document.getElementById('glassPercentageSlider');
+    const glassSection = document.getElementById('glassSection');
+    const glassVisual = document.getElementById('glassVisual');
     const calculateButton = document.getElementById('calculateButton');
 
     if (form) {
@@ -24,38 +27,138 @@ document.addEventListener('DOMContentLoaded', function () {
         calculateButton.addEventListener('click', calculatePrice);
     }
 
-    cleaningTypeSelect.addEventListener('change', function() {
-        if (this.value === 'facade') {
-            glassPercentageInput.value = 100;
-            glassPercentageInput.disabled = true;
-        } else {
-            glassPercentageInput.disabled = false;
-        }
-    });
+    if (cleaningTypeSelect) {
+        cleaningTypeSelect.addEventListener('change', function() {
+            if (this.value === 'facade') {
+                glassPercentageInput.value = 100;
+                glassPercentageSlider.value = 100;
+                glassPercentageInput.disabled = true;
+                glassPercentageSlider.disabled = true;
+                glassSection.style.opacity = '0.7';
+                updateGlassVisual(100);
+            } else {
+                glassPercentageInput.disabled = false;
+                glassPercentageSlider.disabled = false;
+                glassSection.style.opacity = '1';
+                updateGlassVisual(glassPercentageInput.value);
+            }
+        });
+    }
+
+    // Initialize glass percentage visualization
+    if (glassPercentageInput && glassPercentageSlider) {
+        // Sync input and slider
+        glassPercentageInput.addEventListener('input', function() {
+            let value = this.value;
+            if (value < 0) value = 0;
+            if (value > 100) value = 100;
+            glassPercentageSlider.value = value;
+            updateGlassVisual(value);
+        });
+
+        glassPercentageSlider.addEventListener('input', function() {
+            glassPercentageInput.value = this.value;
+            updateGlassVisual(this.value);
+        });
+
+        // Initialize visual
+        updateGlassVisual(glassPercentageInput.value);
+    }
 
     function updateBuildingInputs(count) {
         buildingsContainer.innerHTML = '';
         for (let i = 1; i <= count; i++) {
-            buildingsContainer.innerHTML += `
-                <div class="building-section">
-                    <h3>Building ${i}</h3>
-                    <div class="form-group">
-                        <label for="length${i}">Perimeter (ft):</label>
-                        <input type="number" id="length${i}" required step="0.01">
-                    </div>
-                    <div class="form-group">
-                        <label for="height${i}">Height of floor (ft):</label>
-                        <input type="number" id="height${i}" required step="0.01" value="10">
-                    </div>
-                    <div class="form-group">
-                        <label for="floors${i}">Number of Floors:</label>
-                        <input type="number" id="floors${i}" required>
+            const buildingSection = document.createElement('div');
+            buildingSection.className = 'building-section';
+            buildingSection.innerHTML = `
+                <h3><i class="fas fa-building"></i> Building ${i}</h3>
+                <div class="form-group">
+                    <label for="length${i}">
+                        <i class="fas fa-arrows-alt-h"></i> 
+                        Perimeter (ft)
+                        <span class="tooltip" data-tooltip="Total distance around the building's exterior">?</span>
+                    </label>
+                    <input type="number" 
+                           id="length${i}" 
+                           required 
+                           step="0.01" 
+                           min="0" 
+                           placeholder="Enter building perimeter"
+                           onchange="validateNumber(this, 0)"
+                           oninput="this.value = this.value.replace(/[^0-9.]/g, '')">
+                    <div class="help-text">Measure the total distance around the building</div>
+                </div>
+                <div class="form-group">
+                    <label for="height${i}">
+                        <i class="fas fa-arrows-alt-v"></i> 
+                        Height per Floor (ft)
+                        <span class="tooltip" data-tooltip="Average height of each floor">?</span>
+                    </label>
+                    <input type="number" 
+                           id="height${i}" 
+                           required 
+                           step="0.01" 
+                           min="8" 
+                           value="10"
+                           placeholder="Enter floor height"
+                           onchange="validateNumber(this, 8)"
+                           oninput="this.value = this.value.replace(/[^0-9.]/g, '')">
+                    <div class="help-text">Standard floor height is typically 10-12 feet</div>
+                </div>
+                <div class="form-group">
+                    <label for="floors${i}">
+                        <i class="fas fa-layer-group"></i> 
+                        Number of Floors
+                        <span class="tooltip" data-tooltip="Total number of floors in the building">?</span>
+                    </label>
+                    <input type="number" 
+                           id="floors${i}" 
+                           required 
+                           min="1" 
+                           placeholder="Enter number of floors"
+                           onchange="validateNumber(this, 1)"
+                           oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                    <div class="help-text">Must be at least 1 floor</div>
+                </div>
+                <div class="building-preview">
+                    <div class="preview-info">
+                        <span>Estimated Area: </span>
+                        <span id="estimatedArea${i}">0 sq ft</span>
                     </div>
                 </div>
             `;
+            buildingsContainer.appendChild(buildingSection);
+
+            // Add real-time area calculation
+            ['length', 'height', 'floors'].forEach(field => {
+                document.getElementById(`${field}${i}`).addEventListener('input', () => {
+                    updateEstimatedArea(i);
+                });
+            });
         }
     }
+
+    function updateEstimatedArea(buildingIndex) {
+        const length = parseFloat(document.getElementById(`length${buildingIndex}`).value) || 0;
+        const height = parseFloat(document.getElementById(`height${buildingIndex}`).value) || 0;
+        const floors = parseInt(document.getElementById(`floors${buildingIndex}`).value) || 0;
+        
+        const area = length * height * floors;
+        const estimatedAreaElement = document.getElementById(`estimatedArea${buildingIndex}`);
+        estimatedAreaElement.textContent = `${area.toFixed(2)} sq ft`;
+        
+        // Add visual feedback
+        estimatedAreaElement.style.color = area > 0 ? '#0ff' : '#ff6b6b';
+    }
 });
+
+// Add validation function
+function validateNumber(input, min) {
+    const value = parseFloat(input.value);
+    if (value < min) {
+        input.value = min;
+    }
+}
 
 function calculatePrice() {
     const clientName = document.getElementById('clientName').value.trim();
@@ -65,8 +168,8 @@ function calculatePrice() {
     const buildingCount = parseInt(document.getElementById('buildingCount').value);
 
     if (cleaningType === 'facade') {
-        glassPercentage = 1; // 100% coverage for facade cleaning
-        document.getElementById('glassPercentage').value = 100; // Update the input field
+        glassPercentage = 1;
+        document.getElementById('glassPercentage').value = 100;
     } else {
         glassPercentage = parseFloat(document.getElementById('glassPercentage').value) / 100;
     }
@@ -104,11 +207,10 @@ function calculatePrice() {
     }
 
     localStorage.setItem('totalFloors', totalFloors.toString());
-
     const totalGlassArea = totalArea * glassPercentage;
 
     displayCalculationDetails(clientName, address, totalArea, glassPercentage, totalGlassArea, details, cleaningType);
-    setupContinueButton(totalGlassArea, cleaningType, totalFloors); // Pass totalFloors
+    setupContinueButton(totalGlassArea, cleaningType, totalFloors);
     saveCalculation(clientName, totalGlassArea, cleaningType, address);
 }
 
@@ -117,25 +219,36 @@ function displayCalculationDetails(clientName, address, totalArea, glassPercenta
     result.style.display = 'block';
 
     let detailsHTML = `
-        <h3>Calculation Details for ${clientName}</h3>
-        <p>Address: ${address}</p>
-        <p>Cleaning Type: ${cleaningType === 'facade' ? 'Facade Cleaning' : 'Window Cleaning'}</p>
-        <table>
-            <tr>
-                <th>Building</th>
-                <th>Perimeter (ft)</th>
-                <th>Height of floor (ft)</th>
-                <th>Floors</th>
-                <th>Area (sq ft)</th>
-            </tr>
+        <h2><i class="fas fa-clipboard-list"></i> Calculation Summary</h2>
+        <div class="calculation-details">
+            <div class="client-details">
+                <h3><i class="fas fa-user"></i> Client Details</h3>
+                <p><strong>Name:</strong> ${clientName}</p>
+                <p><strong>Address:</strong> ${address}</p>
+                <p><strong>Service Type:</strong> ${cleaningType === 'facade' ? 'Facade Cleaning' : 'Window Cleaning'}</p>
+            </div>
+
+            <div class="measurements-table">
+                <h3><i class="fas fa-ruler-combined"></i> Building Measurements</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Building</th>
+                            <th>Perimeter (ft)</th>
+                            <th>Floor Height (ft)</th>
+                            <th>Floors</th>
+                            <th>Total Area (sq ft)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
     `;
 
     details.forEach(detail => {
         detailsHTML += `
             <tr>
                 <td>Building ${detail.building}</td>
-                <td>${detail.length}</td>
-                <td>${detail.height}</td>
+                <td>${detail.length.toFixed(2)}</td>
+                <td>${detail.height.toFixed(2)}</td>
                 <td>${detail.floors}</td>
                 <td>${detail.area.toFixed(2)}</td>
             </tr>
@@ -143,25 +256,102 @@ function displayCalculationDetails(clientName, address, totalArea, glassPercenta
     });
 
     detailsHTML += `
-        </table>
-        <h4>Summary:</h4>
-        <p>Total Wall Area: ${totalArea.toFixed(2)} sq ft</p>
-        <p>Glass Coverage: ${(glassPercentage * 100).toFixed(2)}%</p>
-        <p>Total Area to Clean: ${totalGlassArea.toFixed(2)} sq ft</p>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="final-calculations">
+                <h3><i class="fas fa-calculator"></i> Final Calculations</h3>
+                <div class="calculation-grid">
+                    <div class="calc-item">
+                        <span class="calc-label">Total Wall Area:</span>
+                        <span class="calc-value">${totalArea.toFixed(2)} sq ft</span>
+                    </div>
+                    <div class="calc-item">
+                        <span class="calc-label">Glass Coverage:</span>
+                        <span class="calc-value">${(glassPercentage * 100).toFixed(2)}%</span>
+                    </div>
+                    <div class="calc-item highlight">
+                        <span class="calc-label">Total Area to Clean:</span>
+                        <span class="calc-value">${totalGlassArea.toFixed(2)} sq ft</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     `;
 
     result.innerHTML = detailsHTML;
+
+    // Add styles for the new elements
+    const style = document.createElement('style');
+    style.textContent = `
+        .calculation-details {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .client-details, .measurements-table, .final-calculations {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .calculation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .calc-item {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 1rem;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .calc-item.highlight {
+            background: linear-gradient(145deg, rgba(0, 255, 255, 0.1), rgba(0, 255, 255, 0.05));
+            border: 1px solid rgba(0, 255, 255, 0.2);
+        }
+
+        .calc-label {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .calc-value {
+            color: #0ff;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 500;
+        }
+
+        h3 {
+            color: #0ff;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        h3 i {
+            font-size: 1.2em;
+            opacity: 0.8;
+        }
+    `;
+    document.head.appendChild(style);
 
     const continueSection = document.getElementById('continueSection');
     continueSection.style.display = 'block';
 }
 
 function setupContinueButton(totalGlassArea, cleaningType, totalFloors) {
-    console.log('setupContinueButton called'); // For debugging
-
-    document.getElementById('continueButton').addEventListener('click', function () {
-        console.log('Continue button clicked'); // For debugging
-
+    const continueButton = document.getElementById('continueButton');
+    
+    continueButton.addEventListener('click', function () {
         const clientName = document.getElementById('clientName').value.trim();
         const address = document.getElementById('clientAddress').value.trim();
 
@@ -170,16 +360,42 @@ function setupContinueButton(totalGlassArea, cleaningType, totalFloors) {
             return;
         }
 
-        // Store data in localStorage
         localStorage.setItem('clientName', clientName);
         localStorage.setItem('address', address);
         localStorage.setItem('totalSqFt', totalGlassArea.toString());
         localStorage.setItem('cleaningType', cleaningType);
         localStorage.setItem('totalFloors', totalFloors);
 
-        // Navigate to pricing details page with parameters
         window.location.href = `pricingDetails.html?sqft=${encodeURIComponent(totalGlassArea)}&clientName=${encodeURIComponent(clientName)}&address=${encodeURIComponent(address)}&cleaningType=${encodeURIComponent(cleaningType)}&totalFloors=${encodeURIComponent(totalFloors)}`;
     });
+}
+
+function updateGlassVisual(percentage) {
+    const glassVisual = document.getElementById('glassVisual');
+    if (!glassVisual) return;
+
+    // Update the visual representation
+    const windows = glassVisual.getElementsByClassName('window');
+    const totalWindows = windows.length;
+    const activeWindows = Math.round((percentage / 100) * totalWindows);
+
+    for (let i = 0; i < totalWindows; i++) {
+        if (i < activeWindows) {
+            windows[i].classList.add('active');
+        } else {
+            windows[i].classList.remove('active');
+        }
+    }
+
+    // Update the percentage display
+    const percentageDisplay = document.getElementById('percentageDisplay');
+    if (percentageDisplay) {
+        percentageDisplay.textContent = `${Math.round(percentage)}%`;
+        
+        // Update color based on percentage
+        const hue = Math.min(percentage * 1.2, 180); // 0 to 180 (red to cyan)
+        percentageDisplay.style.color = `hsl(${hue}, 100%, 70%)`;
+    }
 }
 
 

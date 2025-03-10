@@ -4,234 +4,529 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Window and Facade Cleaning Calculator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #312450;
-            color: white;
+            font-family: 'Roboto', sans-serif;
+            background: #0a0a1f;
+            color: rgba(255, 255, 255, 0.9);
             line-height: 1.6;
-            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .calculator-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5em;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #fff, #0ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 10px rgba(0, 255, 255, 0.2);
+        }
+
+        .calculator-description {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.1em;
             max-width: 800px;
             margin: 0 auto;
         }
 
-        h1, h2 {
-            color: #a270db;
+        .calculator-form {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-section {
+            background: linear-gradient(145deg, rgba(26, 32, 44, 0.9), rgba(17, 24, 39, 0.95));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5em;
+            margin-bottom: 1.5rem;
+            color: #0ff;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 1.5rem;
+            position: relative;
         }
 
         label {
-            display: block;
-            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
         }
 
-        input[type="text"], input[type="number"], select {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #bb8fce;
-            border-radius: 4px;
-            background-color: rgba(255, 255, 255, 0.1);
+        label i {
+            color: rgba(0, 255, 255, 0.7);
+            font-size: 1em;
+        }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 16px;
+            font-size: 12px;
+            cursor: help;
+            margin-left: 0.5rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .tooltip:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 100%;
+            margin-bottom: 5px;
+            background: rgba(0, 0, 0, 0.9);
             color: white;
+            padding: 0.5rem;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 1000;
+        }
+
+        .help-text {
+            font-size: 0.8em;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 0.25rem;
+            font-style: italic;
+        }
+
+        .building-preview {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .preview-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .preview-info span:first-child {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .preview-info span:last-child {
+            color: #0ff;
+            font-weight: 500;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        select:focus {
+            outline: none;
+            border-color: rgba(0, 255, 255, 0.5);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.1);
+        }
+
+        select option {
+            background: #0a0a1f;
+            color: white;
+        }
+
+        .building-section {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .building-section:hover {
+            border-color: rgba(0, 255, 255, 0.3);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+        }
+
+        .building-section h3 {
+            color: #0ff;
+            margin-bottom: 1rem;
+            font-family: 'Orbitron', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .building-section h3 i {
+            font-size: 1.2em;
+            opacity: 0.8;
         }
 
         .service-button {
-            background-color: #a270db;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
+            background: linear-gradient(145deg, rgba(26, 32, 44, 0.9), rgba(17, 24, 39, 0.95));
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.9);
+            padding: 1rem 2rem;
+            border-radius: 12px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 1.1em;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            width: 100%;
+            max-width: 300px;
+            margin: 2rem auto;
         }
 
         .service-button:hover {
-            background-color: #8058b3;
+            transform: translateY(-2px);
+            background: linear-gradient(145deg, rgba(37, 45, 62, 0.9), rgba(26, 32, 44, 0.95));
+            border-color: rgba(0, 255, 255, 0.4);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
         }
-        .back-button {
-    display: inline-block;
-    margin-top: 20px;
-    color: white; /* Changed to white for better visibility */
-    text-decoration: none;
-    padding: 10px 20px; /* Add padding to create a box effect */
-    border: 1px solid #bb8fce; /* Add a border */
-    border-radius: 5px; /* Add rounded corners */
-    background-color: rgba(255, 255, 255, 0.1); /* Add a background color */
-}
 
-.back-button:hover {
-    text-decoration: underline;
-    background-color: rgba(255, 255, 255, 0.2); /* Change background on hover */
-}
-
+        .service-button i {
+            font-size: 1.2em;
+            color: rgba(0, 255, 255, 0.7);
+        }
 
         #result {
-            margin-top: 20px;
+            background: linear-gradient(145deg, rgba(26, 32, 44, 0.9), rgba(17, 24, 39, 0.95));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 2rem;
+            display: none;
+        }
+
+        #result table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+
+        #result th,
+        #result td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        #result th {
+            color: #0ff;
+            font-weight: 500;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            padding: 0.8rem 1.5rem;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            margin-top: 2rem;
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(0, 255, 255, 0.4);
+            transform: translateX(-5px);
+        }
+
+        .back-button i {
+            font-size: 1.2em;
+            color: rgba(0, 255, 255, 0.7);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .calculator-form {
+                padding: 1rem;
+            }
+
+            .form-section {
+                padding: 1rem;
+            }
+
+            .building-section {
+                padding: 1rem;
+            }
+
+            .tooltip:hover::after {
+                left: 0;
+                transform: none;
+            }
+        }
+
+        .glass-input-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .glass-percentage-input {
+            width: 80px !important;
+            text-align: center;
+        }
+
+        .glass-percentage-slider {
+            flex: 1;
+            height: 6px;
+            -webkit-appearance: none;
+            background: linear-gradient(to right, 
+                rgba(0, 255, 255, 0.5) 0%, 
+                rgba(0, 255, 255, 0.5) 50%, 
+                rgba(255, 255, 255, 0.1) 50%, 
+                rgba(255, 255, 255, 0.1) 100%
+            );
+            border-radius: 3px;
+            outline: none;
+        }
+
+        .glass-percentage-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #0ff;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .glass-percentage-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.7);
+        }
+
+        .percentage-display {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2em;
+            min-width: 60px;
+            text-align: right;
+            color: #0ff;
+            transition: color 0.3s ease;
+        }
+
+        .glass-visual {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 5px;
+            margin: 1rem 0;
             padding: 10px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 5px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
         }
 
-        #continueSection {
-            margin-top: 20px;
+        .window {
+            aspect-ratio: 1;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            transition: all 0.3s ease;
         }
 
-        #buildingsContainer {
-            margin-top: 20px;
+        .window.active {
+            background: rgba(0, 255, 255, 0.2);
+            border-color: rgba(0, 255, 255, 0.4);
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
         }
 
-        #buildingsContainer > div {
-            margin-bottom: 15px;
-            padding: 10px;
-            background-color: rgba(255, 255, 255, 0.05);
-            border-radius: 5px;
+        @media (max-width: 768px) {
+            .glass-input-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .glass-percentage-input {
+                width: 100% !important;
+            }
+
+            .percentage-display {
+                text-align: center;
+            }
+
+            .glass-visual {
+                grid-template-columns: repeat(4, 1fr);
+            }
         }
-        select {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #bb8fce;
-    border-radius: 4px;
-    background-color: rgba(255, 255, 255, 0.1);
-    color: white;
-}
-
-select option {
-    background-color: #312450;
-    color: white;
-}
-/* Styles for the calculation details section */
-#result h3 {
-    color: #a270db;
-    margin-bottom: 10px;
-}
-
-#result p {
-    margin-bottom: 10px;
-}
-
-/* Table styles */
-#result table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-    color: white;
-}
-
-#result th,
-#result td {
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    padding: 10px;
-    text-align: left;
-}
-
-#result th {
-    background-color: rgba(255, 255, 255, 0.1);
-    font-weight: bold;
-    color: #bb8fce;
-}
-
-/* Summary styles */
-#result h4 {
-    color: #a270db;
-    margin-top: 20px;
-    margin-bottom: 10px;
-}
-
-/* Responsive adjustments */
-@media (max-width: 600px) {
-    #result table {
-        font-size: 14px;
-    }
-
-    #result th,
-    #result td {
-        padding: 5px;
-    }
-}
-#buildingsContainer > div {
-    margin-bottom: 15px;
-    padding: 10px;
-    background-color: rgba(255, 255, 255, 0.05);
-    border-radius: 5px;
-    overflow: hidden; /* Add this line */
-}
-
-input[type="text"], input[type="number"], select {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #bb8fce;
-    border-radius: 4px;
-    background-color: rgba(255, 255, 255, 0.1);
-    color: white;
-    box-sizing: border-box; /* Add this line */
-}
-
-
-
     </style>
 </head>
 <body>
-    <h1>Window and Facade Cleaning Calculator</h1>
-    
-    <form id="calculatorForm">
-        <div class="client-info">
-            <h2>Client Information</h2>
-            <div class="form-group">
-                <label for="clientName">Client Name:</label>
-                <input type="text" id="clientName" required>
-                <label for="clientAddress">Client Address:</label>
-                <input type="text" id="clientAddress" required>
-            </div>
+    <div class="container">
+        <div class="calculator-header">
+            <h1>Window and Facade Cleaning Calculator</h1>
+            <p class="calculator-description">
+                Calculate accurate square footage and pricing for your window or facade cleaning project.
+                Enter building details below to get started.
+            </p>
         </div>
 
-        <div class="cleaning-type">
-            <h2>Cleaning Type</h2>
-            <div class="form-group">
-                <label for="cleaningType">Select Cleaning Type:</label>
-                <select id="cleaningType" required>
-                    <option value="window">Window Cleaning</option>
-                    <option value="facade">Facade Cleaning</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="measurements">
-            <h2>Building Measurements</h2>
-            
-            <div class="form-group">
-                <label for="buildingCount">Number of Buildings:</label>
-                <select id="buildingCount" required>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                </select>
+        <form id="calculatorForm" class="calculator-form">
+            <div class="form-section">
+                <h2><i class="fas fa-user"></i> Client Information</h2>
+                <div class="form-group">
+                    <label for="clientName">Client Name</label>
+                    <input type="text" id="clientName" required placeholder="Enter client name">
+                </div>
+                <div class="form-group">
+                    <label for="clientAddress">Client Address</label>
+                    <input type="text" id="clientAddress" required placeholder="Enter client address">
+                </div>
             </div>
 
-            <div id="buildingsContainer"></div>
-        </div>
-
-        <div class="glass-estimate">
-            <h2>Glass Coverage Estimate</h2>
-            <div class="form-group">
-                <label for="glassPercentage">Estimated Glass Coverage (%):</label>
-                <input type="number" id="glassPercentage" required min="0" max="100" value="50">
+            <div class="form-section">
+                <h2><i class="fas fa-spray-can"></i> Cleaning Type</h2>
+                <div class="form-group">
+                    <label for="cleaningType">Select Cleaning Type</label>
+                    <select id="cleaningType" required>
+                        <option value="window">Window Cleaning</option>
+                        <option value="facade">Facade Cleaning</option>
+                    </select>
+                </div>
             </div>
+
+            <div class="form-section">
+                <h2><i class="fas fa-building"></i> Building Details</h2>
+                <div class="form-group">
+                    <label for="buildingCount">Number of Buildings</label>
+                    <select id="buildingCount" required>
+                        <option value="1">1 Building</option>
+                        <option value="2">2 Buildings</option>
+                        <option value="3">3 Buildings</option>
+                        <option value="4">4 Buildings</option>
+                    </select>
+                </div>
+                <div id="buildingsContainer"></div>
+            </div>
+
+            <div class="form-section" id="glassSection">
+                <h2><i class="fas fa-percentage"></i> Glass Coverage</h2>
+                <div class="form-group">
+                    <label for="glassPercentage">
+                        <i class="fas fa-window-maximize"></i>
+                        Estimated Glass Coverage
+                        <span class="tooltip" data-tooltip="Percentage of the wall area that is glass">?</span>
+                    </label>
+                    <div class="glass-input-container">
+                        <input type="number" 
+                               id="glassPercentage" 
+                               required 
+                               min="0" 
+                               max="100" 
+                               value="50"
+                               class="glass-percentage-input">
+                        <input type="range" 
+                               id="glassPercentageSlider" 
+                               min="0" 
+                               max="100" 
+                               value="50"
+                               class="glass-percentage-slider">
+                        <span id="percentageDisplay" class="percentage-display">50%</span>
+                    </div>
+                    <div class="glass-visual" id="glassVisual">
+                        <div class="window"></div>
+                        <div class="window"></div>
+                        <div class="window"></div>
+                        <div class="window"></div>
+                        <div class="window"></div>
+                        <div class="window"></div>
+                        <div class="window"></div>
+                        <div class="window"></div>
+                        <div class="window"></div>
+                        <div class="window"></div>
+                    </div>
+                    <div class="help-text">For facade cleaning, this will automatically be set to 100%</div>
+                </div>
+            </div>
+
+            <button type="submit" class="service-button">
+                <i class="fas fa-calculator"></i>
+                Calculate Square Footage
+            </button>
+        </form>
+
+        <div id="result"></div>
+
+        <div id="continueSection" style="display: none;">
+            <button id="continueButton" class="service-button">
+                <i class="fas fa-arrow-right"></i>
+                Continue to Pricing Details
+            </button>
         </div>
 
-        <button type="submit" class="service-button">Calculate Square Footage</button>
-    </form>
-
-    <div id="result"></div>
-
-    <div id="continueSection" style="display: none;">
-        <button id="continueButton" class="service-button">Continue to Pricing Details</button>
-    </div>
-    
-    <div class="navigation">
-        <a href="#" id="backToHome" class="back-button">Back to Home</a>
+        <div class="navigation">
+            <a href="#" id="backToHome" class="back-button">
+                <i class="fas fa-arrow-left"></i>
+                Back to Home
+            </a>
+        </div>
     </div>
 
     <script src="script.js"></script>

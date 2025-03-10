@@ -5,92 +5,473 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Drone Cleaning Company</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #0a0a1f;
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Animated Background */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(217deg, rgba(6, 11, 40, 0.8), rgba(6, 11, 40, 0.1) 70.71%),
+                linear-gradient(127deg, rgba(0, 255, 255, 0.1), rgba(0, 255, 255, 0) 70.71%),
+                linear-gradient(336deg, rgba(128, 0, 255, 0.1), rgba(128, 0, 255, 0) 70.71%);
+            z-index: -2;
+        }
+
+        /* Geometric Pattern */
+        .geometric-pattern {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(45deg, transparent 48%, rgba(255, 255, 255, 0.05) 50%, transparent 52%),
+                linear-gradient(-45deg, transparent 48%, rgba(255, 255, 255, 0.05) 50%, transparent 52%);
+            background-size: 60px 60px;
+            z-index: -1;
+            animation: patternMove 20s linear infinite;
+        }
+
+        @keyframes patternMove {
+            from {
+                background-position: 0 0;
+            }
+            to {
+                background-position: 60px 60px;
+            }
+        }
+
+        .login-container {
+            display: flex;
+            width: 90%;
+            max-width: 1400px;
+            min-height: 600px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        /* Left Section - Hero Image */
+        .left-section {
+            width: 55%;
+            padding: 0;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            background: url('https://images.unsplash.com/photo-1473968512647-3e447244af8f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') center/cover;
+        }
+
+        .left-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                rgba(10, 10, 31, 0.2),
+                rgba(10, 10, 31, 0.8)
+            );
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 3rem;
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .logo::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: cyan;
+            box-shadow: 0 0 10px cyan;
+        }
+
+        .hero-text {
+            max-width: 500px;
+            margin-bottom: 2rem;
+        }
+
+        .hero-text h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.2em;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #fff, #0ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-text p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        /* Right Section - Login Form */
+        .right-section {
+            width: 45%;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.02);
+            position: relative;
+        }
+
+        .right-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 1px;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent, rgba(0, 255, 255, 0.2), transparent);
+        }
+
+        h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2em;
+            margin-bottom: 2rem;
+            color: #fff;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9em;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(0, 255, 255, 0.5);
+        }
+
+        input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 45px;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            color: white;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: cyan;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+        }
+
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(45deg, #00f2fe, #4facfe);
+            color: white;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .login-button:hover::before {
+            left: 100%;
+        }
+
+        .login-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 242, 254, 0.3);
+        }
+
+        .links {
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        a {
+            color: cyan;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: cyan;
+            transition: width 0.3s ease;
+        }
+
+        a:hover::after {
+            width: 100%;
+        }
+
+        .instructions-btn {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: transparent;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            color: cyan;
+            padding: 0.8rem 1.5rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9em;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .instructions-btn:hover {
+            background: rgba(0, 255, 255, 0.1);
+            border-color: cyan;
+        }
+
+        .instructions-btn i {
+            font-size: 1.2em;
+        }
+
+        #message {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            display: none;
+        }
+
+        #message.error {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            color: #ff4d4d;
+        }
+
+        #message.success {
+            background: rgba(0, 255, 128, 0.1);
+            border: 1px solid rgba(0, 255, 128, 0.3);
+            color: #00ff80;
+        }
+
+        /* Modal Styles */
         #readmeModal {
             display: none;
             position: fixed;
-            z-index: 1000;
-            left: 0;
             top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.7);
-            backdrop-filter: blur(5px);
+            background: rgba(10, 10, 31, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
         }
 
         .modal-content {
-            background-color: rgba(49, 36, 80, 0.9); /* Darker, less transparent background */
-            margin: 5% auto;
-            padding: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+            border: 1px solid rgba(0, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
             width: 90%;
             max-width: 800px;
-            border-radius: 10px;
+            margin: 5% auto;
             position: relative;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-height: 80vh;
+            overflow-y: auto;
         }
 
         .close {
-            color: #a270db;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
+            position: absolute;
+            right: 1.5rem;
+            top: 1.5rem;
+            font-size: 1.5em;
+            color: cyan;
             cursor: pointer;
+            transition: all 0.3s ease;
         }
 
-        .close:hover,
-        .close:focus {
-            color: #8058b3;
-            text-decoration: none;
-            cursor: pointer;
+        .close:hover {
+            color: #fff;
+            transform: rotate(90deg);
         }
 
-        .modal-content h1, .modal-content h2, .modal-content p, .modal-content ol, .modal-content li {
-            color: rgba(255, 255, 255, 0.9);
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .login-container {
+                width: 95%;
+                flex-direction: column;
+            }
+
+            .left-section,
+            .right-section {
+                width: 100%;
+            }
+
+            .left-section {
+                min-height: 300px;
+            }
+
+            .right-section::before {
+                width: 100%;
+                height: 1px;
+                top: 0;
+                background: linear-gradient(to right, transparent, rgba(0, 255, 255, 0.2), transparent);
+            }
         }
 
-        .modal-content a {
-            color: #bb8fce;
-        }
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 2em;
+            }
 
-        .modal-content a:hover {
-            color: #d7bde2;
+            .hero-text h1 {
+                font-size: 1.8em;
+            }
+
+            .right-section {
+                padding: 2rem;
+            }
         }
     </style>
 </head>
+
 <body>
+    <div class="geometric-pattern"></div>
     <div class="login-container">
-        <!-- Left Section -->
         <div class="left-section">
-            <div class="logo">Drone Cleaning Co.</div>
-            <h1>Welcome Back!</h1>
-            <p>Don't have an account? <a href="register.html">Register here</a></p>
-            <hr>
-             <!-- README Button -->
-             <button onclick="openReadme()">Instructions</button>
+            <div class="left-overlay">
+                <div class="logo">Drone Cleaning Co.</div>
+                <div class="hero-text">
+                    <h1>Future of Building Maintenance</h1>
+                    <p>Experience the next generation of automated cleaning solutions with our cutting-edge drone technology. Safer, faster, and more efficient than traditional methods.</p>
+                </div>
+                <button class="instructions-btn" onclick="openReadme()">
+                    <i class="fas fa-book-open"></i>
+                    View Instructions
+                </button>
+            </div>
         </div>
 
-        <!-- Right Section -->
         <div class="right-section">
             <h2>Login</h2>
             <form id="loginForm">
                 <div class="form-group">
-                    <label for="username">Username:</label>
-                    <input type="text" id="username" name="username" placeholder="Enter your username" required>
+                    <label for="username">Username</label>
+                    <div class="input-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="username" name="username" placeholder="Enter your username" required>
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                    <label for="password">Password</label>
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                    </div>
                 </div>
-                <button type="submit" class="login-button">Login</button>
+                <div id="message" style="margin-bottom: 1rem; text-align: center;"></div>
+                <button type="submit" class="login-button">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
             </form>
-
-            <!-- Message Section -->
-            <p id="message"></p>
+            <div class="links">
+                <p>Don't have an account? <a href="register.html">Register here</a></p>
+            </div>
         </div>
-    </div><!-- End of Login Container -->
+    </div>
 
     <!-- README Modal -->
     <div id="readmeModal" class="modal">
@@ -218,4 +599,5 @@
     <script src="login.js"></script>
 
 </body>
+
 </html>
