@@ -2,11 +2,8 @@ services:
   - type: web
     name: pricing-calculator
     env: node
-    buildCommand: |
-      mkdir -p /opt/render/project/src/backend
-      cp -r backend/* /opt/render/project/src/backend/
-      cd /opt/render/project/src/backend && npm install
-    startCommand: cd /opt/render/project/src/backend && node server.js
+    buildCommand: npm install
+    startCommand: node server.js
     envVars:
       - key: NODE_ENV
         value: production
