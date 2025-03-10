@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const User = require('../models/User.js');
+const path = require('path');
+const User = require(path.resolve(__dirname, '../models/User.js'));
 
 // Validate JWT_SECRET
 if (!process.env.JWT_SECRET) {
