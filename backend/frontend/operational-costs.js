@@ -16,13 +16,19 @@ function loadOperationalCosts() {
     const operationalCosts = JSON.parse(localStorage.getItem('operationalCosts')) || {
         dronePilot: 40,
         visualObserver: 25,
-        opsManager: 45
+        opsManager: 45,
+        lowRiseMultiplier: 0.1,
+        midRiseMultiplier: 0.25,
+        highRiseMultiplier: 0.4
     };
 
     // Fill the form with saved values
     document.getElementById('dronePilot').value = operationalCosts.dronePilot;
     document.getElementById('visualObserver').value = operationalCosts.visualObserver;
     document.getElementById('opsManager').value = operationalCosts.opsManager;
+    document.getElementById('lowRiseMultiplier').value = operationalCosts.lowRiseMultiplier;
+    document.getElementById('midRiseMultiplier').value = operationalCosts.midRiseMultiplier;
+    document.getElementById('highRiseMultiplier').value = operationalCosts.highRiseMultiplier;
 }
 
 // Add animations to input fields
@@ -86,6 +92,9 @@ otherCostsForm.addEventListener('submit', (e) => {
         dronePilot: parseFloat(document.getElementById('dronePilot').value),
         visualObserver: parseFloat(document.getElementById('visualObserver').value),
         opsManager: parseFloat(document.getElementById('opsManager').value),
+        lowRiseMultiplier: parseFloat(document.getElementById('lowRiseMultiplier').value),
+        midRiseMultiplier: parseFloat(document.getElementById('midRiseMultiplier').value),
+        highRiseMultiplier: parseFloat(document.getElementById('highRiseMultiplier').value),
         baseSquareFeet: BASE_SQUARE_FEET,
         baseHours: BASE_HOURS
     };
@@ -100,7 +109,7 @@ otherCostsForm.addEventListener('submit', (e) => {
         localStorage.setItem('operationalCosts', JSON.stringify(operationalCosts));
 
         // Show success message
-        showNotification('Operational costs have been saved successfully!');
+        showNotification('Operational costs and multipliers have been saved successfully!');
 
         // Add button click animation
         const submitButton = document.querySelector('button[type="submit"]');

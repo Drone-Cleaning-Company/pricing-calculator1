@@ -498,21 +498,28 @@ function calculateFinalPrice() {
 
     console.log(`Low Rise Floors: ${lowRiseFloors}, Mid Rise Floors: ${midRiseFloors}, High Rise Floors: ${highRiseFloors}`);
 
+    // Get multipliers from localStorage
+    const operationalCosts = JSON.parse(localStorage.getItem('operationalCosts')) || {
+        lowRiseMultiplier: 0.1,
+        midRiseMultiplier: 0.25,
+        highRiseMultiplier: 0.4
+    };
+
     // Calculate prices for each category
-    const lowRisePrice = lowRiseFloors * sqFtPerFloor * 0.1; // Example price multiplier for low-rise
-    const midRisePrice = midRiseFloors * sqFtPerFloor * 0.25; // Example price multiplier for mid-rise
-    const highRisePrice = highRiseFloors * sqFtPerFloor * 0.4; // Example price multiplier for high-rise
+    const lowRisePrice = lowRiseFloors * sqFtPerFloor * operationalCosts.lowRiseMultiplier;
+    const midRisePrice = midRiseFloors * sqFtPerFloor * operationalCosts.midRiseMultiplier;
+    const highRisePrice = highRiseFloors * sqFtPerFloor * operationalCosts.highRiseMultiplier;
 
     console.log(`Low Rise Price: ${lowRisePrice}, Mid Rise Price: ${midRisePrice}, High Rise Price: ${highRisePrice}`);
 
     // Calculate operational costs
-    const operationalCosts = calculateOperationalCosts(totalSqFt);
-    if (!operationalCosts) {
+    const operationalCostsCalc = calculateOperationalCosts(totalSqFt);
+    if (!operationalCostsCalc) {
         console.error("Operational costs calculation failed.");
         return;
     }
 
-    console.log(`Operational Costs:`, operationalCosts);
+    console.log(`Operational Costs:`, operationalCostsCalc);
 
     // Calculate water costs
     const waterCosts = calculateSimpleWaterCosts(totalSqFt);
@@ -628,23 +635,23 @@ function calculateFinalPrice() {
             </tr>
             <tr>
                 <td>Square Feet Cleaned Per Hour</td>
-                <td>${operationalCosts.sqFtPerHour.toFixed(0)} sq ft</td>
+                <td>${operationalCostsCalc.sqFtPerHour.toFixed(0)} sq ft</td>
             </tr>
             <tr>
                 <td>Cleaning Hours</td>
-                <td>${operationalCosts.cleaningHours.toFixed(1)} hours</td>
+                <td>${operationalCostsCalc.cleaningHours.toFixed(1)} hours</td>
             </tr>
             <tr>
                 <td>Additional Time Required (hrs)</td>
-                <td>${operationalCosts.setupHours} hours</td>
+                <td>${operationalCostsCalc.setupHours} hours</td>
             </tr>
             <tr>
                 <td>Total Time</td>
-                <td>${operationalCosts.totalHours.toFixed(1)} hours</td>
+                <td>${operationalCostsCalc.totalHours.toFixed(1)} hours</td>
             </tr>
             <tr>
                 <td>Total Days</td>
-                <td>${operationalCosts.totalDays.toFixed(2)} days</td>
+                <td>${operationalCostsCalc.totalDays.toFixed(2)} days</td>
             </tr>
         </table>
        
@@ -656,19 +663,19 @@ function calculateFinalPrice() {
          <table border="1" cellspacing="0" cellpadding="10">
              <tr>
                  <td>Drone Pilot</td>
-                 <td>$${operationalCosts.dronePilotCost.toFixed(2)}</td>
+                 <td>$${operationalCostsCalc.dronePilotCost.toFixed(2)}</td>
               </tr>
                <tr>
                   <td>Visual Observer</td>
-                 <td>$${operationalCosts.voCost.toFixed(2)}</td>
+                 <td>$${operationalCostsCalc.voCost.toFixed(2)}</td>
                 </tr>
              <tr>
                   <td>Operations Manager</td>
-                  <td>$${operationalCosts.opsManagerCost.toFixed(2)}</td>
+                  <td>$${operationalCostsCalc.opsManagerCost.toFixed(2)}</td>
               </tr>
               <tr>
                  <td><strong>Total Labor Costs</strong></td>
-                    <td><strong>$${operationalCosts.totalOperationalCost.toFixed(2)}</strong></td>
+                    <td><strong>$${operationalCostsCalc.totalOperationalCost.toFixed(2)}</strong></td>
                </tr>
           </table>
         </div>
@@ -725,7 +732,7 @@ function calculateFinalPrice() {
             }
         },
         operationalCosts: {
-            ...operationalCosts
+            ...operationalCostsCalc
         },
         waterCosts: {
             totalWaterCost: waterCosts.totalWaterCost

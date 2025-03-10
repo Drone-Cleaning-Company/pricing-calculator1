@@ -266,6 +266,50 @@
                 </div>
             </div>
 
+            <div class="cost-cards">
+                <div class="cost-card">
+                    <div class="form-group">
+                        <label>
+                            <i class="fas fa-building"></i>
+                            Low-Rise Multiplier
+                        </label>
+                        <div class="input-group">
+                            <i class="fas fa-percentage"></i>
+                            <input type="number" id="lowRiseMultiplier" name="lowRiseMultiplier" value="0.1" step="0.01" required>
+                        </div>
+                        <div class="help-text">Price multiplier for low-rise buildings (Floors 1-5)</div>
+                    </div>
+                </div>
+
+                <div class="cost-card">
+                    <div class="form-group">
+                        <label>
+                            <i class="fas fa-building"></i>
+                            Mid-Rise Multiplier
+                        </label>
+                        <div class="input-group">
+                            <i class="fas fa-percentage"></i>
+                            <input type="number" id="midRiseMultiplier" name="midRiseMultiplier" value="0.25" step="0.01" required>
+                        </div>
+                        <div class="help-text">Price multiplier for mid-rise buildings (Floors 6-10)</div>
+                    </div>
+                </div>
+
+                <div class="cost-card">
+                    <div class="form-group">
+                        <label>
+                            <i class="fas fa-building"></i>
+                            High-Rise Multiplier
+                        </label>
+                        <div class="input-group">
+                            <i class="fas fa-percentage"></i>
+                            <input type="number" id="highRiseMultiplier" name="highRiseMultiplier" value="0.4" step="0.01" required>
+                        </div>
+                        <div class="help-text">Price multiplier for high-rise buildings (Floors 11+)</div>
+                    </div>
+                </div>
+            </div>
+
             <div class="action-buttons">
                 <button type="submit" class="action-button">
                     <i class="fas fa-save"></i>
