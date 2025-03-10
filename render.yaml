@@ -2,6 +2,7 @@ services:
   - type: web
     name: pricing-calculator
     env: node
+    rootDir: backend
     buildCommand: npm install
     startCommand: node server.js
     envVars:
