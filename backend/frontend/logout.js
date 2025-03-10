@@ -27,8 +27,25 @@ document.addEventListener('DOMContentLoaded', () => {
                     console.warn('Server logout failed, proceeding with local logout:', serverError);
                 }
 
-                // Clear local storage regardless of server response
-                localStorage.clear();
+                // Save cost settings before clearing localStorage
+                const otherCosts = localStorage.getItem('otherCosts');
+                const operationalCosts = localStorage.getItem('operationalCosts');
+
+                // Clear only authentication-related data
+                localStorage.removeItem('token');
+                localStorage.removeItem('name');
+                localStorage.removeItem('country');
+                localStorage.removeItem('isAdmin');
+                localStorage.removeItem('username');
+                localStorage.removeItem('savedCalculation');
+                localStorage.removeItem('calculationResults');
+                localStorage.removeItem('clientName');
+                localStorage.removeItem('address');
+                localStorage.removeItem('totalSqFt');
+
+                // Restore cost settings
+                if (otherCosts) localStorage.setItem('otherCosts', otherCosts);
+                if (operationalCosts) localStorage.setItem('operationalCosts', operationalCosts);
 
                 // Show success animation
                 logoutBtn.innerHTML = `
@@ -52,9 +69,28 @@ document.addEventListener('DOMContentLoaded', () => {
                 `;
                 logoutBtn.classList.add('error');
 
-                // Still clear localStorage and redirect
+                // Still clear authentication data and redirect
                 setTimeout(() => {
-                    localStorage.clear();
+                    // Save cost settings before clearing localStorage
+                    const otherCosts = localStorage.getItem('otherCosts');
+                    const operationalCosts = localStorage.getItem('operationalCosts');
+
+                    // Clear only authentication-related data
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('name');
+                    localStorage.removeItem('country');
+                    localStorage.removeItem('isAdmin');
+                    localStorage.removeItem('username');
+                    localStorage.removeItem('savedCalculation');
+                    localStorage.removeItem('calculationResults');
+                    localStorage.removeItem('clientName');
+                    localStorage.removeItem('address');
+                    localStorage.removeItem('totalSqFt');
+
+                    // Restore cost settings
+                    if (otherCosts) localStorage.setItem('otherCosts', otherCosts);
+                    if (operationalCosts) localStorage.setItem('operationalCosts', operationalCosts);
+
                     window.location.href = '/index.html';
                 }, 1000);
             } finally {

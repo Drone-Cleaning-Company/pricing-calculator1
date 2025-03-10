@@ -265,10 +265,17 @@ document.addEventListener('DOMContentLoaded', function() {
         const newTotalPrice = Math.round((originalPrice - newDiscount) * 100) / 100;
     
         try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = '/index.html';
+                return;
+            }
+
             const response = await fetch(`/api/calculations/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({
                     totalPrice: newTotalPrice,
@@ -277,7 +284,16 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     
             if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
+                if (response.status === 401) {
+                    window.location.href = '/index.html';
+                    return;
+                }
+                if (response.status === 403) {
+                    window.location.href = '/user.html';
+                    return;
+                }
+                const error = await response.json();
+                throw new Error(error.message || 'Failed to update calculation');
             }
     
             const data = await response.json();

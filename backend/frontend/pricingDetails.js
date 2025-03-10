@@ -1016,24 +1016,36 @@ function storeClientInfo() {
         try {
             const token = localStorage.getItem('token');
             const country = localStorage.getItem('country');
-            const name = document.getElementById('clientName').value;
+            const urlParams = new URLSearchParams(window.location.search);
+            const name = urlParams.get('clientName') || localStorage.getItem('clientName');
+            const address = urlParams.get('address') || localStorage.getItem('address');
 
             if (!token || !country) {
                 showNotification('Please log in to save calculations', 'error');
-            return;
-        }
-    
-            if (!name) {
-                showNotification('Please enter a client name', 'error');
                 return;
             }
 
-            const totalPrice = parseFloat(document.getElementById('finalPrice').value);
-            const discount = parseFloat(document.getElementById('discountAmount').value) || 0;
-            const totalSqFt = parseFloat(document.getElementById('totalSqFt').value);
-            const address = document.getElementById('address').value;
-            const cleaningType = document.getElementById('cleaningType').value;
-    
+            if (!name) {
+                showNotification('Client name not found', 'error');
+                return;
+            }
+
+            if (!address) {
+                showNotification('Address not found', 'error');
+                return;
+            }
+
+            // Get values from the calculation results
+            if (!window.calculationResults) {
+                showNotification('Please calculate the price first', 'error');
+                return;
+            }
+
+            const totalPrice = window.calculationResults.totals.totalPrice;
+            const discount = window.calculationResults.totals.discountAmount;
+            const totalSqFt = window.calculationResults.inputs.totalSqFt;
+            const cleaningType = document.querySelector('input[name="heightCategory"]:checked')?.value || 'window';
+
             const response = await fetch('/api/calculations', {
                 method: 'POST',
                 headers: {
@@ -1050,18 +1062,13 @@ function storeClientInfo() {
                     cleaningType
                 })
             });
-    
+
             if (!response.ok) {
                 const error = await response.json();
                 throw new Error(error.message || 'Failed to save calculation');
             }
 
             showNotification('Calculation saved successfully');
-            
-            // Redirect to calculations page after a short delay
-            setTimeout(() => {
-                window.location.href = '/calculations.html';
-            }, 1500);
 
         } catch (error) {
             console.error('Error saving calculation:', error);
