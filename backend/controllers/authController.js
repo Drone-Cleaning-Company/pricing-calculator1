@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 console.log('Current directory:', process.cwd());
 console.log('Directory name:', __dirname);
 try {
-    console.log('Attempting to resolve User model path:', require.resolve('../models/User'));
+    console.log('Attempting to resolve User model path:', require.resolve('../models/user'));
 } catch (error) {
     console.log('Failed to resolve User model path:', error.message);
     console.log('Available files in models:', require('fs').readdirSync(require('path').join(__dirname, '../models')));
