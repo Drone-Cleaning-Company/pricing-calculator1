@@ -11,7 +11,7 @@ try {
     console.log('Available files in models:', require('fs').readdirSync(require('path').join(__dirname, '../models')));
 }
 
-const User = require('../models/User');
+const User = require('../models/user');
 
 // Validate JWT_SECRET
 if (!process.env.JWT_SECRET) {
