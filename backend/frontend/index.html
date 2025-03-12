@@ -109,13 +109,35 @@
             padding: 3rem;
         }
 
+        .logo-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .logo-image {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            margin-right: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+            padding: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .logo-image:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+        }
+
         .logo {
             font-family: 'Orbitron', sans-serif;
-            font-size: 2.5em;
+            font-size: 2.2em;
             font-weight: 700;
             color: #fff;
             text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
-            margin-bottom: 1rem;
             position: relative;
             display: inline-block;
         }
@@ -433,7 +455,10 @@
     <div class="login-container">
         <div class="left-section">
             <div class="left-overlay">
-                <div class="logo">Drone Cleaning Co.</div>
+                <div class="logo-container">
+                    <img src="images/logo.jpg" alt="Drone Cleaning Company Logo" class="logo-image" />
+                    <div class="logo">Drone Cleaning Co.</div>
+                </div>
                 <div class="hero-text">
                     <h1>Future of Building Maintenance</h1>
                     <p>Experience the next generation of automated cleaning solutions with our cutting-edge drone technology. Safer, faster, and more efficient than traditional methods.</p>

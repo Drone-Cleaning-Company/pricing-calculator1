@@ -62,12 +62,29 @@
             box-shadow: 0 0 20px rgba(0, 242, 254, 0.3);
         }
 
+        .logo-image {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+            padding: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .logo-image:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+        }
+
         .logo-text {
             font-family: 'Orbitron', sans-serif;
             font-size: 1.2em;
             font-weight: 700;
             background: linear-gradient(to right, #fff, #0ff);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
@@ -128,6 +145,7 @@
             margin-bottom: 0.5rem;
             background: linear-gradient(to right, #fff, #0ff);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
@@ -196,6 +214,7 @@
             font-family: 'Orbitron', sans-serif;
             background: linear-gradient(to right, #E0E7FF, #A5B4FC);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
             text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
@@ -469,11 +488,9 @@
         <!-- Sidebar -->
         <div class="sidebar">
             <div class="logo-section">
-                <div class="logo-icon">
-                    <i class="fas fa-drone"></i>
-                </div>
+                <img src="images/logo.jpg" alt="Drone Cleaning Company Logo" class="logo-image" />
                 <div class="logo-text">Drone Cleaning Co.</div>
-        </div>
+            </div>
 
             <nav class="nav-links">
                 <a href="#" class="nav-link active">
