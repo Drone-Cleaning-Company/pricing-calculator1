@@ -148,7 +148,7 @@ document.addEventListener('DOMContentLoaded', function () {
         estimatedAreaElement.textContent = `${area.toFixed(2)} sq ft`;
         
         // Add visual feedback
-        estimatedAreaElement.style.color = area > 0 ? '#0ff' : '#ff6b6b';
+        estimatedAreaElement.style.color = area > 0 ? '#ff9500' : '#ff6b6b';
     }
 });
 
@@ -286,16 +286,23 @@ function displayCalculationDetails(clientName, address, totalArea, glassPercenta
     const style = document.createElement('style');
     style.textContent = `
         .calculation-details {
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
+            background: #ffffff;
+            border: 1px solid #e5e5e5;
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 1rem 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
         }
 
         .client-details, .measurements-table, .final-calculations {
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 12px;
-            padding: 1.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .final-calculations {
+            border-bottom: none;
+            padding-bottom: 0;
         }
 
         .calculation-grid {
@@ -306,31 +313,38 @@ function displayCalculationDetails(clientName, address, totalArea, glassPercenta
         }
 
         .calc-item {
-            background: rgba(255, 255, 255, 0.02);
+            background: #f9f9fb;
             padding: 1rem;
             border-radius: 8px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border: 1px solid #e5e5e5;
         }
 
         .calc-item.highlight {
-            background: linear-gradient(145deg, rgba(0, 255, 255, 0.1), rgba(0, 255, 255, 0.05));
-            border: 1px solid rgba(0, 255, 255, 0.2);
+            background: rgba(255, 149, 0, 0.05);
+            border: 1px solid rgba(255, 149, 0, 0.2);
         }
 
         .calc-label {
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        .calc-value {
-            color: #0ff;
-            font-family: 'Orbitron', sans-serif;
+            color: #86868b;
             font-weight: 500;
         }
 
+        .calc-value {
+            color: #1d1d1f;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-weight: 600;
+        }
+
+        .calc-item.highlight .calc-value {
+            color: #ff9500;
+        }
+
         h3 {
-            color: #0ff;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: #1d1d1f;
             margin-bottom: 1rem;
             display: flex;
             align-items: center;
@@ -338,8 +352,70 @@ function displayCalculationDetails(clientName, address, totalArea, glassPercenta
         }
 
         h3 i {
+            color: #ff9500;
             font-size: 1.2em;
-            opacity: 0.8;
+        }
+
+        /* Table Styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            background: #f9f9fb;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        thead {
+            background: #f5f5f7;
+        }
+
+        th {
+            padding: 1rem;
+            text-align: left;
+            color: #86868b;
+            font-weight: 600;
+            white-space: nowrap;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        td {
+            padding: 1rem;
+            text-align: left;
+            color: #1d1d1f;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:hover td {
+            background: rgba(255, 149, 0, 0.05);
+        }
+
+        /* Responsive table */
+        @media (max-width: 768px) {
+            .calculation-details {
+                padding: 1rem;
+            }
+            
+            table {
+                font-size: 0.85rem;
+            }
+            
+            th, td {
+                padding: 0.6rem 0.5rem;
+            }
+            
+            .measurements-table {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .measurements-table table {
+                min-width: 600px;
+            }
         }
     `;
     document.head.appendChild(style);
@@ -392,10 +468,8 @@ function updateGlassVisual(percentage) {
     if (percentageDisplay) {
         percentageDisplay.textContent = `${Math.round(percentage)}%`;
         
-        // Update color based on percentage
-        const hue = Math.min(percentage * 1.2, 180); // 0 to 180 (red to cyan)
-        percentageDisplay.style.color = `hsl(${hue}, 100%, 70%)`;
+        // Update color based on percentage (orange hue instead of cyan)
+        const hue = Math.min(percentage * 0.4, 40); // 0 to 40 (red to orange)
+        percentageDisplay.style.color = `hsl(${hue}, 100%, 50%)`;
     }
 }
-
-

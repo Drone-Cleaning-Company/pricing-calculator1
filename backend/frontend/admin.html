@@ -6,7 +6,7 @@
     <title>Admin Dashboard - Drone Cleaning Services</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&family=SF+Pro+Text:wght@300;400;500;600&display=swap');
 
         * {
             margin: 0;
@@ -15,9 +15,9 @@
         }
 
         body {
-            font-family: 'Roboto', sans-serif;
-            background: #0a0a1f;
-            color: white;
+            font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f5f5f7;
+            color: #1d1d1f;
             min-height: 100vh;
             overflow-x: hidden;
         }
@@ -30,9 +30,8 @@
         /* Sidebar */
         .sidebar {
             width: 280px;
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(10px);
-            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            background: #ffffff;
+            border-right: 1px solid #e5e5e5;
             padding: 2rem;
             display: flex;
             flex-direction: column;
@@ -40,6 +39,7 @@
             height: 100vh;
             transition: all 0.3s ease;
             overflow-y: auto;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
         }
 
         .logo-section {
@@ -49,43 +49,27 @@
             margin-bottom: 3rem;
         }
 
-        .logo-icon {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(45deg, #00f2fe, #4facfe);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5em;
-            color: white;
-            box-shadow: 0 0 20px rgba(0, 242, 254, 0.3);
-        }
-
         .logo-image {
             width: 50px;
             height: 50px;
             object-fit: contain;
             border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
-            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 15px rgba(255, 149, 0, 0.2);
+            background: #ffffff;
             padding: 5px;
             transition: all 0.3s ease;
         }
 
         .logo-image:hover {
             transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+            box-shadow: 0 0 20px rgba(255, 149, 0, 0.3);
         }
 
         .logo-text {
-            font-family: 'Orbitron', sans-serif;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
             font-size: 1.2em;
-            font-weight: 700;
-            background: linear-gradient(to right, #fff, #0ff);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-weight: 600;
+            color: #1d1d1f;
         }
 
         .nav-links {
@@ -101,22 +85,23 @@
             align-items: center;
             gap: 1rem;
             padding: 1rem;
-            color: rgba(255, 255, 255, 0.7);
+            color: #86868b;
             text-decoration: none;
             border-radius: 10px;
             transition: all 0.3s ease;
+            font-weight: 500;
         }
 
         .nav-link:hover {
-            background: rgba(255, 255, 255, 0.05);
-            color: cyan;
+            background: rgba(255, 149, 0, 0.05);
+            color: #ff9500;
             transform: translateX(5px);
         }
 
         .nav-link.active {
-            background: rgba(0, 255, 255, 0.1);
-            color: cyan;
-            border: 1px solid rgba(0, 255, 255, 0.2);
+            background: rgba(255, 149, 0, 0.1);
+            color: #ff9500;
+            border: 1px solid rgba(255, 149, 0, 0.2);
         }
 
         .nav-link i {
@@ -137,92 +122,28 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 2rem;
+            border-bottom: 1px solid #e5e5e5;
+            padding-bottom: 1rem;
         }
 
         .welcome-section h1 {
-            font-family: 'Orbitron', sans-serif;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
             font-size: 2em;
             margin-bottom: 0.5rem;
-            background: linear-gradient(to right, #fff, #0ff);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #1d1d1f;
+            font-weight: 600;
         }
 
         .user-info {
-            color: rgba(255, 255, 255, 0.8);
+            color: #86868b;
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            font-size: 0.95em;
         }
 
         .user-info i {
-            color: cyan;
-        }
-
-        /* Stats Grid */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .stat-card {
-            background: linear-gradient(145deg, rgba(26, 32, 44, 0.9), rgba(17, 24, 39, 0.95));
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 1.5rem;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.03), transparent);
-            transform: translateX(-100%);
-            transition: 0.5s;
-        }
-
-        .stat-card:hover::before {
-            transform: translateX(100%);
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-        }
-
-        .stat-icon {
-            font-size: 2em;
-            color: rgba(0, 255, 255, 0.7);
-            margin-bottom: 1rem;
-            opacity: 0.8;
-        }
-
-        .stat-value {
-            font-size: 1.8em;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            font-family: 'Orbitron', sans-serif;
-            background: linear-gradient(to right, #E0E7FF, #A5B4FC);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .stat-label {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 0.9em;
-            letter-spacing: 0.5px;
+            color: #ff9500;
         }
 
         /* Quick Actions */
@@ -234,11 +155,11 @@
         }
 
         .action-button {
-            background: linear-gradient(145deg, rgba(26, 32, 44, 0.9), rgba(17, 24, 39, 0.95));
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: #ffffff;
+            border: 1px solid #e5e5e5;
             border-radius: 12px;
             padding: 1.2rem;
-            color: rgba(255, 255, 255, 0.9);
+            color: #1d1d1f;
             font-size: 1em;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -247,101 +168,152 @@
             justify-content: center;
             gap: 0.8rem;
             text-decoration: none;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            font-weight: 500;
         }
 
         .action-button:hover {
             transform: translateY(-2px);
-            background: linear-gradient(145deg, rgba(37, 45, 62, 0.9), rgba(26, 32, 44, 0.95));
-            border-color: rgba(0, 255, 255, 0.2);
-            color: rgba(0, 255, 255, 0.9);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            background: #f9f9fb;
+            border-color: rgba(255, 149, 0, 0.2);
+            color: #ff9500;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
         }
 
         .action-button i {
             font-size: 1.2em;
-            color: rgba(0, 255, 255, 0.7);
+            color: #ff9500;
             transition: all 0.3s ease;
         }
 
         .action-button:hover i {
-            color: rgba(0, 255, 255, 0.9);
+            color: #ff8000;
             transform: translateY(-1px);
         }
 
-        /* Recent Activity */
-        .recent-activity {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 1.5rem;
+        /* Project Cards */
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
             margin-bottom: 2rem;
         }
 
-        .section-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.5em;
-            margin-bottom: 1.5rem;
-            color: #fff;
+        .project-card {
+            background: #ffffff;
+            border: 1px solid #e5e5e5;
+            border-radius: 15px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            animation: fadeIn 0.5s ease-out forwards;
         }
 
-        .activity-list {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-color: rgba(255, 149, 0, 0.2);
         }
 
-        .activity-item {
+        .project-header {
             display: flex;
             align-items: center;
             gap: 1rem;
-            padding: 1rem;
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 10px;
-            transition: all 0.3s ease;
+            margin-bottom: 1rem;
         }
 
-        .activity-item:hover {
-            background: rgba(255, 255, 255, 0.05);
-            transform: translateX(5px);
-        }
-
-        .activity-icon {
+        .project-icon {
             width: 40px;
             height: 40px;
-            background: rgba(0, 255, 255, 0.1);
-            border-radius: 50%;
+            background: rgba(255, 149, 0, 0.1);
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: cyan;
+            color: #ff9500;
         }
 
-        .activity-details {
-            flex: 1;
+        .project-title {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 1.2em;
+            color: #1d1d1f;
+            font-weight: 600;
         }
 
-        .activity-title {
+        .project-details {
+            margin-top: 1rem;
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            color: #86868b;
+        }
+
+        .detail-value {
+            color: #1d1d1f;
             font-weight: 500;
-            margin-bottom: 0.2rem;
-            color: #fff;
         }
 
-        .activity-meta {
-            font-size: 0.9em;
-            color: cyan;
-            margin-bottom: 0.2rem;
+        /* Overview Stats */
+        .cost-overview {
+            background: #ffffff;
+            border: 1px solid #e5e5e5;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
         }
 
-        .activity-time {
-            font-size: 0.8em;
-            color: rgba(255, 255, 255, 0.5);
+        .section-title {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 1.5em;
+            margin-bottom: 1.5rem;
+            color: #1d1d1f;
+            font-weight: 600;
+        }
+
+        .cost-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .cost-item {
+            background: #f5f5f7;
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .cost-label {
+            color: #86868b;
+            margin-bottom: 0.5rem;
+        }
+
+        .cost-value {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 1.5em;
+            color: #ff9500;
+            font-weight: 600;
+        }
+
+        /* Logout Button Container */
+        .logout-container {
+            position: sticky;
+            bottom: 2rem;
+            width: 100%;
+            padding-top: 2rem;
+            background: linear-gradient(to bottom, transparent, #ffffff 20%);
         }
 
         /* Logout Button */
         .logout-button {
             margin-top: auto;
-            background: linear-gradient(135deg, #ff4d4d 0%, #f02929 100%);
+            background: #ff3b30;
             border: none;
             color: white;
             padding: 1rem;
@@ -354,37 +326,16 @@
             gap: 0.8rem;
             font-size: 1.1em;
             font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 4px 15px rgba(255, 77, 77, 0.2);
-            width: 100%;
-        }
-
-        .logout-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(255, 255, 255, 0.2),
-                transparent
-            );
-            transition: 0.5s;
+            box-shadow: 0 4px 15px rgba(255, 59, 48, 0.2);
         }
 
         .logout-button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255, 77, 77, 0.3);
-        }
-
-        .logout-button:hover::before {
-            left: 100%;
+            background: #ff2d20;
+            box-shadow: 0 6px 20px rgba(255, 59, 48, 0.3);
         }
 
         .logout-button i {
@@ -394,30 +345,6 @@
 
         .logout-button:hover i {
             transform: translateX(3px);
-        }
-
-        /* Logout Button States */
-        .logout-button.clicked {
-            transform: scale(0.95);
-        }
-
-        .logout-button.success {
-            background: linear-gradient(135deg, #00c853 0%, #009624 100%);
-            box-shadow: 0 4px 15px rgba(0, 200, 83, 0.2);
-        }
-
-        .logout-button.error {
-            background: linear-gradient(135deg, #ff1744 0%, #d50000 100%);
-            box-shadow: 0 4px 15px rgba(255, 23, 68, 0.2);
-        }
-
-        .logout-button .fa-spinner {
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
         }
 
         /* Responsive Design */
@@ -442,7 +369,7 @@
         }
 
         @media (max-width: 768px) {
-            .stats-grid {
+            .project-grid {
                 grid-template-columns: 1fr;
             }
 
@@ -457,29 +384,12 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .stat-card {
-            animation: fadeIn 0.5s ease-out forwards;
-        }
-
-        .stat-card:nth-child(2) {
+        .project-card:nth-child(2) {
             animation-delay: 0.2s;
         }
 
-        .stat-card:nth-child(3) {
+        .project-card:nth-child(3) {
             animation-delay: 0.4s;
-        }
-
-        .stat-card:nth-child(4) {
-            animation-delay: 0.6s;
-        }
-
-        /* Logout Button Container */
-        .logout-container {
-            position: sticky;
-            bottom: 2rem;
-            width: 100%;
-            padding-top: 2rem;
-            background: linear-gradient(to bottom, transparent, rgba(10, 10, 31, 0.9) 20%);
         }
     </style>
 </head>
@@ -488,8 +398,8 @@
         <!-- Sidebar -->
         <div class="sidebar">
             <div class="logo-section">
-                <img src="images/logo.jpg" alt="Drone Cleaning Company Logo" class="logo-image" />
-                <div class="logo-text">Drone Cleaning Co.</div>
+                <img src="images/logo.jpg" alt="Drone Cleaning Logo" class="logo-image">
+                <div class="logo-text">DroneCleaning Co.</div>
             </div>
 
             <nav class="nav-links">
@@ -510,11 +420,11 @@
                     Other Costs
                 </a>
                 <a href="adminCalculations.html" class="nav-link">
-                    <i class="fas fa-chart-line"></i>
-                    Calculations
+                    <i class="fas fa-history"></i>
+                    All Calculations
                 </a>
                 <a href="userManager.html" class="nav-link">
-                    <i class="fas fa-users-cog"></i>
+                    <i class="fas fa-users"></i>
                     Manage Users
                 </a>
             </nav>
@@ -535,26 +445,12 @@
                     <div class="user-info">
                         <i class="fas fa-user-shield"></i>
                         <span>Welcome, <span id="userName">Admin</span></span>
-                        <span>|</span>
+                        <span class="separator">|</span>
                         <i class="fas fa-globe"></i>
-                        <span id="userCountry">USA</span>
+                        <span id="userCountry">All Countries</span>
                     </div>
                 </div>
-        </div>
-
-            <!-- Stats Grid -->
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <i class="fas fa-calculator stat-icon"></i>
-                    <div class="stat-value">0</div>
-                    <div class="stat-label">Total Calculations</div>
-                </div>
-                <div class="stat-card">
-                    <i class="fas fa-users stat-icon"></i>
-                    <div class="stat-value">0</div>
-                    <div class="stat-label">Registered Users</div>
-                </div>
-        </div>
+            </div>
 
             <!-- Quick Actions -->
             <div class="quick-actions">
@@ -562,25 +458,69 @@
                     <i class="fas fa-plus"></i>
                     New Calculation
                 </a>
+                <a href="adminCalculations.html" class="action-button">
+                    <i class="fas fa-history"></i>
+                    View History
+                </a>
                 <a href="operational-costs.html" class="action-button">
                     <i class="fas fa-cog"></i>
-                    Configure Costs
-                </a>
-                <a href="adminCalculations.html" class="action-button">
-                    <i class="fas fa-chart-line"></i>
-                    View All Calculations
+                    Operational Costs
                 </a>
                 <a href="userManager.html" class="action-button">
-                    <i class="fas fa-users-cog"></i>
+                    <i class="fas fa-users"></i>
                     Manage Users
                 </a>
             </div>
 
-            <!-- Recent Activity -->
-            <div class="recent-activity">
-                <h2 class="section-title">Recent Calculations</h2>
-                <div class="activity-list">
-                    <!-- Will be populated by JavaScript -->
+            <!-- Recent Calculations -->
+            <div id="recentCalculations" class="project-grid">
+                <!-- Template for JavaScript to clone and populate -->
+                <template id="calculationTemplate">
+                    <div class="project-card">
+                        <div class="project-header">
+                            <div class="project-icon">
+                                <i class="fas fa-building"></i>
+                            </div>
+                            <div class="project-title"></div>
+                        </div>
+                        <div class="project-details">
+                            <div class="detail-item">
+                                <span>Client Name</span>
+                                <span class="detail-value client-name"></span>
+                            </div>
+                            <div class="detail-item">
+                                <span>Square Footage</span>
+                                <span class="detail-value square-footage"></span>
+                            </div>
+                            <div class="detail-item">
+                                <span>Total Price</span>
+                                <span class="detail-value total-price"></span>
+                            </div>
+                            <div class="detail-item">
+                                <span>Country</span>
+                                <span class="detail-value country"></span>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+
+            <!-- Overview Stats -->
+            <div class="cost-overview">
+                <h2 class="section-title">Overview</h2>
+                <div class="cost-grid">
+                    <div class="cost-item">
+                        <div class="cost-label">Total Calculations</div>
+                        <div class="cost-value" id="totalCalculations">0</div>
+                    </div>
+                    <div class="cost-item">
+                        <div class="cost-label">Total Revenue</div>
+                        <div class="cost-value" id="totalRevenue">$0</div>
+                    </div>
+                    <div class="cost-item">
+                        <div class="cost-label">Total Users</div>
+                        <div class="cost-value" id="totalUsers">0</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -588,190 +528,5 @@
 
     <script src="admin.js"></script>
     <script src="logout.js"></script>
-    <script>
-        // Function to check admin status and update user info
-        function checkAdminAndUpdateInfo() {
-            const isAdmin = localStorage.getItem('isAdmin') === 'true';
-            const userName = localStorage.getItem('name');
-            const userCountry = localStorage.getItem('country');
-            const token = localStorage.getItem('token');
-
-            if (!token || !isAdmin || !userName) {
-                console.error('Unauthorized access or missing user data');
-                window.location.href = '/index.html';
-                return;
-            }
-
-            // Update user info display
-            document.getElementById('userName').textContent = userName;
-            document.getElementById('userCountry').textContent = userCountry || 'All Countries';
-        }
-
-        // Function to format currency
-        function formatCurrency(amount) {
-            return new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: 'USD'
-            }).format(amount);
-        }
-
-        // Function to format time ago
-        function formatTimeAgo(dateString) {
-            const date = new Date(dateString);
-            const now = new Date();
-            const diffInSeconds = Math.floor((now - date) / 1000);
-
-            if (diffInSeconds < 60) return 'just now';
-            if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)} minutes ago`;
-            if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)} hours ago`;
-            return `${Math.floor(diffInSeconds / 86400)} days ago`;
-        }
-
-        // Function to load dashboard data
-        async function loadDashboardData() {
-            try {
-                const token = localStorage.getItem('token');
-                const isAdmin = localStorage.getItem('isAdmin') === 'true';
-                console.log('Retrieved token:', token);
-                console.log('Is admin:', isAdmin);
-
-                if (!token) {
-                    console.error('No token found');
-                    window.location.href = '/login.html';
-                    return;
-                }
-
-                if (!isAdmin) {
-                    console.error('User is not an admin');
-                    window.location.href = '/user.html';
-                    return;
-                }
-
-                const headers = {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                };
-
-                const fetchOptions = {
-                    method: 'GET',
-                    headers: headers,
-                    mode: 'cors',
-                    credentials: 'include'
-                };
-
-                // For admin users, we'll fetch all calculations without country filter
-                console.log('Fetching calculations...');
-                const calculationsResponse = await fetch('/api/calculations/all', fetchOptions);
-                
-                if (!calculationsResponse.ok) {
-                    if (calculationsResponse.status === 401) {
-                        console.error('Unauthorized access');
-                        window.location.href = '/login.html';
-                        return;
-                    }
-                    if (calculationsResponse.status === 403) {
-                        console.error('Access denied. Admin privileges required.');
-                        window.location.href = '/user.html';
-                        return;
-                    }
-                    const errorData = await calculationsResponse.json();
-                    throw new Error(errorData.message || `HTTP error! status: ${calculationsResponse.status}`);
-                }
-                
-                const calculations = await calculationsResponse.json();
-                console.log('Fetched calculations:', calculations);
-
-                // Update total calculations
-                const totalCalculationsElement = document.querySelector('.stats-grid .stat-card:nth-child(1) .stat-value');
-                if (totalCalculationsElement) {
-                    console.log('Updating total calculations:', calculations.length);
-                    totalCalculationsElement.textContent = calculations.length;
-                }
-
-                // Fetch user count
-                console.log('Fetching user count...');
-                const userCountResponse = await fetch('/api/userManager/count', {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                if (!userCountResponse.ok) {
-                    if (userCountResponse.status === 401) {
-                        console.error('Unauthorized access');
-                        window.location.href = '/login.html';
-                        return;
-                    }
-                    if (userCountResponse.status === 403) {
-                        console.error('Access denied. Admin privileges required.');
-                        window.location.href = '/user.html';
-                        return;
-                    }
-                    const errorData = await userCountResponse.json();
-                    throw new Error(errorData.message || `HTTP error! status: ${userCountResponse.status}`);
-                }
-                
-                const userData = await userCountResponse.json();
-                console.log('Fetched user data:', userData);
-
-                // Update total users
-                const totalUsersElement = document.querySelector('.stats-grid .stat-card:nth-child(2) .stat-value');
-                if (totalUsersElement) {
-                    console.log('Updating total users:', userData.count);
-                    totalUsersElement.textContent = userData.count;
-                }
-
-                // Update recent activity
-                const activityList = document.querySelector('.activity-list');
-                if (activityList && calculations.length > 0) {
-                    console.log('Updating recent activity');
-                    activityList.innerHTML = '';
-                    
-                    const recentCalcs = calculations.slice(0, 3);
-                    recentCalcs.forEach(calc => {
-                        const activityItem = document.createElement('div');
-                        activityItem.className = 'activity-item';
-                        activityItem.innerHTML = `
-                            <div class="activity-icon">
-                                <i class="fas fa-file-alt"></i>
-                            </div>
-                            <div class="activity-details">
-                                <div class="activity-title">New calculation by ${calc.name || 'Unknown'}</div>
-                                <div class="activity-meta">
-                                    ${formatCurrency(calc.totalPrice)} - ${calc.cleaningType} (${calc.country || 'Unknown Country'})
-                                </div>
-                                <div class="activity-time">${formatTimeAgo(calc.createdAt)}</div>
-                            </div>
-                        `;
-                        activityList.appendChild(activityItem);
-                    });
-                }
-
-            } catch (error) {
-                console.error('Error loading dashboard data:', error);
-                // Show error message to user
-                const container = document.querySelector('.stats-grid');
-                if (container) {
-                    container.innerHTML = `
-                        <div class="stat-card" style="text-align: center; padding: 2rem;">
-                            <div class="stat-icon">
-                                <i class="fas fa-exclamation-circle"></i>
-                            </div>
-                            <div class="stat-value" style="color: #ff4d4d;">Error</div>
-                            <div class="stat-label">${error.message}</div>
-                        </div>
-                    `;
-                }
-            }
-        }
-
-        // Load data when page loads
-        document.addEventListener('DOMContentLoaded', () => {
-            checkAdminAndUpdateInfo();
-            loadDashboardData();
-        });
-    </script>
 </body>
 </html>

@@ -4,11 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register - Drone Cleaning Company</title>
+    <title>Register - Window Cleaning Calculator</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="logo-styles.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&family=SF+Pro+Text:wght@300;400;500;600&display=swap');
 
         * {
             margin: 0;
@@ -17,67 +16,30 @@
         }
 
         body {
-            font-family: 'Roboto', sans-serif;
+            font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
             margin: 0;
             padding: 0;
-            background: #0a0a1f;
-            color: white;
+            background: #f5f5f7;
+            color: #1d1d1f;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             position: relative;
-            overflow: hidden;
-        }
-
-        /* Animated Background */
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                linear-gradient(217deg, rgba(6, 11, 40, 0.8), rgba(6, 11, 40, 0.1) 70.71%),
-                linear-gradient(127deg, rgba(0, 255, 255, 0.1), rgba(0, 255, 255, 0) 70.71%),
-                linear-gradient(336deg, rgba(128, 0, 255, 0.1), rgba(128, 0, 255, 0) 70.71%);
-            z-index: -2;
-        }
-
-        /* Geometric Pattern */
-        .geometric-pattern {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: 
-                linear-gradient(45deg, transparent 48%, rgba(255, 255, 255, 0.05) 50%, transparent 52%),
-                linear-gradient(-45deg, transparent 48%, rgba(255, 255, 255, 0.05) 50%, transparent 52%);
-            background-size: 60px 60px;
-            z-index: -1;
-            animation: patternMove 20s linear infinite;
-        }
-
-        @keyframes patternMove {
-            from { background-position: 0 0; }
-            to { background-position: 60px 60px; }
         }
 
         .register-container {
             display: flex;
             width: 90%;
-            max-width: 1400px;
+            max-width: 1200px;
             min-height: 600px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: #ffffff;
             border-radius: 20px;
             overflow: hidden;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-            position: relative;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
         }
 
-        /* Left Section - Hero Image */
+        /* Left Section - Logo Display */
         .left-section {
             width: 45%;
             padding: 0;
@@ -86,7 +48,7 @@
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
-            background: url('https://images.unsplash.com/photo-1579829366248-204fe8413f31?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') center/cover;
+            background: linear-gradient(135deg, #ff9500, #ff5e00);
         }
 
         .left-overlay {
@@ -95,57 +57,78 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(
-                to bottom,
-                rgba(10, 10, 31, 0.2),
-                rgba(10, 10, 31, 0.8)
-            );
             display: flex;
             flex-direction: column;
-            justify-content: flex-end;
+            justify-content: center;
+            align-items: center;
             padding: 3rem;
+            text-align: center;
+        }
+
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .logo-image {
+            width: 120px;
+            height: 120px;
+            object-fit: contain;
+            margin-bottom: 1.5rem;
+            border-radius: 24px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .logo-image:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
         }
 
         .logo {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.5em;
-            font-weight: 700;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 2.4em;
+            font-weight: 600;
             color: #fff;
-            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
-            margin-bottom: 1rem;
             position: relative;
             display: inline-block;
+            margin-bottom: 0.5rem;
         }
 
         .logo::after {
             content: '';
             position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 60px;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
             height: 3px;
-            background: cyan;
-            box-shadow: 0 0 10px cyan;
+            background: #fff;
+            border-radius: 1.5px;
         }
 
         .hero-text {
-            max-width: 500px;
+            max-width: 400px;
             margin-bottom: 2rem;
         }
 
         .hero-text h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.2em;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 1.8em;
+            font-weight: 500;
             margin-bottom: 1rem;
-            background: linear-gradient(to right, #fff, #0ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #fff;
         }
 
         .hero-text p {
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 1.1em;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1em;
             line-height: 1.6;
+            font-weight: 300;
         }
 
         /* Right Section - Registration Form */
@@ -155,28 +138,16 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            background: rgba(255, 255, 255, 0.02);
-            position: relative;
-        }
-
-        .right-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 1px;
-            height: 100%;
-            background: linear-gradient(to bottom, transparent, rgba(0, 255, 255, 0.2), transparent);
+            background: #ffffff;
         }
 
         h2 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2em;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 1.8em;
             margin-bottom: 2rem;
-            color: #fff;
+            color: #1d1d1f;
             text-align: center;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            font-weight: 500;
         }
 
         .form-group {
@@ -187,11 +158,9 @@
         label {
             display: block;
             margin-bottom: 0.5rem;
-            color: rgba(255, 255, 255, 0.9);
+            color: #86868b;
             font-size: 0.9em;
             font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 1px;
         }
 
         .input-group {
@@ -203,112 +172,109 @@
             left: 15px;
             top: 50%;
             transform: translateY(-50%);
-            color: rgba(0, 255, 255, 0.5);
+            color: #86868b;
         }
 
         input, select {
             width: 100%;
-            padding: 1rem 1rem 1rem 45px;
-            border: 1px solid rgba(0, 255, 255, 0.2);
+            padding: 0.8rem 1rem 0.8rem 45px;
+            border: 1px solid #d2d2d7;
             border-radius: 8px;
-            background: rgba(255, 255, 255, 0.03);
-            color: white;
+            background: #ffffff;
+            color: #1d1d1f;
             font-size: 1em;
             transition: all 0.3s ease;
+            font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
         select {
             appearance: none;
             -webkit-appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='cyan' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23ff9500' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
             background-repeat: no-repeat;
             background-position: right 1rem center;
             background-size: 1.2em;
         }
 
         select option {
-            background-color: #0a0a1f;
-            color: white;
+            background-color: #ffffff;
+            color: #1d1d1f;
         }
 
         input:focus, select:focus {
             outline: none;
-            border-color: cyan;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+            border-color: #ff9500;
+            box-shadow: 0 0 0 4px rgba(255, 149, 0, 0.1);
         }
 
         input::placeholder {
-            color: rgba(255, 255, 255, 0.3);
+            color: #86868b;
         }
 
         .register-button {
             width: 100%;
-            padding: 1rem;
+            padding: 0.8rem;
             border: none;
             border-radius: 8px;
-            background: linear-gradient(45deg, #00f2fe, #4facfe);
+            background: #ff9500;
             color: white;
             font-size: 1em;
-            font-weight: 600;
+            font-weight: 500;
             cursor: pointer;
             transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
             margin-top: 1rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .register-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(255, 255, 255, 0.2),
-                transparent
-            );
-            transition: 0.5s;
-        }
-
-        .register-button:hover::before {
-            left: 100%;
+            font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
         .register-button:hover {
+            background: #ff8000;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 242, 254, 0.3);
+            box-shadow: 0 5px 15px rgba(255, 149, 0, 0.3);
         }
 
         .links {
             margin-top: 2rem;
             text-align: center;
+            color: #86868b;
         }
 
         a {
-            color: cyan;
+            color: #ff9500;
             text-decoration: none;
             transition: all 0.3s ease;
             position: relative;
+            font-weight: 500;
         }
 
-        a::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 0;
-            height: 1px;
-            background: cyan;
-            transition: width 0.3s ease;
+        a:hover {
+            color: #ff8000;
         }
 
-        a:hover::after {
-            width: 100%;
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            display: none;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .notification.success {
+            background: #34c759;
+        }
+
+        .notification.error {
+            background: #ff3b30;
         }
 
         /* Responsive Design */
@@ -326,13 +292,6 @@
             .left-section {
                 min-height: 300px;
             }
-
-            .right-section::before {
-                width: 100%;
-                height: 1px;
-                top: 0;
-                background: linear-gradient(to right, transparent, rgba(0, 255, 255, 0.2), transparent);
-            }
         }
 
         @media (max-width: 480px) {
@@ -341,28 +300,31 @@
             }
 
             .hero-text h1 {
-                font-size: 1.8em;
+                font-size: 1.5em;
             }
 
             .right-section {
                 padding: 2rem;
+            }
+
+            .register-container {
+                margin: 10% auto;
             }
         }
     </style>
 </head>
 
 <body>
-    <div class="geometric-pattern"></div>
     <div class="register-container">
         <div class="left-section">
             <div class="left-overlay">
                 <div class="logo-container">
-                    <img src="images/logo.jpg" alt="Drone Cleaning Company Logo" class="logo-image" />
-                    <div class="logo">Drone Cleaning Co.</div>
+                    <img src="images/logo.jpg" alt="Window Cleaning Calculator Logo" class="logo-image" />
+                    <div class="logo">Window Cleaning Co.</div>
                 </div>
                 <div class="hero-text">
-                    <h1>Join the Revolution</h1>
-                    <p>Be part of the future in building maintenance. Our drone technology is transforming the industry with precision, safety, and efficiency.</p>
+                    <h1>Professional Cleaning Estimation</h1>
+                    <p>Create an account to access our advanced pricing calculator. Generate accurate quotes, track projects, and optimize your operations.</p>
                 </div>
             </div>
         </div>
@@ -420,7 +382,7 @@
                 <button type="submit" class="register-button">Create Account</button>
             </form>
             <div class="links">
-                <p>Already have an account? <a href="index.html">Login here</a></p>
+                <p>Already have an account? <a href="index.html">Sign In</a></p>
             </div>
         </div>
     </div>

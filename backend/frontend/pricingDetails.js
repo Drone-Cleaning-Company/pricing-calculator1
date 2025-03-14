@@ -250,17 +250,18 @@ style.textContent = `
         top: 20px;
         right: 20px;
         padding: 1rem;
-        border-radius: 8px;
-        background: rgba(0, 255, 255, 0.1);
-        border: 1px solid rgba(0, 255, 255, 0.2);
-        color: white;
+        border-radius: 12px;
+        background: #ffffff;
+        border: 1px solid rgba(255, 149, 0, 0.2);
+        color: #1d1d1f;
         display: flex;
         align-items: center;
         gap: 0.5rem;
         transform: translateX(120%);
         transition: transform 0.3s ease;
         z-index: 1000;
-        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
     }
 
     .notification.show {
@@ -268,7 +269,8 @@ style.textContent = `
     }
 
     .notification i {
-        color: #0ff;
+        color: #ff9500;
+        font-size: 1.2em;
     }
 
     .tooltip {
@@ -276,14 +278,15 @@ style.textContent = `
         display: inline-block;
         width: 16px;
         height: 16px;
-        background: rgba(255, 255, 255, 0.1);
+        background: rgba(0, 0, 0, 0.1);
         border-radius: 50%;
         text-align: center;
         line-height: 16px;
         font-size: 12px;
         cursor: help;
         margin-left: 0.5rem;
-        color: rgba(255, 255, 255, 0.7);
+        color: #86868b;
+        font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
     }
 
     .tooltip:hover::after {
@@ -293,13 +296,88 @@ style.textContent = `
         transform: translateX(-50%);
         bottom: 100%;
         margin-bottom: 5px;
-        background: rgba(0, 0, 0, 0.9);
+        background: #1d1d1f;
         color: white;
         padding: 0.5rem;
-        border-radius: 4px;
+        border-radius: 8px;
         font-size: 12px;
         white-space: nowrap;
         z-index: 1000;
+        font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    .calculation-details {
+        background: #ffffff;
+        border: 1px solid #e5e5e5;
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        animation: fadeIn 0.5s ease-out forwards;
+    }
+
+    .final-calculation {
+        background: #ffffff;
+        border: 1px solid rgba(255, 149, 0, 0.2);
+        border-radius: 15px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    .subtotal-row {
+        border-bottom: 1px solid #e5e5e5;
+    }
+
+    .total-row td {
+        padding-top: 1rem;
+        font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+        font-weight: 600;
+    }
+
+    .total-row td:last-child {
+        color: #ff9500;
+        font-size: 1.2em;
+    }
+
+    #result h2 {
+        font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+        font-size: 1.8em;
+        color: #1d1d1f;
+        margin-bottom: 1.5rem;
+        font-weight: 600;
+    }
+
+    #result h3 {
+        margin-top: 2rem;
+        font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+        font-size: 1.5em;
+        color: #1d1d1f;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+    #result h2 i, #result h3 i {
+        color: #ff9500;
+        margin-right: 0.5rem;
+    }
+
+    .section-title {
+        font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+        font-size: 1.5em;
+        margin-bottom: 1.5rem;
+        color: #1d1d1f;
+        font-weight: 600;
+    }
+
+    .detail-item {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+        color: #86868b;
+    }
+
+    .detail-value {
+        color: #1d1d1f;
+        font-weight: 500;
     }
 `;
 document.head.appendChild(style);
@@ -764,13 +842,15 @@ function calculateFinalPrice() {
 // Function to store client info before navigating to P&L
 function storeClientInfo() {
     const urlParams = new URLSearchParams(window.location.search);
-    const name = decodeURIComponent(urlParams.get('clientName')) || localStorage.getItem('clientName');
-    const address = decodeURIComponent(urlParams.get('address')) || localStorage.getItem('address');
-    const totalSqFt = urlParams.get('sqft') || localStorage.getItem('totalSqFt');
+    const clientNameParam = urlParams.get('clientName');
+    const addressParam = urlParams.get('address');
+    
+    const name = clientNameParam ? decodeURIComponent(clientNameParam) : localStorage.getItem('clientName');
+    const address = addressParam ? decodeURIComponent(addressParam) : localStorage.getItem('address');
 
     localStorage.setItem('clientName', name);
     localStorage.setItem('address', address);
-    localStorage.setItem('totalSqFt', totalSqFt);
+    localStorage.setItem('totalSqFt', urlParams.get('sqft') || localStorage.getItem('totalSqFt'));
 }
 
     // showPnLPage.js
@@ -887,118 +967,157 @@ function storeClientInfo() {
                 resultDiv.style.display = 'block'; // Ensure it's visible
     
                 resultDiv.innerHTML = `
-                    <h3>Service Price Breakdown</h3>
-                    <table border="1" cellspacing="0" cellpadding="10">
-                        <tr>
-                            <th>Category</th>
-                            <th>Square Footage</th>
-                            <th>Price per Sq Ft</th>
-                            <th>Total Price</th>
-                        </tr>
-                        <tr>
-                            <td>Low Rise (1-5 Floors)</td>
-                            <td>${results.pricing?.lowRise?.squareFootage?.toFixed(2) || '0.00'} sq ft</td>
-                            <td>$0.10</td>
-                            <td>$${results.pricing?.lowRise?.totalPrice?.toFixed(2) || '0.00'}</td>
-                        </tr>
-                        <tr>
-                            <td>Mid Rise (6-10 Floors)</td>
-                            <td>${results.pricing?.midRise?.squareFootage?.toFixed(2) || '0.00'} sq ft</td>
-                            <td>$0.25</td>
-                            <td>$${results.pricing?.midRise?.totalPrice?.toFixed(2) || '0.00'}</td>
-                        </tr>
-                        <tr>
-                            <td>High Rise (11+ Floors)</td>
-                            <td>${results.pricing?.highRise?.squareFootage?.toFixed(2) || '0.00'} sq ft</td>
-                            <td>$0.40</td>
-                            <td>$${results.pricing?.highRise?.totalPrice?.toFixed(2) || '0.00'}</td>
-                        </tr>
-                    </table>
+                    <h3><i class="fas fa-chart-line"></i> Service Price Breakdown</h3>
+                    <div class="calculation-details">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Category</th>
+                                    <th>Square Footage</th>
+                                    <th>Price per Sq Ft</th>
+                                    <th>Total Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Low Rise (1-5 Floors)</td>
+                                    <td>${results.pricing?.lowRise?.squareFootage?.toFixed(2) || '0.00'} sq ft</td>
+                                    <td>$0.10</td>
+                                    <td>$${results.pricing?.lowRise?.totalPrice?.toFixed(2) || '0.00'}</td>
+                                </tr>
+                                <tr>
+                                    <td>Mid Rise (6-10 Floors)</td>
+                                    <td>${results.pricing?.midRise?.squareFootage?.toFixed(2) || '0.00'} sq ft</td>
+                                    <td>$0.25</td>
+                                    <td>$${results.pricing?.midRise?.totalPrice?.toFixed(2) || '0.00'}</td>
+                                </tr>
+                                <tr>
+                                    <td>High Rise (11+ Floors)</td>
+                                    <td>${results.pricing?.highRise?.squareFootage?.toFixed(2) || '0.00'} sq ft</td>
+                                    <td>$0.40</td>
+                                    <td>$${results.pricing?.highRise?.totalPrice?.toFixed(2) || '0.00'}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
     
-                    <h3>Operational Costs</h3>
-                    <table border="1" cellspacing="0" cellpadding="10">
-                        <tr>
-                            <td>Total Square Footage</td>
-                            <td>${results.operationalCosts?.totalSqFt?.toFixed(0) || '0'} sq ft</td>
-                        </tr>
-                        <tr>
-                            <td>Square Feet Cleaned Per Hour</td>
-                            <td>${results.operationalCosts?.sqFtPerHour?.toFixed(0) || '0'} sq ft</td>
-                        </tr>
-                        <tr>
-                            <td>Cleaning Hours</td>
-                            <td>${results.operationalCosts?.cleaningHours?.toFixed(1) || '0.0'} hours</td>
-                        </tr>
-                        <tr>
-                            <td>Additional Time Required (hrs)</td>
-                            <td>${results.operationalCosts?.setupHours || '0'} hours</td>
-                        </tr>
-                        <tr>
-                            <td>Total Time</td>
-                            <td>${results.operationalCosts?.totalHours?.toFixed(1) || '0.0'} hours</td>
-                        </tr>
-                        <tr>
-                            <td>Total Days</td>
-                            <td>${results.operationalCosts?.totalDays?.toFixed(2) || '0.00'} days</td>
-                        </tr>
-                    </table>
+                    <h3><i class="fas fa-business-time"></i> Operational Costs</h3>
+                    <div class="calculation-details">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td>Total Square Footage</td>
+                                    <td>${results.operationalCosts?.totalSqFt?.toFixed(0) || '0'} sq ft</td>
+                                </tr>
+                                <tr>
+                                    <td>Square Feet Cleaned Per Hour</td>
+                                    <td>${results.operationalCosts?.sqFtPerHour?.toFixed(0) || '0'} sq ft</td>
+                                </tr>
+                                <tr>
+                                    <td>Cleaning Hours</td>
+                                    <td>${results.operationalCosts?.cleaningHours?.toFixed(1) || '0.0'} hours</td>
+                                </tr>
+                                <tr>
+                                    <td>Additional Time Required (hrs)</td>
+                                    <td>${results.operationalCosts?.setupHours || '0'} hours</td>
+                                </tr>
+                                <tr>
+                                    <td>Total Time</td>
+                                    <td>${results.operationalCosts?.totalHours?.toFixed(1) || '0.0'} hours</td>
+                                </tr>
+                                <tr>
+                                    <td>Total Days</td>
+                                    <td>${results.operationalCosts?.totalDays?.toFixed(2) || '0.00'} days</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
     
-                   <button type="button" class="toggle-button" onclick="toggleLaborCosts()" style="margin: 1rem 0;">
-                       <i class="fas fa-users"></i>
-                       Labor Costs
-                   </button>
-                   <div id="laborCostsSection" style="display: none; margin-top: 10px;">
-                    <table border="1" cellspacing="0" cellpadding="10">
-                        <tr>
-                            <td>Drone Pilot</td>
-                            <td>$${results.operationalCosts?.dronePilotCost?.toFixed(2) || '0.00'}</td>
-                         </tr>
-                          <tr>
-                             <td>Visual Observer</td>
-                            <td>$${results.operationalCosts?.voCost?.toFixed(2) || '0.00'}</td>
-                           </tr>
-                        <tr>
-                             <td>Operations Manager</td>
-                             <td>$${results.operationalCosts?.opsManagerCost?.toFixed(2) || '0.00'}</td>
-                         </tr>
-                         <tr>
-                            <td><strong>Total Labor Costs</strong></td>
-                               <td><strong>$${results.operationalCosts?.totalOperationalCost?.toFixed(2) || '0.00'}</strong></td>
-                          </tr>
-                   </table>
-                 </div>
+                    <button type="button" class="toggle-button" onclick="toggleLaborCosts()" style="margin: 1rem 0;">
+                        <i class="fas fa-users"></i>
+                        Labor Costs
+                    </button>
+                    <div id="laborCostsSection" style="display: none; margin-top: 10px;" class="calculation-details">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td>Drone Pilot</td>
+                                    <td>$${results.operationalCosts?.dronePilotCost?.toFixed(2) || '0.00'}</td>
+                                </tr>
+                                <tr>
+                                    <td>Visual Observer</td>
+                                    <td>$${results.operationalCosts?.voCost?.toFixed(2) || '0.00'}</td>
+                                </tr>
+                                <tr>
+                                    <td>Operations Manager</td>
+                                    <td>$${results.operationalCosts?.opsManagerCost?.toFixed(2) || '0.00'}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Total Labor Costs</strong></td>
+                                    <td><strong>$${results.operationalCosts?.totalOperationalCost?.toFixed(2) || '0.00'}</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
     
-    
-                    <h4>Final Price Breakdown</h4>
-                    <table border="1" cellspacing="0" cellpadding="10">
-                        <tr>
-                            <td>Base Service Price</td>
-                            <td>$${results.totals?.baseServicePrice?.toFixed(2) || '0.00'}</td>
-                        </tr>
-                        <tr>
-                            <td>Additional Cost</td>
-                            <td>$${((results.otherCosts?.otherCostSubtotal || 0) + (results.waterCosts?.totalWaterCost || 0)).toFixed(2)}</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Subtotal</strong></td>
-                            <td><strong>$${results.totals?.subtotal?.toFixed(2) || '0.00'}</strong></td>
-                        </tr>
-                        <tr>
-                            <td>Discount (${results.inputs?.discountType === 'percentage' ? results.inputs?.discountValue + '%' : 'Fixed'})</td>
-                            <td>-$${results.totals?.discountAmount?.toFixed(2) || '0.00'}</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Total Price</strong></td>
-                            <td><strong>$${results.totals?.totalPrice?.toFixed(2) || '0.00'}</strong></td>
-                        </tr>
-                    </table>
+                    <h3><i class="fas fa-dollar-sign"></i> Final Price Breakdown</h3>
+                    <div class="calculation-details final-calculation">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td>Base Service Price</td>
+                                    <td>$${results.totals?.baseServicePrice?.toFixed(2) || '0.00'}</td>
+                                </tr>
+                                <tr>
+                                    <td>Additional Cost</td>
+                                    <td>$${((results.otherCosts?.otherCostSubtotal || 0) + (results.waterCosts?.totalWaterCost || 0)).toFixed(2)}</td>
+                                </tr>
+                                <tr class="subtotal-row">
+                                    <td><strong>Subtotal</strong></td>
+                                    <td><strong>$${results.totals?.subtotal?.toFixed(2) || '0.00'}</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>Discount (${results.inputs?.discountType === 'percentage' ? results.inputs?.discountValue + '%' : 'Fixed'})</td>
+                                    <td>-$${results.totals?.discountAmount?.toFixed(2) || '0.00'}</td>
+                                </tr>
+                                <tr class="total-row">
+                                    <td><strong>Total Price</strong></td>
+                                    <td><strong style="color: #ff9500; font-size: 1.2em;">$${results.totals?.totalPrice?.toFixed(2) || '0.00'}</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button type="button" id="saveButton" class="action-button">
+                            <i class="fas fa-save"></i> Save Calculation
+                        </button>
+                        <button type="button" id="showPnLPage" class="action-button">
+                            <i class="fas fa-chart-pie"></i> View P&L
+                        </button>
+                    </div>
                 `;
+                
+                // Add event listeners to the newly created buttons
+                const saveButton = document.getElementById('saveButton');
+                if (saveButton) {
+                    saveButton.addEventListener('click', saveCalculation);
+                }
+                
+                const pnlButton = document.getElementById('showPnLPage');
+                if (pnlButton) {
+                    const isAdmin = localStorage.getItem('isAdmin') === 'true';
+                    if (!isAdmin) {
+                        pnlButton.style.display = 'none';
+                    } else {
+                        pnlButton.addEventListener('click', showPnLPage);
+                    }
+                }
             }
         } catch (error) {
             console.error("Error updating UI:", error);
         }
     }
-    
     
     function restoreClientInfo() {
         const nameDisplay = document.getElementById('clientNameDisplay');
@@ -1024,8 +1143,11 @@ function storeClientInfo() {
             const token = localStorage.getItem('token');
             const country = localStorage.getItem('country');
             const urlParams = new URLSearchParams(window.location.search);
-            const name = urlParams.get('clientName') || localStorage.getItem('clientName');
-            const address = urlParams.get('address') || localStorage.getItem('address');
+            const clientNameParam = urlParams.get('clientName');
+            const addressParam = urlParams.get('address');
+            
+            const name = clientNameParam ? decodeURIComponent(clientNameParam) : localStorage.getItem('clientName');
+            const address = addressParam ? decodeURIComponent(addressParam) : localStorage.getItem('address');
 
             if (!token || !country) {
                 showNotification('Please log in to save calculations', 'error');
@@ -1110,4 +1232,3 @@ function toggleLaborCosts() {
         }, 300);
     }
 }
-    

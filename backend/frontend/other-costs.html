@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Other Costs Configuration</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&family=SF+Pro+Text:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -14,9 +14,9 @@
         }
 
         body {
-            font-family: 'Roboto', sans-serif;
-            background: linear-gradient(135deg, #0a0a1f 0%, #1a1a3f 100%);
-            color: rgba(255, 255, 255, 0.9);
+            font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f5f5f7;
+            color: #1d1d1f;
             line-height: 1.6;
             min-height: 100vh;
             padding: 2rem;
@@ -31,23 +31,26 @@
             text-align: center;
             margin-bottom: 3rem;
             padding: 2rem 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
             animation: fadeIn 0.8s ease-out;
         }
 
         h1 {
-            font-family: 'Orbitron', sans-serif;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
             font-size: 2.5em;
             margin-bottom: 1rem;
-            background: linear-gradient(to right, #fff, #0ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 2px 10px rgba(0, 255, 255, 0.2);
+            color: #1d1d1f;
+            font-weight: 600;
+        }
+
+        h1 i {
+            color: #ff9500;
+            margin-right: 0.5rem;
         }
 
         .section-header {
-            font-family: 'Orbitron', sans-serif;
-            color: #0ff;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: #ff9500;
             font-size: 1.5em;
             margin: 2rem 0 1rem;
             display: flex;
@@ -56,8 +59,8 @@
         }
 
         .cost-section {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(0, 0, 0, 0.1);
             border-radius: 15px;
             padding: 1.5rem;
             margin-bottom: 2rem;
@@ -69,7 +72,7 @@
         .cost-section:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            border-color: rgba(0, 255, 255, 0.2);
+            border-color: rgba(255, 149, 0, 0.4);
         }
 
         .form-group {
@@ -80,13 +83,13 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            color: rgba(255, 255, 255, 0.9);
+            color: #1d1d1f;
             margin-bottom: 0.8rem;
             font-size: 1.1em;
         }
 
         label i {
-            color: rgba(0, 255, 255, 0.7);
+            color: #ff9500;
         }
 
         .input-group {
@@ -98,33 +101,33 @@
         .input-group i {
             position: absolute;
             left: 1rem;
-            color: rgba(0, 255, 255, 0.7);
+            color: #ff9500;
         }
 
         input[type="number"] {
             width: 100%;
             padding: 0.8rem;
             padding-left: 2.5rem;
-            border: 1px solid rgba(0, 255, 255, 0.2);
+            border: 1px solid rgba(0, 0, 0, 0.1);
             border-radius: 8px;
-            background: rgba(255, 255, 255, 0.05);
-            color: white;
+            background: rgba(255, 255, 255, 0.5);
+            color: #1d1d1f;
             font-size: 1em;
             transition: all 0.3s ease;
         }
 
         input[type="number"]:focus {
             outline: none;
-            border-color: #0ff;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.1);
+            border-color: #ff9500;
+            box-shadow: 0 0 15px rgba(255, 149, 0, 0.2);
         }
 
         .help-text {
-            color: rgba(255, 255, 255, 0.6);
+            color: #1d1d1f;
             font-size: 0.9em;
             margin-top: 0.5rem;
             padding-left: 0.5rem;
-            border-left: 2px solid rgba(0, 255, 255, 0.3);
+            border-left: 2px solid rgba(255, 149, 0, 0.3);
         }
 
         .action-buttons {
@@ -135,9 +138,9 @@
         }
 
         .action-button {
-            background: linear-gradient(145deg, rgba(26, 32, 44, 0.9), rgba(17, 24, 39, 0.95));
-            color: white;
-            border: 1px solid rgba(0, 255, 255, 0.2);
+            background: linear-gradient(145deg, rgba(245, 245, 247, 0.9), rgba(237, 237, 239, 0.95));
+            color: #1d1d1f;
+            border: 1px solid rgba(0, 0, 0, 0.1);
             padding: 1rem 2rem;
             border-radius: 8px;
             cursor: pointer;
@@ -152,13 +155,13 @@
         }
 
         .action-button:hover {
-            background: linear-gradient(145deg, rgba(37, 45, 62, 0.9), rgba(26, 32, 44, 0.95));
-            border-color: rgba(0, 255, 255, 0.4);
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(245, 245, 247, 0.95));
+            border-color: rgba(255, 149, 0, 0.4);
             transform: translateY(-2px);
         }
 
         .action-button i {
-            color: #0ff;
+            color: #ff9500;
         }
 
         .notification {
@@ -167,9 +170,9 @@
             right: 20px;
             padding: 1rem;
             border-radius: 8px;
-            background: rgba(0, 255, 255, 0.1);
-            border: 1px solid rgba(0, 255, 255, 0.2);
-            color: white;
+            background: rgba(255, 149, 0, 0.1);
+            border: 1px solid rgba(255, 149, 0, 0.2);
+            color: #1d1d1f;
             display: flex;
             align-items: center;
             gap: 0.5rem;

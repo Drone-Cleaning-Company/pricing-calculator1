@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Calculations Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&family=SF+Pro+Text:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -14,9 +14,9 @@
         }
 
         body {
-            font-family: 'Roboto', sans-serif;
-            background: linear-gradient(135deg, #0a0a1f 0%, #1a1a3f 100%);
-            color: rgba(255, 255, 255, 0.9);
+            font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f5f5f7;
+            color: #1d1d1f;
             line-height: 1.6;
             min-height: 100vh;
             padding: 2rem;
@@ -31,23 +31,26 @@
             text-align: center;
             margin-bottom: 3rem;
             padding: 2rem 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
             animation: fadeIn 0.8s ease-out;
         }
 
         h1 {
-            font-family: 'Orbitron', sans-serif;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
             font-size: 2.5em;
             margin-bottom: 1rem;
-            background: linear-gradient(to right, #fff, #0ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 2px 10px rgba(0, 255, 255, 0.2);
+            color: #1d1d1f;
+            font-weight: 600;
+        }
+
+        h1 i {
+            color: #ff9500;
+            margin-right: 0.5rem;
         }
 
         #savedCalculationsContainer {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(0, 0, 0, 0.1);
             border-radius: 15px;
             padding: 1.5rem;
             backdrop-filter: blur(10px);
@@ -65,13 +68,13 @@
         th, td {
             padding: 1rem 1.5rem;
             text-align: left;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
         }
 
         th {
-            background: rgba(0, 255, 255, 0.05);
-            color: #0ff;
-            font-family: 'Orbitron', sans-serif;
+            background: rgba(255, 149, 0, 0.05);
+            color: #ff9500;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
             font-weight: 500;
             font-size: 0.9em;
             text-transform: uppercase;
@@ -87,11 +90,23 @@
             transform: translateX(5px);
         }
 
+        .button-container {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: nowrap;
+        }
+
         .editBtn, .deleteBtn, .saveBtn, .cancelBtn {
-            padding: 0.5rem 1rem;
+            flex: 1;
+            max-width: 120px;
+            padding: 0.4rem 0.8rem;
             border: none;
-            border-radius: 5px;
-            color: white;
+            border-radius: 6px;
+            color: #1d1d1f;
             cursor: pointer;
             font-size: 0.9em;
             display: inline-flex;
@@ -99,43 +114,44 @@
             gap: 0.5rem;
             transition: all 0.3s ease;
             margin-right: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .editBtn {
-            background: linear-gradient(145deg, #4CAF50, #45a049);
+            background: linear-gradient(145deg, #6BCB77, #4CAF50);
         }
 
         .deleteBtn {
-            background: linear-gradient(145deg, #F44336, #d32f2f);
+            background: linear-gradient(145deg, #FF6B6B, #F44336);
         }
 
         .saveBtn {
-            background: linear-gradient(145deg, #2196F3, #1976D2);
+            background: linear-gradient(145deg, #4D9DE0, #2196F3);
         }
 
         .cancelBtn {
-            background: linear-gradient(145deg, #9E9E9E, #757575);
+            background: linear-gradient(145deg, #B0BEC5, #9E9E9E);
         }
 
         .editBtn:hover, .deleteBtn:hover, .saveBtn:hover, .cancelBtn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         }
 
         input[type="number"] {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(0, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(0, 0, 0, 0.1);
             border-radius: 5px;
             padding: 0.5rem;
-            color: white;
+            color: #1d1d1f;
             width: 100%;
             transition: all 0.3s ease;
         }
 
         input[type="number"]:focus {
             outline: none;
-            border-color: #0ff;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.1);
+            border-color: #ff9500;
+            box-shadow: 0 0 15px rgba(255, 149, 0, 0.2);
         }
 
         .back-button {
@@ -144,20 +160,20 @@
             justify-content: center;
             margin: 2rem auto;
             padding: 1rem 2rem;
-            color: white;
+            color: #1d1d1f;
             text-decoration: none;
-            border: 2px solid rgba(0, 255, 255, 0.2);
+            border: 2px solid rgba(255, 149, 0, 0.2);
             border-radius: 8px;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.5);
             transition: all 0.3s ease;
-            font-family: 'Orbitron', sans-serif;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
             gap: 0.5rem;
         }
 
         .back-button:hover {
-            background: rgba(0, 255, 255, 0.1);
+            background: rgba(255, 149, 0, 0.1);
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 255, 255, 0.1);
+            box-shadow: 0 4px 12px rgba(255, 149, 0, 0.1);
         }
 
         .notification {
@@ -166,9 +182,9 @@
             right: 20px;
             padding: 1rem;
             border-radius: 8px;
-            background: rgba(0, 255, 255, 0.1);
-            border: 1px solid rgba(0, 255, 255, 0.2);
-            color: white;
+            background: rgba(255, 149, 0, 0.1);
+            border: 1px solid rgba(255, 149, 0, 0.2);
+            color: #1d1d1f;
             display: flex;
             align-items: center;
             gap: 0.5rem;
@@ -199,17 +215,8 @@
         }
 
         @media (max-width: 1024px) {
-            body {
+            .container {
                 padding: 1rem;
-            }
-
-            th, td {
-                padding: 0.8rem;
-            }
-
-            .editBtn, .deleteBtn, .saveBtn, .cancelBtn {
-                padding: 0.4rem 0.8rem;
-                font-size: 0.8em;
             }
         }
     </style>
@@ -223,6 +230,13 @@
 
         <div id="savedCalculationsContainer">
             <!-- Table will be dynamically inserted here -->
+        </div>
+
+        <div id="buttonContainer" class="button-container" style="display: none;">
+            <button class="editBtn">Edit</button>
+            <button class="deleteBtn">Delete</button>
+            <button class="saveBtn">Save</button>
+            <button class="cancelBtn">Cancel</button>
         </div>
 
         <a href="#" id="backToHome" class="back-button">

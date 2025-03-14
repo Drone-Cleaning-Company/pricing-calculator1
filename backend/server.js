@@ -76,11 +76,11 @@ app.use((req, res) => {
 });
 
 // Start the server
-const port = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
 // Start the server and log the full URL
-app.listen(port, () => {
-    console.log(`Server listening at http://localhost:${port}`);
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
     console.log('Available routes:');
     console.log('- GET /api/userManager/count');
     console.log('- GET /api/userManager/users');

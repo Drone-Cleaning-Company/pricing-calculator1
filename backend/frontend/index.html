@@ -4,10 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Drone Cleaning Company</title>
+    <title>Login - Window Cleaning Calculator</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&family=SF+Pro+Text:wght@300;400;500;600&display=swap');
 
         * {
             margin: 0;
@@ -16,11 +16,11 @@
         }
 
         body {
-            font-family: 'Roboto', sans-serif;
+            font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background: #0a0a1f;
-            color: white;
+            background: #f5f5f7;
+            color: #1d1d1f;
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -29,7 +29,7 @@
             overflow: hidden;
         }
 
-        /* Animated Background */
+        /* Subtle Background Pattern */
         body::before {
             content: '';
             position: absolute;
@@ -37,46 +37,20 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: 
-                linear-gradient(217deg, rgba(6, 11, 40, 0.8), rgba(6, 11, 40, 0.1) 70.71%),
-                linear-gradient(127deg, rgba(0, 255, 255, 0.1), rgba(0, 255, 255, 0) 70.71%),
-                linear-gradient(336deg, rgba(128, 0, 255, 0.1), rgba(128, 0, 255, 0) 70.71%);
+            background: radial-gradient(circle at 30% 40%, rgba(255, 149, 0, 0.05) 0%, transparent 70%),
+                       radial-gradient(circle at 70% 60%, rgba(255, 149, 0, 0.05) 0%, transparent 70%);
             z-index: -2;
-        }
-
-        /* Geometric Pattern */
-        .geometric-pattern {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: 
-                linear-gradient(45deg, transparent 48%, rgba(255, 255, 255, 0.05) 50%, transparent 52%),
-                linear-gradient(-45deg, transparent 48%, rgba(255, 255, 255, 0.05) 50%, transparent 52%);
-            background-size: 60px 60px;
-            z-index: -1;
-            animation: patternMove 20s linear infinite;
-        }
-
-        @keyframes patternMove {
-            from {
-                background-position: 0 0;
-            }
-            to {
-                background-position: 60px 60px;
-            }
         }
 
         .login-container {
             display: flex;
             width: 90%;
-            max-width: 1400px;
+            max-width: 1200px;
             min-height: 600px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: #ffffff;
             border-radius: 20px;
             overflow: hidden;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
             position: relative;
         }
 
@@ -89,7 +63,7 @@
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
-            background: url('https://images.unsplash.com/photo-1473968512647-3e447244af8f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') center/cover;
+            background: linear-gradient(135deg, #ff9500, #ff5e00);
         }
 
         .left-overlay {
@@ -98,125 +72,111 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(
-                to bottom,
-                rgba(10, 10, 31, 0.2),
-                rgba(10, 10, 31, 0.8)
-            );
             display: flex;
             flex-direction: column;
-            justify-content: flex-end;
+            justify-content: center;
+            align-items: center;
             padding: 3rem;
+            text-align: center;
         }
 
         .logo-container {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            margin-bottom: 1.5rem;
+            margin-bottom: 2.5rem;
         }
 
         .logo-image {
-            width: 80px;
-            height: 80px;
+            width: 120px;
+            height: 120px;
             object-fit: contain;
-            margin-right: 1rem;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
-            background: rgba(255, 255, 255, 0.05);
-            padding: 5px;
+            margin-bottom: 1.5rem;
+            border-radius: 24px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px;
             transition: all 0.3s ease;
         }
 
         .logo-image:hover {
             transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
         }
 
         .logo {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.2em;
-            font-weight: 700;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 2.4em;
+            font-weight: 600;
             color: #fff;
-            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
             position: relative;
             display: inline-block;
+            margin-bottom: 0.5rem;
         }
 
         .logo::after {
             content: '';
             position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 60px;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
             height: 3px;
-            background: cyan;
-            box-shadow: 0 0 10px cyan;
+            background: #fff;
+            border-radius: 1.5px;
         }
 
         .hero-text {
-            max-width: 500px;
+            max-width: 400px;
             margin-bottom: 2rem;
         }
 
         .hero-text h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.2em;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 1.8em;
+            font-weight: 500;
             margin-bottom: 1rem;
-            background: linear-gradient(to right, #fff, #0ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #fff;
         }
 
         .hero-text p {
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 1.1em;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1em;
             line-height: 1.6;
+            font-weight: 300;
         }
 
         /* Right Section - Login Form */
         .right-section {
             width: 45%;
-            padding: 3rem;
+            padding: 3.5rem;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            background: rgba(255, 255, 255, 0.02);
+            background: #ffffff;
             position: relative;
         }
 
-        .right-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 1px;
-            height: 100%;
-            background: linear-gradient(to bottom, transparent, rgba(0, 255, 255, 0.2), transparent);
-        }
-
         h2 {
-            font-family: 'Orbitron', sans-serif;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
             font-size: 2em;
+            font-weight: 600;
             margin-bottom: 2rem;
-            color: #fff;
-            text-align: center;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            color: #1d1d1f;
+            text-align: left;
         }
 
         .form-group {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.8rem;
             position: relative;
         }
 
         label {
             display: block;
             margin-bottom: 0.5rem;
-            color: rgba(255, 255, 255, 0.9);
+            color: #86868b;
             font-size: 0.9em;
             font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 1px;
         }
 
         .input-group {
@@ -228,71 +188,48 @@
             left: 15px;
             top: 50%;
             transform: translateY(-50%);
-            color: rgba(0, 255, 255, 0.5);
+            color: #ff9500;
         }
 
         input {
             width: 100%;
             padding: 1rem 1rem 1rem 45px;
-            border: 1px solid rgba(0, 255, 255, 0.2);
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.03);
-            color: white;
+            border: 1px solid #e5e5e5;
+            border-radius: 10px;
+            background: #ffffff;
+            color: #1d1d1f;
             font-size: 1em;
             transition: all 0.3s ease;
         }
 
         input:focus {
             outline: none;
-            border-color: cyan;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+            border-color: #ff9500;
+            box-shadow: 0 0 0 2px rgba(255, 149, 0, 0.2);
         }
 
         input::placeholder {
-            color: rgba(255, 255, 255, 0.3);
+            color: #c7c7cc;
         }
 
         .login-button {
             width: 100%;
             padding: 1rem;
             border: none;
-            border-radius: 8px;
-            background: linear-gradient(45deg, #00f2fe, #4facfe);
+            border-radius: 10px;
+            background: #ff9500;
             color: white;
             font-size: 1em;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
             margin-top: 1rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .login-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(255, 255, 255, 0.2),
-                transparent
-            );
-            transition: 0.5s;
-        }
-
-        .login-button:hover::before {
-            left: 100%;
         }
 
         .login-button:hover {
+            background: #ff8000;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 242, 254, 0.3);
+            box-shadow: 0 4px 12px rgba(255, 149, 0, 0.3);
         }
 
         .links {
@@ -301,25 +238,15 @@
         }
 
         a {
-            color: cyan;
+            color: #ff9500;
             text-decoration: none;
             transition: all 0.3s ease;
             position: relative;
+            font-weight: 500;
         }
 
-        a::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 0;
-            height: 1px;
-            background: cyan;
-            transition: width 0.3s ease;
-        }
-
-        a:hover::after {
-            width: 100%;
+        a:hover {
+            color: #ff8000;
         }
 
         .instructions-btn {
@@ -327,9 +254,9 @@
             bottom: 2rem;
             left: 50%;
             transform: translateX(-50%);
-            background: transparent;
-            border: 1px solid rgba(0, 255, 255, 0.3);
-            color: cyan;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            color: #ff9500;
             padding: 0.8rem 1.5rem;
             border-radius: 20px;
             cursor: pointer;
@@ -338,11 +265,14 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
         .instructions-btn:hover {
-            background: rgba(0, 255, 255, 0.1);
-            border-color: cyan;
+            background: #ffffff;
+            color: #ff8000;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
         }
 
         .instructions-btn i {
@@ -352,21 +282,22 @@
         #message {
             margin-top: 1rem;
             padding: 1rem;
-            border-radius: 8px;
+            border-radius: 10px;
             text-align: center;
             display: none;
+            font-size: 0.9em;
         }
 
         #message.error {
-            background: rgba(255, 0, 0, 0.1);
-            border: 1px solid rgba(255, 0, 0, 0.3);
-            color: #ff4d4d;
+            background: rgba(255, 59, 48, 0.1);
+            border: 1px solid rgba(255, 59, 48, 0.3);
+            color: #ff3b30;
         }
 
         #message.success {
-            background: rgba(0, 255, 128, 0.1);
-            border: 1px solid rgba(0, 255, 128, 0.3);
-            color: #00ff80;
+            background: rgba(52, 199, 89, 0.1);
+            border: 1px solid rgba(52, 199, 89, 0.3);
+            color: #34c759;
         }
 
         /* Modal Styles */
@@ -377,14 +308,14 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(10, 10, 31, 0.95);
+            background: rgba(29, 29, 31, 0.7);
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             z-index: 1000;
         }
 
         .modal-content {
-            background: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
-            border: 1px solid rgba(0, 255, 255, 0.1);
+            background: #ffffff;
             border-radius: 20px;
             padding: 2.5rem;
             width: 90%;
@@ -393,24 +324,24 @@
             position: relative;
             max-height: 80vh;
             overflow-y: auto;
-            color: #e6e6e6;
-            font-family: 'Roboto', sans-serif;
+            color: #1d1d1f;
+            font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
         }
 
         .modal-title {
-            color: cyan;
-            font-family: 'Orbitron', sans-serif;
+            color: #1d1d1f;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
             text-align: center;
             margin-bottom: 1.5rem;
             font-size: 2.2rem;
-            letter-spacing: 1px;
-            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+            font-weight: 600;
         }
 
         .section {
             margin-bottom: 2rem;
             padding-bottom: 1.5rem;
-            border-bottom: 1px solid rgba(0, 255, 255, 0.1);
+            border-bottom: 1px solid #e5e5e5;
         }
 
         .section:last-child {
@@ -419,22 +350,24 @@
         }
 
         .section-title {
-            color: #00ffff;
+            color: #1d1d1f;
             margin-bottom: 1rem;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 500;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-weight: 600;
+            font-size: 1.5rem;
         }
 
         .subsection-title {
-            color: #00cccc;
+            color: #1d1d1f;
             margin: 1rem 0;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 400;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-weight: 500;
+            font-size: 1.2rem;
         }
 
         .toc-container {
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
+            background: #f5f5f7;
+            border-radius: 12px;
             padding: 1.5rem;
             margin-bottom: 2rem;
         }
@@ -444,48 +377,51 @@
         }
 
         .toc-link {
-            color: #00ffff;
+            color: #ff9500;
             text-decoration: none;
             transition: all 0.3s ease;
+            font-weight: 500;
         }
 
         .toc-link:hover {
-            color: #ffffff;
-            text-shadow: 0 0 5px rgba(0, 255, 255, 0.7);
+            color: #ff8000;
         }
 
         .instruction-list, .admin-list, .notes-list, .features-list, .step-details {
             padding-left: 1.5rem;
             margin-bottom: 1rem;
+            color: #4d4d4f;
         }
 
         .step-title {
-            font-weight: 500;
-            color: #00dddd;
+            font-weight: 600;
+            color: #1d1d1f;
             display: block;
             margin-bottom: 0.5rem;
         }
 
         .important-note {
-            background: rgba(255, 255, 0, 0.1);
-            border-left: 4px solid #ffff00;
+            background: rgba(255, 149, 0, 0.1);
+            border-left: 4px solid #ff9500;
             padding: 1rem;
             margin: 1rem 0;
             border-radius: 0 8px 8px 0;
+            color: #4d4d4f;
         }
 
         .admin-key {
-            background: rgba(0, 255, 0, 0.1);
-            color: #00ff00;
+            background: rgba(52, 199, 89, 0.1);
+            color: #34c759;
             padding: 0.2rem 0.5rem;
             border-radius: 4px;
-            font-family: monospace;
-            font-weight: bold;
+            font-family: 'SF Mono', monospace;
+            font-weight: 500;
         }
 
         .section-text {
             line-height: 1.6;
             margin-bottom: 1rem;
+            color: #4d4d4f;
         }
 
         .close {
@@ -493,14 +429,20 @@
             right: 1.5rem;
             top: 1.5rem;
             font-size: 1.5em;
-            color: cyan;
+            color: #86868b;
             cursor: pointer;
             transition: all 0.3s ease;
+            height: 32px;
+            width: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
         }
 
         .close:hover {
-            color: #fff;
-            transform: rotate(90deg);
+            color: #1d1d1f;
+            background: rgba(0, 0, 0, 0.05);
         }
 
         /* Responsive Design */
@@ -518,18 +460,11 @@
             .left-section {
                 min-height: 300px;
             }
-
-            .right-section::before {
-                width: 100%;
-                height: 1px;
-                top: 0;
-                background: linear-gradient(to right, transparent, rgba(0, 255, 255, 0.2), transparent);
-            }
         }
 
         @media (max-width: 480px) {
             .logo {
-                font-size: 2em;
+                font-size: 1.8em;
             }
 
             .hero-text h1 {
@@ -539,22 +474,27 @@
             .right-section {
                 padding: 2rem;
             }
+
+            .modal-content {
+                padding: 1.5rem;
+                width: 95%;
+                margin: 10% auto;
+            }
         }
     </style>
 </head>
 
 <body>
-    <div class="geometric-pattern"></div>
     <div class="login-container">
         <div class="left-section">
             <div class="left-overlay">
                 <div class="logo-container">
-                    <img src="images/logo.jpg" alt="Drone Cleaning Company Logo" class="logo-image" />
-                    <div class="logo">Drone Cleaning Co.</div>
+                    <img src="images/logo.jpg" alt="Window Cleaning Calculator Logo" class="logo-image" />
+                    <div class="logo">Window Cleaning Co.</div>
                 </div>
                 <div class="hero-text">
-                    <h1>Future of Building Maintenance</h1>
-                    <p>Experience the next generation of automated cleaning solutions with our cutting-edge drone technology. Safer, faster, and more efficient than traditional methods.</p>
+                    <h1>Professional Cleaning Estimation</h1>
+                    <p>Streamline your window cleaning business with our advanced pricing calculator. Generate accurate quotes, track projects, and optimize your operations.</p>
                 </div>
                 <button class="instructions-btn" onclick="openReadme()">
                     <i class="fas fa-book-open"></i>
@@ -564,7 +504,7 @@
         </div>
 
         <div class="right-section">
-            <h2>Login</h2>
+            <h2>Sign In</h2>
             <form id="loginForm">
                 <div class="form-group">
                     <label for="username">Username</label>
@@ -582,11 +522,11 @@
                 </div>
                 <div id="message" style="margin-bottom: 1rem; text-align: center;"></div>
                 <button type="submit" class="login-button">
-                    <i class="fas fa-sign-in-alt"></i> Login
+                    Sign In
                 </button>
             </form>
             <div class="links">
-                <p>Don't have an account? <a href="register.html">Register here</a></p>
+                <p>Don't have an account? <a href="register.html">Create Account</a></p>
             </div>
         </div>
     </div>

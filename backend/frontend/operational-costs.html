@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Operational Costs</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&family=SF+Pro+Text:wght@300;400;500;600&display=swap');
+
         * {
             margin: 0;
             padding: 0;
@@ -14,9 +15,9 @@
         }
 
         body {
-            font-family: 'Roboto', sans-serif;
-            background: linear-gradient(135deg, #0a0a1f 0%, #1a1a3f 100%);
-            color: rgba(255, 255, 255, 0.9);
+            font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f5f5f7;
+            color: #1d1d1f;
             line-height: 1.6;
             min-height: 100vh;
             padding: 2rem;
@@ -31,18 +32,25 @@
             text-align: center;
             margin-bottom: 3rem;
             padding: 2rem 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid #e5e5e5;
             animation: fadeIn 0.8s ease-out;
         }
 
         h1 {
-            font-family: 'Orbitron', sans-serif;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
             font-size: 2.5em;
             margin-bottom: 1rem;
-            background: linear-gradient(to right, #fff, #0ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 2px 10px rgba(0, 255, 255, 0.2);
+            color: #1d1d1f;
+            font-weight: 600;
+        }
+
+        h1 i {
+            color: #ff9500;
+        }
+
+        .header p {
+            color: #86868b;
+            font-size: 1.1em;
         }
 
         .cost-cards {
@@ -54,18 +62,18 @@
         }
 
         .cost-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: #ffffff;
+            border: 1px solid #e5e5e5;
             border-radius: 15px;
             padding: 1.5rem;
-            backdrop-filter: blur(10px);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
         }
 
         .cost-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            border-color: rgba(0, 255, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-color: rgba(255, 149, 0, 0.2);
         }
 
         .form-group {
@@ -76,13 +84,14 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            color: #0ff;
+            color: #1d1d1f;
             margin-bottom: 0.8rem;
             font-size: 1.1em;
+            font-weight: 500;
         }
 
         label i {
-            color: rgba(0, 255, 255, 0.7);
+            color: #ff9500;
         }
 
         .input-group {
@@ -94,33 +103,34 @@
         .input-group i {
             position: absolute;
             left: 1rem;
-            color: rgba(0, 255, 255, 0.7);
+            color: #ff9500;
         }
 
         input[type="number"] {
             width: 100%;
             padding: 0.8rem;
             padding-left: 2.5rem;
-            border: 1px solid rgba(0, 255, 255, 0.2);
+            border: 1px solid #e5e5e5;
             border-radius: 8px;
-            background: rgba(255, 255, 255, 0.05);
-            color: white;
+            background: #ffffff;
+            color: #1d1d1f;
             font-size: 1em;
             transition: all 0.3s ease;
+            font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
         input[type="number"]:focus {
             outline: none;
-            border-color: #0ff;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.1);
+            border-color: #ff9500;
+            box-shadow: 0 0 15px rgba(255, 149, 0, 0.1);
         }
 
         .help-text {
-            color: rgba(255, 255, 255, 0.6);
+            color: #86868b;
             font-size: 0.9em;
             margin-top: 0.5rem;
             padding-left: 0.5rem;
-            border-left: 2px solid rgba(0, 255, 255, 0.3);
+            border-left: 2px solid rgba(255, 149, 0, 0.3);
         }
 
         .action-buttons {
@@ -131,11 +141,11 @@
         }
 
         .action-button {
-            background: linear-gradient(145deg, rgba(26, 32, 44, 0.9), rgba(17, 24, 39, 0.95));
-            color: white;
-            border: 1px solid rgba(0, 255, 255, 0.2);
+            background: #ffffff;
+            color: #1d1d1f;
+            border: 1px solid #e5e5e5;
             padding: 1rem 2rem;
-            border-radius: 8px;
+            border-radius: 12px;
             cursor: pointer;
             font-size: 1em;
             display: flex;
@@ -145,16 +155,41 @@
             text-decoration: none;
             flex: 1;
             justify-content: center;
+            font-weight: 500;
+            font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
         }
 
         .action-button:hover {
-            background: linear-gradient(145deg, rgba(37, 45, 62, 0.9), rgba(26, 32, 44, 0.95));
-            border-color: rgba(0, 255, 255, 0.4);
+            background: #f9f9fb;
+            border-color: rgba(255, 149, 0, 0.2);
+            color: #ff9500;
             transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
         }
 
         .action-button i {
-            color: #0ff;
+            color: #ff9500;
+            font-size: 1.2em;
+        }
+
+        .action-button:hover i {
+            color: #ff8000;
+        }
+
+        button.action-button {
+            background: #ff9500;
+            color: white;
+            border: none;
+        }
+
+        button.action-button:hover {
+            background: #ff8000;
+            color: white;
+        }
+
+        button.action-button i {
+            color: white;
         }
 
         .notification {
@@ -162,21 +197,37 @@
             top: 20px;
             right: 20px;
             padding: 1rem;
-            border-radius: 8px;
-            background: rgba(0, 255, 255, 0.1);
-            border: 1px solid rgba(0, 255, 255, 0.2);
-            color: white;
+            border-radius: 12px;
+            background: #ffffff;
+            border: 1px solid #e5e5e5;
+            color: #1d1d1f;
             display: flex;
             align-items: center;
             gap: 0.5rem;
             transform: translateX(120%);
             transition: transform 0.3s ease;
             z-index: 1000;
-            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .notification.success {
+            border-left: 4px solid #34c759;
+        }
+
+        .notification.error {
+            border-left: 4px solid #ff3b30;
         }
 
         .notification.show {
             transform: translateX(0);
+        }
+
+        .notification i.success {
+            color: #34c759;
+        }
+
+        .notification i.error {
+            color: #ff3b30;
         }
 
         @keyframes fadeIn {

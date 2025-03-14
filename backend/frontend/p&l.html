@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>P&L Statement</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
     <script src="p&l.js"></script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&family=SF+Pro+Text:wght@300;400;500;600&display=swap');
+
         * {
             margin: 0;
             padding: 0;
@@ -15,9 +16,9 @@
         }
 
         body {
-            font-family: 'Roboto', sans-serif;
-            background: linear-gradient(135deg, #0a0a1f 0%, #1a1a3f 100%);
-            color: rgba(255, 255, 255, 0.9);
+            font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f5f5f7;
+            color: #1d1d1f;
             line-height: 1.6;
             min-height: 100vh;
             padding: 2rem;
@@ -32,18 +33,26 @@
             text-align: center;
             margin-bottom: 3rem;
             padding: 2rem 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
             animation: fadeIn 0.8s ease-out;
         }
 
         h1 {
-            font-family: 'Orbitron', sans-serif;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
             font-size: 2.5em;
             margin-bottom: 1rem;
-            background: linear-gradient(to right, #fff, #0ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 2px 10px rgba(0, 255, 255, 0.2);
+            color: #1d1d1f;
+            font-weight: 600;
+        }
+
+        h1 i {
+            color: #ff9500;
+            margin-right: 0.5rem;
+        }
+
+        .header p {
+            color: #86868b;
+            font-size: 1.1em;
         }
 
         .summary-cards {
@@ -55,47 +64,56 @@
         }
 
         .summary-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: #ffffff;
+            border: 1px solid #e5e5e5;
             border-radius: 15px;
             padding: 1.5rem;
-            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: fadeIn 0.5s ease-out forwards;
         }
 
         .summary-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            border-color: rgba(0, 255, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-color: rgba(255, 149, 0, 0.2);
         }
 
         .summary-card h3 {
-            color: #0ff;
-            font-size: 1.1em;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: #1d1d1f;
+            font-size: 1.2em;
             margin-bottom: 0.5rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            font-weight: 600;
+        }
+
+        .summary-card h3 i {
+            color: #ff9500;
         }
 
         .summary-card .value {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
             font-size: 1.8em;
-            font-weight: 500;
+            font-weight: 600;
             margin: 0.5rem 0;
+            color: #ff9500;
         }
 
         .summary-card .label {
-            color: rgba(255, 255, 255, 0.6);
+            color: #86868b;
             font-size: 0.9em;
         }
 
         .pl-table {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: #ffffff;
+            border: 1px solid #e5e5e5;
             border-radius: 15px;
             padding: 1.5rem;
             margin-bottom: 2rem;
-            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
             animation: slideUp 1s ease-out;
         }
 
@@ -109,12 +127,14 @@
         th, td {
             padding: 1rem;
             text-align: left;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid #e5e5e5;
         }
 
         th {
-            color: #0ff;
-            font-weight: 500;
+            background: #f5f5f7;
+            color: #86868b;
+            font-weight: 600;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
             font-size: 0.9em;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -124,30 +144,42 @@
             border-bottom: none;
         }
 
+        tr:hover td {
+            background: rgba(255, 149, 0, 0.05);
+        }
+
+        td i {
+            color: #ff9500;
+            margin-right: 0.5rem;
+        }
+
         input[type="number"] {
             width: 100%;
             padding: 0.8rem;
-            border: 1px solid rgba(0, 255, 255, 0.2);
+            border: 1px solid #e5e5e5;
             border-radius: 8px;
-            background: rgba(255, 255, 255, 0.05);
-            color: white;
+            background: #ffffff;
+            color: #1d1d1f;
             font-size: 1em;
             transition: all 0.3s ease;
+            font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
         input[type="number"]:focus {
             outline: none;
-            border-color: #0ff;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.1);
+            border-color: #ff9500;
+            box-shadow: 0 0 15px rgba(255, 149, 0, 0.1);
         }
 
         .total-row {
-            background: rgba(0, 255, 255, 0.05);
+            background: rgba(255, 149, 0, 0.05);
             font-weight: 500;
         }
 
         .total-row td {
-            color: #0ff;
+            color: #ff9500;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-weight: 600;
         }
 
         .action-buttons {
@@ -158,28 +190,40 @@
         }
 
         .action-button {
-            background: linear-gradient(145deg, rgba(26, 32, 44, 0.9), rgba(17, 24, 39, 0.95));
-            color: white;
-            border: 1px solid rgba(0, 255, 255, 0.2);
-            padding: 1rem 2rem;
-            border-radius: 8px;
-            cursor: pointer;
+            background: #ffffff;
+            border: 1px solid #e5e5e5;
+            border-radius: 12px;
+            padding: 1.2rem;
+            color: #1d1d1f;
             font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            transition: all 0.3s ease;
+            gap: 0.8rem;
             text-decoration: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            font-weight: 500;
+            font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
         .action-button:hover {
-            background: linear-gradient(145deg, rgba(37, 45, 62, 0.9), rgba(26, 32, 44, 0.95));
-            border-color: rgba(0, 255, 255, 0.4);
             transform: translateY(-2px);
+            background: #f9f9fb;
+            border-color: rgba(255, 149, 0, 0.2);
+            color: #ff9500;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
         }
 
         .action-button i {
-            color: #0ff;
+            font-size: 1.2em;
+            color: #ff9500;
+            transition: all 0.3s ease;
+        }
+
+        .action-button:hover i {
+            color: #ff8000;
+            transform: translateY(-1px);
         }
 
         @keyframes fadeIn {
