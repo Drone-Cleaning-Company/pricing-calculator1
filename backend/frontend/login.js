@@ -87,6 +87,18 @@ document.addEventListener('DOMContentLoaded', function() {
                             message.style.color = '#ff0000';
                         }
                     });
+                } else if (data.errorType === 'password') {
+                    // Password-specific error message
+                    message.textContent = 'Incorrect password. Please try again.';
+                    message.style.color = '#ff0000';
+                } else if (data.errorType === 'user_not_found') {
+                    // User not found error message
+                    message.textContent = 'User not found. Please check your username or email.';
+                    message.style.color = '#ff0000';
+                } else if (data.errorType === 'account_locked') {
+                    // Account locked error message
+                    message.textContent = 'Your account has been temporarily locked due to multiple failed login attempts. Please try again later.';
+                    message.style.color = '#ff0000';
                 } else {
                     // Regular error message
                     message.textContent = data.message || 'Login failed';

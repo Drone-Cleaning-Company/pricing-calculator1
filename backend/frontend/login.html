@@ -44,17 +44,47 @@
                         window.location.href = data.user.isAdmin ? '/admin.html' : '/user.html';
                     }, 1000);
                 } else {
-                    if (data.message === 'Please verify your email before logging in') {
+                    if (data.message === 'Please verify your email before logging in' || data.needsVerification) {
                         // Store email for verification page
-                        localStorage.setItem('pendingEmail', formData.email);
+                        localStorage.setItem('pendingEmail', formData.email || data.email);
                         
-                        // Show verification message
-                        showNotification('Please verify your email first. Redirecting to verification page...', 'warning');
+                        // Show verification message with resend option
+                        const verificationMessage = 'Please verify your email first. <a href="#" id="resendVerification" class="resend-link">Resend verification email</a>';
+                        showNotification(verificationMessage, 'warning', true);
                         
-                        // Redirect to verification page
-                        setTimeout(() => {
-                            window.location.href = '/verify-email.html';
-                        }, 2000);
+                        // Add event listener for resend link
+                        document.getElementById('resendVerification').addEventListener('click', async (e) => {
+                            e.preventDefault();
+                            try {
+                                const resendResponse = await fetch('/api/auth/resend-verification', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({ email: formData.email || data.email })
+                                });
+                                
+                                const resendData = await resendResponse.json();
+                                
+                                if (resendResponse.ok) {
+                                    showNotification('Verification email sent! Please check your inbox.', 'success');
+                                } else {
+                                    showNotification(resendData.message || 'Failed to resend verification email.', 'error');
+                                }
+                            } catch (error) {
+                                console.error('Error resending verification:', error);
+                                showNotification('An error occurred. Please try again.', 'error');
+                            }
+                        });
+                    } else if (data.errorType === 'password') {
+                        // Password-specific error message
+                        showNotification('Incorrect password. Please try again.', 'error');
+                    } else if (data.errorType === 'user_not_found') {
+                        // User not found error message
+                        showNotification('User not found. Please check your username or email.', 'error');
+                    } else if (data.errorType === 'account_locked') {
+                        // Account locked error message
+                        showNotification('Your account has been temporarily locked due to multiple failed login attempts. Please try again later.', 'error');
                     } else {
                         showNotification(data.message || 'Login failed', 'error');
                     }
@@ -69,14 +99,21 @@
             }
         });
 
-        function showNotification(message, type = 'success') {
-            notification.textContent = message;
+        function showNotification(message, type = 'success', isHTML = false) {
+            if (isHTML) {
+                notification.innerHTML = message;
+            } else {
+                notification.textContent = message;
+            }
             notification.className = `notification ${type}`;
             notification.style.display = 'block';
             
-            setTimeout(() => {
-                notification.style.display = 'none';
-            }, 5000);
+            // Only auto-hide non-HTML notifications (since HTML ones might have interactive elements)
+            if (!isHTML) {
+                setTimeout(() => {
+                    notification.style.display = 'none';
+                }, 5000);
+            }
         }
     });
 </script> 

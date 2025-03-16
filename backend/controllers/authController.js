@@ -70,7 +70,10 @@ exports.login = async (req, res) => {
         // Validate input
         if (!username || !password) {
             console.log('Missing credentials:', { username: !!username, password: !!password });
-            return res.status(400).json({ message: 'Please provide username and password' });
+            return res.status(400).json({ 
+                message: 'Please provide username and password',
+                errorType: 'missing_credentials'
+            });
         }
 
         // Find user by username or email
@@ -84,7 +87,10 @@ exports.login = async (req, res) => {
 
         if (!user) {
             console.log('User not found:', username);
-            return res.status(401).json({ message: 'Invalid username or password' });
+            return res.status(401).json({ 
+                message: 'Invalid username or password', 
+                errorType: 'user_not_found'
+            });
         }
 
         console.log('User found:', {
@@ -103,7 +109,8 @@ exports.login = async (req, res) => {
             return res.status(401).json({ 
                 message: 'Account not verified. Please check your email for verification link or request a new one.',
                 needsVerification: true,
-                email: user.email
+                email: user.email,
+                errorType: 'not_verified'
             });
         }
 
@@ -129,11 +136,17 @@ exports.login = async (req, res) => {
             
             if (!isMatch) {
                 console.log('Password mismatch for user:', username);
-                return res.status(401).json({ message: 'Invalid username or password' });
+                return res.status(401).json({ 
+                    message: 'Invalid username or password',
+                    errorType: 'password'
+                });
             }
         } catch (error) {
             console.error('Error during password comparison:', error);
-            return res.status(500).json({ message: 'Error verifying password' });
+            return res.status(500).json({ 
+                message: 'Error verifying password',
+                errorType: 'server_error'
+            });
         }
 
         // Create JWT token
@@ -169,7 +182,8 @@ exports.login = async (req, res) => {
         res.status(500).json({ 
             message: 'Error during login', 
             error: error.message,
-            stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+            stack: process.env.NODE_ENV === 'development' ? error.stack : undefined,
+            errorType: 'server_error'
         });
     }
 };
