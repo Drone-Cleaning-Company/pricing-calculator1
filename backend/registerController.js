@@ -12,7 +12,7 @@ async function sendVerificationEmail(userEmail, token) {
         },
     });
 
-    const verificationLink = `http://localhost:5000/verify-email.html?token=${token}`;
+    const verificationLink = `https://pricing-calculator1.onrender.com/verify-email.html?token=${token}`;
 
     let mailOptions = {
         from: 'dronecleaningcompanyinterns@gmail.com',
@@ -56,7 +56,7 @@ async function registerUser(req, res) {
             return res.status(500).send('Error storing verification token');
         }
 
-        const verificationLink = `http://localhost:5000/verify-email.html?token=${token}`;
+        const verificationLink = `https://pricing-calculator1.onrender.com/verify-email.html?token=${token}`;
         console.log('Verification link:', verificationLink); // Log the verification link
 
         // Send verification email

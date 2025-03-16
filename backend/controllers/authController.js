@@ -1,7 +1,8 @@
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
-const crypto = require('crypto');
+const User = require('../models/user');
+const bcryptjs = require('bcryptjs');
 const nodemailer = require('nodemailer');
+const crypto = require('crypto');
 
 // Debug logging
 console.log('Current directory:', process.cwd());
@@ -12,8 +13,6 @@ try {
     console.log('Failed to resolve User model path:', error.message);
     console.log('Available files in models:', require('fs').readdirSync(require('path').join(__dirname, '../models')));
 }
-
-const User = require('../models/user');
 
 // Validate JWT_SECRET
 if (!process.env.JWT_SECRET) {
@@ -61,27 +60,41 @@ async function sendVerificationEmail(userEmail, token) {
 exports.login = async (req, res) => {
     try {
         const { username, password } = req.body;
-        console.log('Login attempt:', { username });
-
+        
+        console.log('Login attempt received:', { 
+            username: username,
+            passwordProvided: !!password,
+            passwordLength: password ? password.length : 0
+        });
+        
+        // Validate input
         if (!username || !password) {
             console.log('Missing credentials:', { username: !!username, password: !!password });
-            return res.status(400).json({ message: 'Username and password are required' });
+            return res.status(400).json({ message: 'Please provide username and password' });
         }
 
-        // Find user by username
-        console.log('Searching for user with username:', username);
-        const user = await User.findOne({ username });
-        
+        // Find user by username or email
+        console.log('Searching for user with username or email:', username);
+        const user = await User.findOne({
+            $or: [
+                { username: username },
+                { email: username }
+            ]
+        });
+
         if (!user) {
             console.log('User not found:', username);
             return res.status(401).json({ message: 'Invalid username or password' });
         }
 
-        console.log('User found:', { 
+        console.log('User found:', {
+            id: user._id,
             username: user.username,
-            hasPassword: !!user.password,
+            email: user.email,
+            isVerified: user.isVerified,
             isAdmin: user.isAdmin,
-            isVerified: user.isVerified
+            passwordExists: !!user.password,
+            passwordLength: user.password ? user.password.length : 0
         });
 
         // Check if user is verified
@@ -95,12 +108,32 @@ exports.login = async (req, res) => {
         }
 
         // Check password using the model's comparePassword method
-        const isMatch = await user.comparePassword(password);
-        console.log('Password check result:', isMatch);
-
-        if (!isMatch) {
-            console.log('Password mismatch for user:', username);
-            return res.status(401).json({ message: 'Invalid username or password' });
+        console.log(`Attempting login for user: ${username} with password length: ${password.length}`);
+        
+        // Enhanced debugging for password comparison
+        console.log('Password first 3 chars:', password.substring(0, 3) + '...');
+        console.log('Stored hash first 10 chars:', user.password.substring(0, 10) + '...');
+        
+        try {
+            // Use bcryptjs directly for comparison as a fallback if model method fails
+            let isMatch = await user.comparePassword(password);
+            
+            // If the model method fails, try direct comparison as a fallback
+            if (!isMatch) {
+                console.log('Model comparePassword failed, trying direct bcryptjs.compare...');
+                isMatch = await bcryptjs.compare(String(password), String(user.password));
+                console.log('Direct bcryptjs comparison result:', isMatch);
+            }
+            
+            console.log('Final password check result:', isMatch);
+            
+            if (!isMatch) {
+                console.log('Password mismatch for user:', username);
+                return res.status(401).json({ message: 'Invalid username or password' });
+            }
+        } catch (error) {
+            console.error('Error during password comparison:', error);
+            return res.status(500).json({ message: 'Error verifying password' });
         }
 
         // Create JWT token
@@ -115,25 +148,22 @@ exports.login = async (req, res) => {
         const token = jwt.sign(
             tokenPayload,
             process.env.JWT_SECRET,
-            { expiresIn: '24h' }
+            { expiresIn: '1h' }
         );
 
-        // Send response
-        const response = {
+        // Return success response
+        console.log('Login successful for user:', username);
+        return res.status(200).json({
             message: 'Login successful',
             token,
             user: {
-                id: user._id,
+                userId: user._id,
                 name: user.name,
-                email: user.email,
-                country: user.country,
                 isAdmin: user.isAdmin,
+                country: user.country,
                 username: user.username
             }
-        };
-        console.log('Login successful:', { username, isAdmin: user.isAdmin });
-        res.status(200).json(response);
-
+        });
     } catch (error) {
         console.error('Login error:', error);
         res.status(500).json({ 
@@ -147,11 +177,13 @@ exports.login = async (req, res) => {
 // Register controller
 exports.register = async (req, res) => {
     try {
-        const { name, email, password, username, country } = req.body;
+        const { name, email, username, password, country, adminKey } = req.body;
         
-        // Log registration attempt
-        console.log('Registration attempt:', { username, email });
-
+        // Validate required fields
+        if (!name || !email || !username || !password || !country) {
+            return res.status(400).json({ message: 'All fields are required' });
+        }
+        
         // Check if user already exists
         const existingUser = await User.findOne({ 
             $or: [
@@ -159,77 +191,67 @@ exports.register = async (req, res) => {
                 { username: username }
             ]
         });
-
+        
         if (existingUser) {
-            if (existingUser.email === email) {
-                return res.status(400).json({ message: 'Email already in use' });
-            }
-            if (existingUser.username === username) {
-                return res.status(400).json({ message: 'Username already taken' });
+            const field = existingUser.email === email ? 'email' : 'username';
+            return res.status(400).json({ message: `User with this ${field} already exists` });
+        }
+        
+        // Check admin key and set isAdmin flag
+        let isAdmin = false;
+        let adminKeyMessage = "";
+        const correctAdminKey = process.env.ADMIN_KEY;
+        
+        if (adminKey) {
+            if (adminKey === correctAdminKey) {
+                isAdmin = true;
+                adminKeyMessage = "Admin privileges granted";
+            } else {
+                adminKeyMessage = "Invalid admin key provided";
             }
         }
-
-        // Hash password
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password, salt);
         
+        console.log('Admin key check:', { 
+            provided: adminKey ? 'Yes' : 'No',
+            isCorrect: isAdmin,
+            isAdmin: isAdmin,
+            message: adminKeyMessage
+        });
+
         // Generate verification token
         const verificationToken = generateVerificationToken();
+        const tokenExpiration = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
         
-        // Create new user
+        // Create new user with verification token
+        // Note: Password will be hashed by the pre-save middleware in the User model
         const newUser = new User({
             name,
             email,
-            password: hashedPassword,
             username,
+            password, // This will be hashed by the pre-save middleware
             country,
+            isAdmin,
             verificationToken,
-            tokenExpiration: new Date(Date.now() + 24 * 60 * 60 * 1000) // 24 hours from now
+            tokenExpiration
         });
-
-        await newUser.save();
         
-        // Log new user
-        console.log('New user created:', {
+        // Save the user to the database
+        await newUser.save();
+        console.log('User created successfully:', { 
             username: newUser.username,
             email: newUser.email,
-            userId: newUser._id
+            isAdmin: newUser.isAdmin
         });
 
         // Send verification email
         await sendVerificationEmail(email, verificationToken);
 
-        // Generate JWT token
-        const payload = {
+        // Return success with admin key message if applicable
+        return res.status(201).json({ 
+            message: 'User registered successfully', 
+            adminKeyMessage: adminKeyMessage,
             userId: newUser._id,
-            isAdmin: newUser.isAdmin,
-            name: newUser.name,
-            country: newUser.country
-        };
-        
-        console.log('Creating token with payload:', payload);
-
-        const token = jwt.sign(
-            payload,
-            process.env.JWT_SECRET,
-            { expiresIn: '1h' }
-        );
-
-        // Return success response with token
-        console.log('Registration successful:', { username: newUser.username });
-        res.status(201).json({
-            success: true,
-            message: 'Registration successful! Please check your email to verify your account.',
-            token,
-            user: {
-                id: newUser._id,
-                name: newUser.name,
-                email: newUser.email,
-                username: newUser.username,
-                country: newUser.country,
-                isAdmin: newUser.isAdmin,
-                isVerified: newUser.isVerified
-            }
+            isAdmin: newUser.isAdmin
         });
     } catch (error) {
         console.error('Registration error:', error);

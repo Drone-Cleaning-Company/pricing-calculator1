@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
+const bcryptjs = require('bcryptjs');
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -31,6 +31,7 @@ const userSchema = new mongoose.Schema({
     },
     isAdmin: {
         type: Boolean,
+        required: true,
         default: false
     },
     isVerified: {
@@ -52,8 +53,9 @@ userSchema.pre('save', async function(next) {
     if (!this.isModified('password')) return next();
     
     try {
-        const salt = await bcrypt.genSalt(10);
-        this.password = await bcrypt.hash(this.password, salt);
+        // Use bcryptjs consistently
+        const salt = await bcryptjs.genSalt(10);
+        this.password = await bcryptjs.hash(this.password, salt);
         next();
     } catch (error) {
         next(error);
@@ -63,13 +65,40 @@ userSchema.pre('save', async function(next) {
 // Method to compare password
 userSchema.methods.comparePassword = async function(candidatePassword) {
     try {
-        return await bcrypt.compare(candidatePassword, this.password);
+        if (!candidatePassword) {
+            console.error('No candidate password provided for comparison');
+            return false;
+        }
+        
+        if (!this.password) {
+            console.error('User has no stored password hash');
+            return false;
+        }
+        
+        // Use bcryptjs consistently for comparison
+        // Make sure both parameters are strings
+        const storedPassword = String(this.password);
+        const inputPassword = String(candidatePassword);
+        
+        // Enhanced logging for password debugging
+        console.log('Comparing passwords:');
+        console.log('- Input password length:', inputPassword.length);
+        console.log('- Stored hash length:', storedPassword.length);
+        console.log('- Input password type:', typeof inputPassword);
+        console.log('- Stored hash type:', typeof storedPassword);
+        
+        // Use bcryptjs.compare for secure password comparison
+        const result = await bcryptjs.compare(inputPassword, storedPassword);
+        console.log('Password comparison result:', result);
+        
+        return result;
     } catch (error) {
-        throw error;
+        console.error('Error comparing passwords:', error);
+        console.error('Error stack:', error.stack);
+        return false; // Return false instead of throwing to prevent login failures due to errors
     }
 };
 
-// Check if the model already exists before defining it
-const User = mongoose.models.User || mongoose.model('User', userSchema);
-
+// Export the model
+const User = mongoose.model('User', userSchema);
 module.exports = User;
