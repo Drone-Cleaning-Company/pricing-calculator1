@@ -38,6 +38,7 @@ const userSchema = new mongoose.Schema({
         default: false
     },
     verificationToken: String,
+    tokenExpiration: Date,
     resetPasswordToken: String,
     resetPasswordExpires: Date,
     createdAt: {
@@ -68,6 +69,7 @@ userSchema.methods.comparePassword = async function(candidatePassword) {
     }
 };
 
-const User = mongoose.model('User', userSchema);
+// Check if the model already exists before defining it
+const User = mongoose.models.User || mongoose.model('User', userSchema);
 
-module.exports = User; 
+module.exports = User;

@@ -425,13 +425,13 @@
                         // Store email for verification page
                         localStorage.setItem('pendingEmail', formData.email);
                         
-                        // Show success message
-                        showNotification('Registration successful! Please check your email to verify your account.', 'success');
+                        // Show success message with instructions
+                        showNotification('Registration successful! Please check your email to verify your account. Click the link in the email to complete verification.', 'success');
                         
-                        // Redirect to verification page after a delay
-                        setTimeout(() => {
-                            window.location.href = '/verify-email.html';
-                        }, 2000);
+                        // Change the button to a success message
+                        submitButton.innerHTML = '<i class="fas fa-check-circle"></i> Registration Complete';
+                        submitButton.style.backgroundColor = '#4CAF50';
+                        submitButton.disabled = true;
                     } else {
                         // Show specific error message from server
                         showNotification(data.message || 'Registration failed', 'error');
