@@ -80,8 +80,19 @@ exports.login = async (req, res) => {
         console.log('User found:', { 
             username: user.username,
             hasPassword: !!user.password,
-            isAdmin: user.isAdmin
+            isAdmin: user.isAdmin,
+            isVerified: user.isVerified
         });
+
+        // Check if user is verified
+        if (!user.isVerified) {
+            console.log('User not verified:', username);
+            return res.status(401).json({ 
+                message: 'Account not verified. Please check your email for verification link or request a new one.',
+                needsVerification: true,
+                email: user.email
+            });
+        }
 
         // Check password using the model's comparePassword method
         const isMatch = await user.comparePassword(password);

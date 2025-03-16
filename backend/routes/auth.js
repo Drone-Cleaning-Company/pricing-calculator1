@@ -85,14 +85,13 @@ router.get('/verify-email', async (req, res) => {
 
 // Resend verification email
 router.post('/resend-verification', async (req, res) => {
-    const { email } = req.body;
-    
-    if (!email) {
-        return res.status(400).json({ message: 'Email is required' });
-    }
-    
     try {
-        // Find user by email
+        const { email } = req.body;
+        
+        if (!email) {
+            return res.status(400).json({ message: 'Email is required' });
+        }
+        
         const user = await User.findOne({ email });
         
         if (!user) {
@@ -100,15 +99,14 @@ router.post('/resend-verification', async (req, res) => {
         }
         
         if (user.isVerified) {
-            return res.status(400).json({ message: 'Email is already verified' });
+            return res.status(400).json({ message: 'This account is already verified' });
         }
         
-        // Generate new verification token
+        // Generate new token
         const newToken = crypto.randomBytes(32).toString('hex');
-        
-        // Update user with new token
         user.verificationToken = newToken;
-        user.tokenExpiration = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
+        user.tokenExpiration = Date.now() + 24 * 60 * 60 * 1000; // 24 hours
+        
         await user.save();
         
         // Send verification email
@@ -117,35 +115,116 @@ router.post('/resend-verification', async (req, res) => {
         let mailOptions = {
             from: 'dronecleaningcompanyinterns@gmail.com',
             to: user.email,
-            subject: 'Verify Your Email - Drone Cleaning Services',
-            text: `Please verify your email by clicking on the following link: ${verificationLink}`,
+            subject: 'Email Verification',
             html: `
-                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 5px;">
-                    <h2 style="color: #333;">Verify Your Email</h2>
-                    <p>Thank you for registering with Drone Cleaning Services. Please verify your email address by clicking the button below:</p>
-                    <a href="${verificationLink}" style="display: inline-block; background-color: #4facfe; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; margin: 20px 0;">Verify Email</a>
-                    <p>If the button doesn't work, you can also click on this link or copy it to your browser:</p>
-                    <p><a href="${verificationLink}">${verificationLink}</a></p>
-                    <p>This link will expire in 24 hours.</p>
-                    <p>Thank you,<br>Drone Cleaning Services Team</p>
-                </div>
+                <h1>Verify Your Email</h1>
+                <p>Please click the link below to verify your email address:</p>
+                <a href="${verificationLink}" style="display: inline-block; padding: 10px 20px; background-color: #007BFF; color: white; text-decoration: none; border-radius: 5px;">Verify Email</a>
+                <p>If you did not request this, please ignore this email.</p>
             `
         };
         
         let transporter = nodemailer.createTransport({
-            service: 'Gmail',
+            service: 'gmail',
             auth: {
                 user: 'dronecleaningcompanyinterns@gmail.com',
-                pass: 'mkfn oiob swrf aogl',
+                pass: 'mkfn oiob swrf aogl'
             },
         });
         
         await transporter.sendMail(mailOptions);
         
-        res.status(200).send('Verification email resent successfully');
+        res.status(200).json({ message: 'Verification email sent successfully' });
     } catch (error) {
         console.error('Error resending verification email:', error);
-        res.status(500).send('Error resending verification email');
+        res.status(500).json({ message: 'Failed to resend verification email' });
+    }
+});
+
+// Forgot password route
+router.post('/forgot-password', async (req, res) => {
+    try {
+        const { email } = req.body;
+        
+        if (!email) {
+            return res.status(400).json({ message: 'Email is required' });
+        }
+        
+        const user = await User.findOne({ email });
+        
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        
+        // Generate reset token
+        const resetToken = crypto.randomBytes(32).toString('hex');
+        user.resetPasswordToken = resetToken;
+        user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+        
+        await user.save();
+        
+        // Send reset email
+        const resetLink = `https://pricing-calculator1.onrender.com/reset-password.html?token=${resetToken}`;
+        
+        let mailOptions = {
+            from: 'dronecleaningcompanyinterns@gmail.com',
+            to: user.email,
+            subject: 'Password Reset',
+            html: `
+                <h1>Reset Your Password</h1>
+                <p>Please click the link below to reset your password:</p>
+                <a href="${resetLink}" style="display: inline-block; padding: 10px 20px; background-color: #007BFF; color: white; text-decoration: none; border-radius: 5px;">Reset Password</a>
+                <p>If you did not request this, please ignore this email.</p>
+                <p>This link will expire in 1 hour.</p>
+            `
+        };
+        
+        let transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: 'dronecleaningcompanyinterns@gmail.com',
+                pass: 'mkfn oiob swrf aogl'
+            },
+        });
+        
+        await transporter.sendMail(mailOptions);
+        
+        res.status(200).json({ message: 'Password reset email sent successfully' });
+    } catch (error) {
+        console.error('Error sending reset email:', error);
+        res.status(500).json({ message: 'Failed to send reset email' });
+    }
+});
+
+// Reset password route
+router.post('/reset-password', async (req, res) => {
+    try {
+        const { token, newPassword } = req.body;
+        
+        if (!token || !newPassword) {
+            return res.status(400).json({ message: 'Token and new password are required' });
+        }
+        
+        const user = await User.findOne({
+            resetPasswordToken: token,
+            resetPasswordExpires: { $gt: Date.now() }
+        });
+        
+        if (!user) {
+            return res.status(400).json({ message: 'Invalid or expired reset token' });
+        }
+        
+        // Update password
+        user.password = newPassword;
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpires = undefined;
+        
+        await user.save();
+        
+        res.status(200).json({ message: 'Password reset successful' });
+    } catch (error) {
+        console.error('Error resetting password:', error);
+        res.status(500).json({ message: 'Failed to reset password' });
     }
 });
 
