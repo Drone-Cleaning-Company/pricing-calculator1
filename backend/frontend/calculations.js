@@ -6,6 +6,21 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
 
+    // Add CSS for consistent column styling
+    const style = document.createElement('style');
+    style.textContent = `
+        #calculationsTable {
+            width: 100%;
+        }
+        #calculationsTable td {
+            color: #000;
+        }
+        #calculationsTable td i {
+            color: #000;
+        }
+    `;
+    document.head.appendChild(style);
+
     fetchAndDisplayCalculations();
 
     async function fetchAndDisplayCalculations() {
@@ -61,9 +76,9 @@ document.addEventListener('DOMContentLoaded', function() {
                             <th><i class="fas fa-user"></i> Name</th>
                             <th><i class="fas fa-map-marker-alt"></i> Address</th>
                             <th><i class="fas fa-chart-area"></i> Total SqFt</th>
-                            <th><i class="fas fa-tag"></i> Original Price</th>
+                            <th><i class="fas fa-money-bill"></i> Currency</th>
                             <th><i class="fas fa-dollar-sign"></i> Total Price</th>
-                            <th><i class="fas fa-percentage"></i> Discount</th>
+                            <th><i class="fas fa-dollar-sign"></i> Discount Amount</th>
                             <th><i class="fas fa-calendar"></i> Date</th>
                             <th><i class="fas fa-broom"></i> Cleaning Type</th>
                         </tr>
@@ -95,7 +110,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 const date = new Date(calculation.createdAt);
                 const formattedDate = date.toLocaleDateString();
-                const originalPrice = Math.round((calculation.totalPrice + (calculation.discount || 0)) * 100) / 100;
                 const totalPrice = Math.round(calculation.totalPrice * 100) / 100;
                 const discount = Math.round((calculation.discount || 0) * 100) / 100;
 
@@ -104,8 +118,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         <td><i class="fas fa-user-circle"></i> ${calculation.name || 'N/A'}</td>
                         <td><i class="fas fa-building"></i> ${calculation.address || 'N/A'}</td>
                         <td><i class="fas fa-ruler"></i> ${calculation.totalSqFt || 0}</td>
-                        <td class="price-cell"><i class="fas fa-${currencyIcon}"></i> ${originalPrice} ${currencyText}</td>
-                        <td class="price-cell"><i class="fas fa-${currencyIcon}"></i> ${totalPrice} ${currencyText}</td>
+                        <td class="currency"><i class="fas fa-${currencyIcon}"></i> ${currencyText}</td>
+                        <td class="price-cell">${totalPrice}</td>
                         <td class="price-cell"><i class="fas fa-tag"></i> ${discount}</td>
                         <td><i class="far fa-calendar-alt"></i> ${formattedDate}</td>
                         <td><i class="fas fa-spray-can"></i> ${calculation.cleaningType || 'N/A'}</td>

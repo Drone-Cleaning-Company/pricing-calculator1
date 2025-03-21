@@ -167,16 +167,6 @@ function initializeEventListeners() {
             }
         });
     }
-
-    // Save button event
-    const saveButton = document.getElementById('saveButton');
-    if (saveButton) {
-        saveButton.addEventListener('click', () => {
-            saveButton.classList.add('button-click');
-            setTimeout(() => saveButton.classList.remove('button-click'), 200);
-            saveCalculation();
-        });
-    }
 }
 
 function initializeTooltips() {
@@ -390,7 +380,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!isAdmin) {
             pnlButton.style.display = 'none';
         } else {
-            pnlButton.addEventListener('click', showPnLPage);
+            // Removed event listener attachment from here
         }
     }
 });
@@ -434,6 +424,7 @@ function calculateOperationalHours(squareFeet) {
 
     return {
         squareFeet: squareFeet,
+        totalSqFt: squareFeet, // Add this property for UI consistency
         sqFtPerMinute: SQFT_PER_MINUTE,
         sqFtPerHour: SQFT_PER_HOUR,
         cleaningHours: cleaningHours,
@@ -546,7 +537,7 @@ function calculateFinalPrice() {
 
     // Retrieve inputs
     const totalSqFt = parseFloat(document.getElementById('totalSqFt').value) || 0;
-    let totalFloors = parseInt(urlParams.get('totalFloors')) || 0;
+    let totalFloors = parseInt(urlParams.get('totalFloors') || localStorage.getItem('totalFloors') || 0);
     const frequency = document.querySelector('input[name="frequency"]:checked')?.value;
     const heightCategory = document.querySelector('input[name="heightCategory"]:checked')?.value;
     const discountType = document.getElementById('discountType').value;
@@ -896,7 +887,20 @@ function storeClientInfo() {
             // Calculate Total Cost
             const totalCost = laborCosts + additionalCost;
             console.log('Total Cost:', totalCost);
-    
+
+            // Save complexity cost, travel cost, and discount information
+            const complexityCost = parseFloat(document.getElementById('complexityCost').value) || 0;
+            const travelCost = parseFloat(document.getElementById('travelCost').value) || 0;
+            const discountType = document.getElementById('discountType').value;
+            const discountValue = parseFloat(document.getElementById('discountValue').value) || 0;
+            
+            // Add these values to the calculation results
+            if (!results.inputs) results.inputs = {};
+            results.inputs.complexityCost = complexityCost;
+            results.inputs.travelCost = travelCost;
+            results.inputs.discountType = discountType;
+            results.inputs.discountValue = discountValue;
+            
             // Prepare data to be passed to the next page
             const data = {
                 totalPrice,
@@ -906,11 +910,11 @@ function storeClientInfo() {
             
             localStorage.setItem('savedCalculation', JSON.stringify(window.calculationResults));
             console.log('Data to be encoded:', data);
-    
+
             // Encode the data and pass it to the new page (p&l.html)
             const encodedData = btoa(JSON.stringify(data));
             console.log('Encoded data:', encodedData);
-    
+
             window.location.href = `p&l.html?data=${encodedData}`;
         } catch (error) {
             console.error('Error:', error);
@@ -923,6 +927,43 @@ function storeClientInfo() {
         if (savedCalculation) {
             try {
                 window.calculationResults = JSON.parse(savedCalculation);
+                
+                // Restore complexity cost, travel cost, and discount values if they exist
+                if (window.calculationResults.inputs) {
+                    const complexityCostInput = document.getElementById('complexityCost');
+                    const travelCostInput = document.getElementById('travelCost');
+                    const discountTypeSelect = document.getElementById('discountType');
+                    const discountValueInput = document.getElementById('discountValue');
+                    const discountValueSection = document.getElementById('discountValueSection');
+                    
+                    if (complexityCostInput && window.calculationResults.inputs.complexityCost !== undefined) {
+                        complexityCostInput.value = window.calculationResults.inputs.complexityCost;
+                    }
+                    
+                    if (travelCostInput && window.calculationResults.inputs.travelCost !== undefined) {
+                        travelCostInput.value = window.calculationResults.inputs.travelCost;
+                    }
+                    
+                    if (discountTypeSelect && window.calculationResults.inputs.discountType !== undefined) {
+                        discountTypeSelect.value = window.calculationResults.inputs.discountType;
+                        
+                        // Show/hide discount value section based on discount type
+                        if (discountValueSection) {
+                            if (window.calculationResults.inputs.discountType !== 'none') {
+                                discountValueSection.style.display = 'block';
+                                discountValueSection.style.opacity = '1';
+                                discountValueSection.style.transform = 'translateY(0)';
+                                
+                                if (discountValueInput && window.calculationResults.inputs.discountValue !== undefined) {
+                                    discountValueInput.value = window.calculationResults.inputs.discountValue;
+                                }
+                            } else {
+                                discountValueSection.style.display = 'none';
+                            }
+                        }
+                    }
+                }
+                
                 // Update the UI with the restored values
                 updateUIWithCalculationResults();
             } catch (error) {
@@ -1087,124 +1128,141 @@ function storeClientInfo() {
                             </tbody>
                         </table>
                     </div>
-                    
-                    <div class="action-buttons">
-                        <button type="button" id="saveButton" class="action-button">
-                            <i class="fas fa-save"></i> Save Calculation
-                        </button>
-                        <button type="button" id="showPnLPage" class="action-button">
-                            <i class="fas fa-chart-pie"></i> View P&L
-                        </button>
-                    </div>
                 `;
                 
-                // Add event listeners to the newly created buttons
-                const saveButton = document.getElementById('saveButton');
-                if (saveButton) {
-                    saveButton.addEventListener('click', saveCalculation);
-                }
-                
-                const pnlButton = document.getElementById('showPnLPage');
-                if (pnlButton) {
-                    const isAdmin = localStorage.getItem('isAdmin') === 'true';
-                    if (!isAdmin) {
-                        pnlButton.style.display = 'none';
-                    } else {
-                        pnlButton.addEventListener('click', showPnLPage);
-                    }
-                }
+                // Removed event listener attachment from here
             }
         } catch (error) {
             console.error("Error updating UI:", error);
         }
-    }
-    
-    function restoreClientInfo() {
-        const nameDisplay = document.getElementById('clientNameDisplay');
-        const addressDisplay = document.getElementById('addressDisplay');
         
-        if (nameDisplay) {
-          nameDisplay.textContent = localStorage.getItem('clientName') || 'Unknown';
-        }
-        if (addressDisplay) {
-          addressDisplay.textContent = localStorage.getItem('address') || 'Unknown';
-        }
-      }
-      
-    // Call this function when the page loads
-    window.addEventListener('load', () => {
-        restoreSavedCalculation();
-        restoreClientInfo();
-    });
-    
-    
-    async function saveCalculation() {
-        try {
-            const token = localStorage.getItem('token');
-            const country = localStorage.getItem('country');
-            const urlParams = new URLSearchParams(window.location.search);
-            const clientNameParam = urlParams.get('clientName');
-            const addressParam = urlParams.get('address');
+        // Call the function to set up event listeners after updating the UI
+        setupButtonEventListeners();
+    }
+
+    // New function to centralize event listener setup
+    function setupButtonEventListeners() {
+        console.log("Setting up button event listeners");
+        
+        // First, remove all existing event listeners by cloning and replacing the buttons
+        const saveButton = document.getElementById('saveButton');
+        if (saveButton) {
+            const newSaveButton = saveButton.cloneNode(true);
+            saveButton.parentNode.replaceChild(newSaveButton, saveButton);
             
-            const name = clientNameParam ? decodeURIComponent(clientNameParam) : localStorage.getItem('clientName');
-            const address = addressParam ? decodeURIComponent(addressParam) : localStorage.getItem('address');
-
-            if (!token || !country) {
-                showNotification('Please log in to save calculations', 'error');
-                return;
-            }
-
-            if (!name) {
-                showNotification('Client name not found', 'error');
-                return;
-            }
-
-            if (!address) {
-                showNotification('Address not found', 'error');
-                return;
-            }
-
-            // Get values from the calculation results
-            if (!window.calculationResults) {
-                showNotification('Please calculate the price first', 'error');
-                return;
-            }
-
-            const totalPrice = window.calculationResults.totals.totalPrice;
-            const discount = window.calculationResults.totals.discountAmount;
-            const totalSqFt = window.calculationResults.inputs.totalSqFt;
-            const cleaningType = document.querySelector('input[name="heightCategory"]:checked')?.value || 'window';
-
-            const response = await fetch('/api/calculations', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({
-                    name,
-                    totalPrice,
-                    discount,
-                    totalSqFt,
-                    address,
-                    country,
-                    cleaningType
-                })
+            // Add the event listener to the new button
+            newSaveButton.addEventListener('click', function(e) {
+                console.log("Save button clicked");
+                newSaveButton.classList.add('button-click');
+                setTimeout(() => newSaveButton.classList.remove('button-click'), 200);
+                saveCalculation();
             });
-
-            if (!response.ok) {
-                const error = await response.json();
-                throw new Error(error.message || 'Failed to save calculation');
+        }
+        
+        const pnlButton = document.getElementById('showPnLPage');
+        if (pnlButton) {
+            const isAdmin = localStorage.getItem('isAdmin') === 'true';
+            if (!isAdmin) {
+                pnlButton.style.display = 'none';
+            } else {
+                const newPnlButton = pnlButton.cloneNode(true);
+                pnlButton.parentNode.replaceChild(newPnlButton, pnlButton);
+                
+                // Add the event listener to the new button
+                newPnlButton.addEventListener('click', function(e) {
+                    console.log("P&L button clicked");
+                    showPnLPage();
+                });
             }
-
-            showNotification('Calculation saved successfully');
-
-        } catch (error) {
-            console.error('Error saving calculation:', error);
-            showNotification(error.message || 'Error saving calculation', 'error');
         }
     }
+
+    // Call this function when the page loads to set up initial event listeners
+    document.addEventListener('DOMContentLoaded', function() {
+        setupButtonEventListeners();
+    });
+
+async function saveCalculation() {
+    // Add a debounce flag to prevent multiple rapid saves
+    if (window.isSaving) {
+        console.log("Save operation already in progress, ignoring duplicate call");
+        return;
+    }
     
+    try {
+        // Set the flag to indicate a save is in progress
+        window.isSaving = true;
+        
+        const token = localStorage.getItem('token');
+        const country = localStorage.getItem('country');
+        const urlParams = new URLSearchParams(window.location.search);
+        const clientNameParam = urlParams.get('clientName');
+        const addressParam = urlParams.get('address');
+        
+        const name = clientNameParam ? decodeURIComponent(clientNameParam) : localStorage.getItem('clientName');
+        const address = addressParam ? decodeURIComponent(addressParam) : localStorage.getItem('address');
+
+        if (!token || !country) {
+            showNotification('Please log in to save calculations', 'error');
+            return;
+        }
+
+        if (!name) {
+            showNotification('Client name not found', 'error');
+            return;
+        }
+
+        if (!address) {
+            showNotification('Address not found', 'error');
+            return;
+        }
+
+        // Get values from the calculation results
+        if (!window.calculationResults) {
+            showNotification('Please calculate the price first', 'error');
+            return;
+        }
+
+        const totalPrice = window.calculationResults.totals.totalPrice;
+        const discount = window.calculationResults.totals.discountAmount;
+        const totalSqFt = window.calculationResults.inputs.totalSqFt;
+        const cleaningType = document.querySelector('input[name="heightCategory"]:checked')?.value || 'window';
+
+        const response = await fetch('/api/calculations', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                name,
+                totalPrice,
+                discount,
+                totalSqFt,
+                address,
+                country,
+                cleaningType
+            })
+        });
+
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.message || 'Failed to save calculation');
+        }
+
+        showNotification('Calculation saved successfully');
+
+    } catch (error) {
+        console.error('Error saving calculation:', error);
+        showNotification(error.message || 'Error saving calculation', 'error');
+    } finally {
+        // Reset the flag after a short delay to prevent rapid consecutive clicks
+        setTimeout(() => {
+            window.isSaving = false;
+        }, 1000);
+    }
+}
+
 // Add the toggleLaborCosts function
 function toggleLaborCosts() {
     const section = document.getElementById('laborCostsSection');
@@ -1232,3 +1290,21 @@ function toggleLaborCosts() {
         }, 300);
     }
 }
+
+function restoreClientInfo() {
+    const nameDisplay = document.getElementById('clientNameDisplay');
+    const addressDisplay = document.getElementById('addressDisplay');
+    
+    if (nameDisplay) {
+      nameDisplay.textContent = localStorage.getItem('clientName') || 'Unknown';
+    }
+    if (addressDisplay) {
+      addressDisplay.textContent = localStorage.getItem('address') || 'Unknown';
+    }
+}
+
+// Call this function when the page loads
+window.addEventListener('load', () => {
+    restoreSavedCalculation();
+    restoreClientInfo();
+});

@@ -13,6 +13,40 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
 
+    // Add CSS for consistent column styling
+    const style = document.createElement('style');
+    style.textContent = `
+        #calculationsTable {
+            width: 100%;
+            table-layout: fixed;
+        }
+        #calculationsTable th:last-child, 
+        #calculationsTable td:last-child {
+            width: 220px;
+            white-space: nowrap;
+        }
+        #calculationsTable td {
+            color: #000;
+        }
+        #calculationsTable td i {
+            color: #000;
+        }
+        .editBtn, .deleteBtn {
+            display: inline-block;
+            margin: 2px 5px;
+            padding: 5px 10px;
+            width: 80px;
+            text-align: center;
+        }
+        .actions-container {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+        }
+    `;
+    document.head.appendChild(style);
+
     fetchAndDisplayCalculations();
 
     async function fetchAndDisplayCalculations() {
@@ -62,9 +96,9 @@ document.addEventListener('DOMContentLoaded', function() {
                             <th><i class="fas fa-map-marker-alt"></i> Address</th>
                             <th><i class="fas fa-globe"></i> Country</th>
                             <th><i class="fas fa-chart-area"></i> Total SqFt</th>
-                            <th><i class="fas fa-tag"></i> Original Price</th>
+                            <th><i class="fas fa-money-bill"></i> Currency</th>
                             <th><i class="fas fa-dollar-sign"></i> Total Price</th>
-                            <th><i class="fas fa-percentage"></i> Discount</th>
+                            <th><i class="fas fa-dollar-sign"></i> Discount Amount</th>
                             <th><i class="fas fa-calendar"></i> Date</th>
                             <th><i class="fas fa-broom"></i> Cleaning Type</th>
                             <th><i class="fas fa-cogs"></i> Actions</th>
@@ -102,23 +136,25 @@ document.addEventListener('DOMContentLoaded', function() {
                 const discount = Math.round(calculation.discount * 100) / 100;
 
                 tableHTML += `
-                    <tr data-id="${calculation._id}" data-original-price="${originalPrice}">
+                    <tr data-id="${calculation._id}" data-original-price="${originalPrice}" data-currency="${currencyText}" data-currency-icon="${currencyIcon}">
                         <td><i class="fas fa-user-circle"></i> ${calculation.name}</td>
                         <td><i class="fas fa-building"></i> ${calculation.address}</td>
                         <td><i class="fas fa-globe"></i> ${calculation.country}</td>
                         <td>${calculation.totalSqFt}</td>
-                        <td class="originalPrice"><i class="fas fa-${currencyIcon}"></i> ${originalPrice} ${currencyText}</td>
-                        <td class="totalPrice"><i class="fas fa-${currencyIcon}"></i> ${totalPrice} ${currencyText}</td>
+                        <td class="currency"><i class="fas fa-${currencyIcon}"></i> ${currencyText}</td>
+                        <td class="totalPrice">${totalPrice}</td>
                         <td class="discount"><i class="fas fa-tag"></i> ${discount}</td>
                         <td><i class="far fa-calendar-alt"></i> ${formattedDate}</td>
                         <td><i class="fas fa-spray-can"></i> ${calculation.cleaningType}</td>
                         <td>
-                            <button class="editBtn" data-id="${calculation._id}">
-                                <i class="fas fa-edit"></i> Edit
-                            </button>
-                            <button class="deleteBtn" data-id="${calculation._id}">
-                                <i class="fas fa-trash-alt"></i> Delete
-                            </button>
+                            <div class="actions-container">
+                                <button class="editBtn" data-id="${calculation._id}">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+                                <button class="deleteBtn" data-id="${calculation._id}">
+                                    <i class="fas fa-trash-alt"></i> Delete
+                                </button>
+                            </div>
                         </td>
                     </tr>
                 `;
@@ -223,9 +259,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const row = event.target.closest('tr');
 
         const originalPrice = parseFloat(row.dataset.originalPrice);
+        const currency = row.dataset.currency;
+        const currencyIcon = row.dataset.currencyIcon;
 
         const totalPriceCell = row.querySelector('.totalPrice');
         const discountCell = row.querySelector('.discount');
+        const currencyCell = row.querySelector('.currency');
 
         const originalTotalPrice = Math.round(parseFloat(totalPriceCell.textContent.replace(/[^\d.]/g, '')) * 100) / 100;
         const originalDiscount = Math.round(parseFloat(discountCell.textContent.replace(/[^\d.]/g, '')) * 100) / 100;
@@ -242,19 +281,24 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         `;
 
+        // Keep the currency display unchanged
+        currencyCell.innerHTML = `<i class="fas fa-${currencyIcon}"></i> ${currency}`;
+
         const editButtonsHTML = `
-            <button class="saveBtn" data-id="${id}" data-original-price="${originalPrice}">
-                <i class="fas fa-save"></i> Save
-            </button>
-            <button class="cancelBtn" data-id="${id}">
-                <i class="fas fa-times"></i> Cancel
-            </button>
+            <div class="actions-container">
+                <button class="saveBtn" data-id="${id}" data-original-price="${originalPrice}">
+                    <i class="fas fa-save"></i> Save
+                </button>
+                <button class="cancelBtn" data-id="${id}">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+            </div>
         `;
 
         row.querySelector('td:last-child').innerHTML = editButtonsHTML;
 
         row.querySelector('.saveBtn').addEventListener('click', () => saveCalculation(id, row, originalPrice));
-        row.querySelector('.cancelBtn').addEventListener('click', () => cancelEdit(row, originalTotalPrice, originalDiscount));
+        row.querySelector('.cancelBtn').addEventListener('click', () => cancelEdit(row, originalTotalPrice, originalDiscount, currency, currencyIcon));
 
         // Add animation to the edited row
         row.style.backgroundColor = 'rgba(0, 255, 255, 0.05)';
@@ -263,6 +307,8 @@ document.addEventListener('DOMContentLoaded', function() {
     async function saveCalculation(id, row, originalPrice) {
         const newDiscount = Math.round(parseFloat(row.querySelector('.editDiscount').value) * 100) / 100;
         const newTotalPrice = Math.round((originalPrice - newDiscount) * 100) / 100;
+        const currency = row.dataset.currency;
+        const currencyIcon = row.dataset.currencyIcon;
     
         try {
             const token = localStorage.getItem('token');
@@ -298,56 +344,76 @@ document.addEventListener('DOMContentLoaded', function() {
     
             const data = await response.json();
     
-            row.querySelector('.totalPrice').textContent = Math.round(data.totalPrice * 100) / 100;
-            row.querySelector('.discount').textContent = Math.round(data.discount * 100) / 100;
-    
-            const actionButtonsHTML = `
+            // Update the cells with the new values
+            row.querySelector('.totalPrice').innerHTML = `${Math.round(data.totalPrice * 100) / 100}`;
+            row.querySelector('.discount').innerHTML = `<i class="fas fa-tag"></i> ${Math.round(data.discount * 100) / 100}`;
+            
+            // Keep the currency display
+            row.querySelector('.currency').innerHTML = `<i class="fas fa-${currencyIcon}"></i> ${currency}`;
+
+            // Update the original price in the row data attribute
+            const newOriginalPrice = Math.round((data.totalPrice + data.discount) * 100) / 100;
+            row.dataset.originalPrice = newOriginalPrice;
+
+            // Replace the edit/save buttons with the original edit/delete buttons
+            const actionsCell = row.querySelector('td:last-child');
+            actionsCell.innerHTML = `
+                <div class="actions-container">
+                    <button class="editBtn" data-id="${id}">
+                        <i class="fas fa-edit"></i> Edit
+                    </button>
+                    <button class="deleteBtn" data-id="${id}">
+                        <i class="fas fa-trash-alt"></i> Delete
+                    </button>
+                </div>
+            `;
+
+            // Add event listeners to the new buttons
+            actionsCell.querySelector('.editBtn').addEventListener('click', editCalculation);
+            actionsCell.querySelector('.deleteBtn').addEventListener('click', deleteCalculation);
+
+            // Add a success animation
+            row.style.backgroundColor = 'rgba(0, 255, 0, 0.05)';
+            setTimeout(() => {
+                row.style.backgroundColor = '';
+                row.style.transition = 'background-color 1s ease';
+            }, 300);
+
+            showNotification('Calculation updated successfully');
+        } catch (error) {
+            console.error('Error updating calculation:', error);
+            showNotification(error.message || 'Error updating calculation', 'error');
+        }
+    }
+
+    function cancelEdit(row, originalTotalPrice, originalDiscount, currency, currencyIcon) {
+        const id = row.dataset.id;
+        
+        // Restore the original values
+        row.querySelector('.totalPrice').innerHTML = `${originalTotalPrice}`;
+        row.querySelector('.discount').innerHTML = `<i class="fas fa-tag"></i> ${originalDiscount}`;
+        
+        // Keep the currency display
+        row.querySelector('.currency').innerHTML = `<i class="fas fa-${currencyIcon}"></i> ${currency}`;
+
+        // Replace the save/cancel buttons with the original edit/delete buttons
+        const actionsCell = row.querySelector('td:last-child');
+        actionsCell.innerHTML = `
+            <div class="actions-container">
                 <button class="editBtn" data-id="${id}">
                     <i class="fas fa-edit"></i> Edit
                 </button>
                 <button class="deleteBtn" data-id="${id}">
                     <i class="fas fa-trash-alt"></i> Delete
                 </button>
-            `;
-            row.querySelector('td:last-child').innerHTML = actionButtonsHTML;
-    
-            row.querySelector('.editBtn').addEventListener('click', editCalculation);
-            row.querySelector('.deleteBtn').addEventListener('click', deleteCalculation);
-    
-            // Add success animation
-            row.style.backgroundColor = 'rgba(0, 255, 255, 0.1)';
-            setTimeout(() => {
-                row.style.backgroundColor = '';
-            }, 500);
-
-            showNotification("Calculation updated successfully!", "success");
-    
-        } catch (error) {
-            console.error("Error updating calculation:", error);
-            showNotification(`Error updating calculation: ${error.message}`, "error");
-        }
-    }
-    
-    function cancelEdit(row, originalTotalPrice, originalDiscount) {
-        row.querySelector('.totalPrice').textContent = originalTotalPrice;
-        row.querySelector('.discount').textContent = originalDiscount;
-
-        const id = row.dataset.id;
-        const actionButtonsHTML = `
-            <button class="editBtn" data-id="${id}">
-                <i class="fas fa-edit"></i> Edit
-            </button>
-            <button class="deleteBtn" data-id="${id}">
-                <i class="fas fa-trash-alt"></i> Delete
-            </button>
+            </div>
         `;
-        row.querySelector('td:last-child').innerHTML = actionButtonsHTML;
 
-        // Re-attach event listeners
-        row.querySelector('.editBtn').addEventListener('click', editCalculation);
-        row.querySelector('.deleteBtn').addEventListener('click', deleteCalculation);
+        // Add event listeners to the new buttons
+        actionsCell.querySelector('.editBtn').addEventListener('click', editCalculation);
+        actionsCell.querySelector('.deleteBtn').addEventListener('click', deleteCalculation);
 
-        // Remove edit highlight
+        // Reset the row styling
         row.style.backgroundColor = '';
     }
 
